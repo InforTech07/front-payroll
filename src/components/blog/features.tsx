@@ -2,7 +2,7 @@ import ContainerBlog from "../container/container";
 
 function Feature(){
     return(
-        <div id="feature">
+        <div id="feature" className="space-y-40 mb-40">
             <ContainerBlog>
                 <div className="mb-12 space-y-2 text-center">
                     <h2 className="text-3xl font-bold text-gray-800 md:text-4xl dark:text-white">Funcionalidades</h2>

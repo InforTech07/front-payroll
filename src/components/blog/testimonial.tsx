@@ -2,7 +2,7 @@ import ContainerBlog from "../container/container"
 
 function Testimonials(){
     return(
-        <div className="text-gray-600 dark:text-gray-300" id="reviews">
+        <div className="text-gray-600 dark:text-gray-300 space-y-40 mb-40" id="reviews">
             <ContainerBlog>
                 <div className="mb-20 space-y-4 px-6 md:px-0">
                 <h2 className="text-center text-2xl font-bold text-gray-800 dark:text-white md:text-4xl">

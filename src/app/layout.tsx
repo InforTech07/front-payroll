@@ -14,14 +14,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-
-  //saber si es blog aplicar bg-gray-900 diferente a blog bg-white
-
-
-
   return (
     <html lang="en" data-theme="corporate">
-      <body className="bg-gray-900">
+      <body>
         <NextAuthProvider>
           <Navbar />
           {children}

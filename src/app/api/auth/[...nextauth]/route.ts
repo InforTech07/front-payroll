@@ -13,14 +13,21 @@ const handler = NextAuth({
             },
             async authorize(credentials, req) {
                 const user = { id: "1", name: "J Smith", email: "jhon@gmail.com" };
-                if (user) {
-                    return user;
-                } else {
-                    return null;
+                let userFound = false;
+                if (credentials?.email === user.email && credentials.password === "1234") {
+                    userFound = true;
                 }
+                console.log(credentials)
+                if (!userFound) throw new Error("Credenciales invalidas");
+
+                return user;
             }  
         }),
     ],
+    pages: {
+        signIn: "/login",
+        //signOut: "/logout",
+    },
     // A database is optional, but required to persist accounts in a database
     // database: process.env.DATABASE_URL,
 });
