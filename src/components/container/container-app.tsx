@@ -1,4 +1,5 @@
 import SideBar from "../navs/sidebar";
+
 interface ContainerProps {
     children: React.ReactNode;
 }
@@ -9,7 +10,7 @@ function ContainerApp({ children }: ContainerProps) {
       <div className="flex flex-col h-full md: md:">
         <SideBar />
       </div>
-      <div className="flex flex-col w-full  md: md:">
+      <div className="flex flex-col w-full rounded-xl  md: md:">
         {children}
       </div>
     </div>
