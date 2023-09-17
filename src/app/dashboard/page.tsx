@@ -1,21 +1,15 @@
-"use client";
-import {useSession, signOut} from 'next-auth/react';
-
+import ContainerApp from '@/components/container/container-app';
 function DashboardPage(){
-    const {data: session, status} = useSession();
-
     return (
-    <div>
-        <h1>Dashboard Page</h1>
-        <pre>
-            {JSON.stringify(session, null, 2)}
-        </pre>
-        <button  className="btn btn-accent" 
-        onClick={() => {
-          signOut();
-        }}
-        >Salir</button>
-    </div>)
+    <ContainerApp>
+        <div className='bg-base-200 flex flex-col md:flex-row md:space-x-4'>
+            <h1>Dashboard Page</h1>
+            <pre>
+                {/* {JSON.stringify(session, null, 2)} */}
+            </pre>
+        </div>
+    </ContainerApp>
+    )
 }
 
 export default DashboardPage;

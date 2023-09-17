@@ -2,12 +2,16 @@
 import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Navbar from "@/components/navs/navbar";
 
 function LoginPage(){
     const [error, setError] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const router = useRouter();
+    //const callbackUrl = decodeURI((router.query?.callbackUrl as string) ?? "/");
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -27,6 +31,8 @@ function LoginPage(){
 
 
     return (
+        <>
+        <Navbar showLogin={false}/>
         <div className="relative h-screen flex justify-center  bg-gray-900 before:absolute before:inset-0 before:w-full before:h-[50%] before:bg-gray-900">
             <div className="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">
                 <div className="m-auto space-y-8 md:w-8/12 lg:w-full">
@@ -52,18 +58,18 @@ function LoginPage(){
                                         <label className="label">
                                             <span className="label-text text-gray-50">Email:</span>
                                         </label>
-                                        <input type="text" name="email" placeholder="email@example.com" className="input input-bordered w-full max-w-xs" />
+                                        <input type="text" name="email" placeholder="email@example.com" className="input input-bordered input-sm w-full max-w-xs" />
                                         <label className="label">
-                                            <span className="label-text-alt text-gray-50">Error</span>
+                                            <span className="label-text-alt text-gray-50" hidden>Error</span>
                                         </label>
                                     </div>
                                     <div className="form-control w-full max-w-xs">
                                         <label className="label">
                                             <span className="label-text text-gray-50">Contrasena:</span>
                                         </label>
-                                        <input type="password" name="password" placeholder="*****" className="input input-bordered w-full max-w-xs" />
+                                        <input type="password" name="password" placeholder="*****" className="input input-bordered input-sm w-full max-w-xs" />
                                         <label className="label">
-                                            <span className="label-text-alt text-gray-50">Error</span>
+                                            <span className="label-text-alt text-gray-50" hidden>Error</span>
                                         </label>
                                     </div>
                                     <div className="form-control w-full max-w-xs">
@@ -80,6 +86,7 @@ function LoginPage(){
                 </div>
             </div>
         </div>
+        </>
     )
 }
 

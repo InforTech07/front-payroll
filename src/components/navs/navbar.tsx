@@ -1,7 +1,4 @@
-"use client";
-import { usePathname } from 'next/navigation';
 import  Link  from 'next/link';
-import { useEffect, useState } from "react";
 import ContainerBlog from "../container/container";
 const links = [
     {
@@ -17,18 +14,10 @@ const links = [
         label: "Opiniones",
     }
 ];
-function Navbar(){
-    const [isHome, setIsHome] = useState(true);
-    
-    const pathname = usePathname();
-
-    useEffect(() => {
-        if (pathname === "/") {
-            setIsHome(true);
-        } else {
-            setIsHome(false);
-        }
-    }, [pathname]);
+type NavbarProps = {
+    showLogin?: boolean;
+};
+function Navbar({showLogin = true}: NavbarProps){
     // if (pathname !== "/") {
     //     setIsHome(false);
     // }
@@ -97,7 +86,7 @@ function Navbar(){
                                 </ul>
                             </div>
                             {
-                                isHome && (
+                                showLogin && (
                                     <div className="mt-12 lg:mt-0">
                                         <Link href="/login" className="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
                                             <span className="relative text-sm font-semibold text-white"> login </span>

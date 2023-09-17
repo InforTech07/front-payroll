@@ -18,7 +18,6 @@ export default function RootLayout({
     <html lang="en" data-theme="corporate">
       <body>
         <NextAuthProvider>
-          <Navbar />
           {children}
         </NextAuthProvider>
       </body>
