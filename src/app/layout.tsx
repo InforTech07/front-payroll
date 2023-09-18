@@ -1,4 +1,6 @@
 import './globals.css'
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import type { Metadata } from 'next'
 import { NextAuthProvider } from './providers'
 
@@ -18,6 +20,18 @@ export default function RootLayout({
         <NextAuthProvider>
           {children}
         </NextAuthProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </body>
     </html>
   )

@@ -1,18 +1,9 @@
 "use client";
-import type { Metadata } from 'next'
-import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { IFormRegisterCompanies } from '@/entitys/companies';
+import { companyService } from '@/services/companie-service';
 
-type FormRegisterCompaniesValues ={
-    companies: string;
-    description: string;
-    name: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-}
 
 // const resolver: Resolver<FormRegisterCompaniesValues> = async (values) => {
 //   return {
@@ -29,22 +20,44 @@ type FormRegisterCompaniesValues ={
 // };
 
 function FormRegisterCampanies(){
-    //const router = useRouter();
+    const [succesRegister, setSuccesRegister] = useState<boolean>(false);
+    const [errorRegister, setErrorRegister] = useState<boolean>(false);
     const {
           register, 
           handleSubmit, 
           formState:{ errors }, 
           watch
-    } = useForm<FormRegisterCompaniesValues>();
+    } = useForm<IFormRegisterCompanies>();
 
-    const onSubmit =  handleSubmit((data) => {
-      console.log(data);
+    const onSubmit =   handleSubmit((data) => {
+      companyService.registerCompanies(data).then(res => {
+        if(res){
+          setSuccesRegister(true);
+          console.log(res);
+        }
+      }).catch(err => {
+        setErrorRegister(true);
+        console.log(err);
+      });
+      
     });
     
     return (
       <div className="selection: selection:text-white">
           <div className="flex min-h-screen items-center justify-center">
               <div className="flex-1 p-8">
+              { succesRegister && (
+                      <div className="alert alert-success my-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span>Registro satisfactorio, Ingrese a su correo para activar su cuenta</span>
+                      </div>
+                    )}
+                { errorRegister && (
+                      <div className="alert alert-error my-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span>Lo sentimos, no podemos registrar ahora..!!</span>
+                      </div>
+                    )}
                 <div className="mx-auto w-full overflow-hidden rounded-3xl bg-white shadow-xl">
                     {/* Form Body */}
                     <div className="rounded-tr-4xl bg-white px-10 pb-8 pt-4">
@@ -65,21 +78,21 @@ function FormRegisterCampanies(){
                                       <span className="label-text">Nombre de la empresa</span>
                                     </label>
                                     <input
-                                      {...register("companies", { required: {
+                                      {...register("company", { required: {
                                         value: true,
                                         message: "Ingrese un nombre",
                                       } })}
-                                      id="companies"
-                                      name="companies"
+                                      id="company"
+                                      name="company"
                                       type="text"
                                       className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
                                       placeholder="micromercado"
                                       autoComplete="off" 
                                     />
-                                    {errors?.companies && (
+                                    {errors?.company && (
                                       <label className="label">
                                         <span className="text-red-600 text-sm">
-                                          {errors.companies.message}
+                                          {errors.company.message}
                                         </span>
                                       </label>
                                     )}
@@ -260,7 +273,7 @@ function FormRegisterCampanies(){
                                         value: true,
                                         message: "Ingrese una contraseña",
                                       },
-                                      validate: value => value === watch('confirmPassword') || "Las contraseñas no coinciden"
+                                      validate: value => value === watch('password') || "Las contraseñas no coinciden"
                                     })}
                                       id="confirmPassword"
                                       name="confirmPassword"

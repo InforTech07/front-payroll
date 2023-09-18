@@ -1,7 +1,7 @@
 // services/UserService.ts
 import users from "../data/users.json";
 import { User } from "next-auth";
-import { IUserService } from "./IUserService";
+import { IUserService } from "../entitys/user";
 export class InMemoryUserService implements IUserService {
   signInCredentials(email: string, password: string): User | Promise<User> {
     const user = users.find((user) => {

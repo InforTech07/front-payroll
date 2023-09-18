@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import  CredentialsProvider  from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
-import { userService } from "@/services/UserService";
+import { userService } from "@/services/user-service";
 import { config } from "@/config";
 
 if(!config.nextAuthSecret) throw new Error("NEXTAUTH_SECRET is not defined");
