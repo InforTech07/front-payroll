@@ -61,9 +61,9 @@ function SideBar(){
                     </li>
                 </ul>
                 <div className="space-y-2 justify-end">
-                    <img src="https://source.unsplash.com/100x100/?portrait" alt="" className="w-12 h-12 rounded-full dark:bg-gray-500" />
+                    <img src={session?.user?.image ? session.user.image : './images/avatars/avatar.webp' } alt="" className="w-12 h-12 rounded-full dark:bg-gray-500" />
                     <div>
-                        <h2 className="text-lg font-semibold">Leroy Jenkins</h2>
+                        <h2 className="text-lg font-semibold">{session?.user?.name}</h2>
                     </div>
                 </div>
             </nav>

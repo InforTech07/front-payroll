@@ -11,9 +11,12 @@ interface IUserAdminCompanies{
 
 export interface ICompanies {
     id?: number | string;
-    company: string;
+    name: string;
+    phone: string;
     description: string;
-    urlLogo?: string;
+    address: string;
+    picture?: string;
+    create_user?: boolean
 }
 
 export interface IFormRegisterCompanies extends ICompanies, IUserAdminCompanies {}

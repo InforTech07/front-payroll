@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IFormRegisterCompanies } from '@/entitys/companies';
 import { companyService } from '@/services/companie-service';
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 
 // const resolver: Resolver<FormRegisterCompaniesValues> = async (values) => {
@@ -20,8 +22,9 @@ import { companyService } from '@/services/companie-service';
 // };
 
 function FormRegisterCampanies(){
-    const [succesRegister, setSuccesRegister] = useState<boolean>(false);
-    const [errorRegister, setErrorRegister] = useState<boolean>(false);
+    // const [succesRegister, setSuccesRegister] = useState<boolean>(false);
+    // const [errorRegister, setErrorRegister] = useState<boolean>(false);
+    const router = useRouter();
     const {
           register, 
           handleSubmit, 
@@ -31,13 +34,14 @@ function FormRegisterCampanies(){
 
     const onSubmit =   handleSubmit((data) => {
       companyService.registerCompanies(data).then(res => {
-        if(res){
-          setSuccesRegister(true);
-          console.log(res);
+        if(res.ok){
+          toast.success("Registro satisfactorio, puede iniciar sesion");
+          //router.push('/login');
+          return;
         }
       }).catch(err => {
-        setErrorRegister(true);
-        console.log(err);
+        toast.error("Lo sentimos, no podemos registrar ahora..!!");
+        return;
       });
       
     });
@@ -46,18 +50,6 @@ function FormRegisterCampanies(){
       <div className="selection: selection:text-white">
           <div className="flex min-h-screen items-center justify-center">
               <div className="flex-1 p-8">
-              { succesRegister && (
-                      <div className="alert alert-success my-8">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span>Registro satisfactorio, Ingrese a su correo para activar su cuenta</span>
-                      </div>
-                    )}
-                { errorRegister && (
-                      <div className="alert alert-error my-8">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span>Lo sentimos, no podemos registrar ahora..!!</span>
-                      </div>
-                    )}
                 <div className="mx-auto w-full overflow-hidden rounded-3xl bg-white shadow-xl">
                     {/* Form Body */}
                     <div className="rounded-tr-4xl bg-white px-10 pb-8 pt-4">
@@ -72,27 +64,77 @@ function FormRegisterCampanies(){
                                   <h4 className="text-2xl font-semibold text-black">
                                     Datos de la empresa
                                   </h4>
-                                  {/* Email Input */}
+                                  {/* name company Input */}
                                   <div className="form-control w-full max-w-xs">
                                     <label className="label">
                                       <span className="label-text">Nombre de la empresa</span>
                                     </label>
                                     <input
-                                      {...register("company", { required: {
+                                      {...register("name", { required: {
                                         value: true,
                                         message: "Ingrese un nombre",
                                       } })}
-                                      id="company"
-                                      name="company"
+                                      id="name"
+                                      name="name"
                                       type="text"
                                       className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
                                       placeholder="micromercado"
                                       autoComplete="off" 
                                     />
-                                    {errors?.company && (
+                                    {errors?.name && (
                                       <label className="label">
                                         <span className="text-red-600 text-sm">
-                                          {errors.company.message}
+                                          {errors.name.message}
+                                        </span>
+                                      </label>
+                                    )}
+                                  </div>
+                                  {/* phone company Input */}
+                                  <div className="form-control w-full max-w-xs">
+                                    <label className="label">
+                                      <span className="label-text">Telefono de la empresa</span>
+                                    </label>
+                                    <input
+                                      {...register("phone", { required: {
+                                        value: true,
+                                        message: "Ingrese un telefono",
+                                      } })}
+                                      id="phone"
+                                      name="phone"
+                                      type="text"
+                                      className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
+                                      placeholder="1232344"
+                                      autoComplete="off" 
+                                    />
+                                    {errors?.phone && (
+                                      <label className="label">
+                                        <span className="text-red-600 text-sm">
+                                          {errors.phone.message}
+                                        </span>
+                                      </label>
+                                    )}
+                                  </div>
+                                  {/* name company Input */}
+                                  <div className="form-control w-full max-w-xs">
+                                    <label className="label">
+                                      <span className="label-text">Direccion de la empresa</span>
+                                    </label>
+                                    <input
+                                      {...register("address", { required: {
+                                        value: true,
+                                        message: "Ingrese una direccion",
+                                      } })}
+                                      id="address"
+                                      name="address"
+                                      type="text"
+                                      className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
+                                      placeholder="Av. 1234"
+                                      autoComplete="off" 
+                                    />
+                                    {errors?.address && (
+                                      <label className="label">
+                                        <span className="text-red-600 text-sm">
+                                          {errors.address.message}
                                         </span>
                                       </label>
                                     )}
@@ -131,80 +173,7 @@ function FormRegisterCampanies(){
                                   <h4 className="text-2xl font-semibold text-gray-900">
                                     Datos del administrador
                                   </h4>
-                                  {/* Name admin Input */}
-                                  <div className="form-control w-full max-w-xs">
-                                    <label className="label">
-                                      <span className="label-text">Nombre del administrador</span>
-                                    </label>
-                                    <input
-                                      {...register("name", { required:{
-                                        value: true,
-                                        message: "Ingrese el nombre",
-                                      }
-                                      })}
-                                      id="name"
-                                      name="name"
-                                      type="text"
-                                      className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
-                                      placeholder="John Doe"
-                                      autoComplete="off" 
-                                    />
-                                    {errors?.name && (
-                                      <label className="label">
-                                        <span className="text-red-600 text-sm">
-                                          {errors.name.message}
-                                        </span>
-                                      </label>
-                                    )}
-                                  </div>
-                                  {/* last name Input */}
-                                  <div className="form-control w-full max-w-xs">
-                                    <label className="label">
-                                      <span className="label-text">Apellidos</span>
-                                    </label>
-                                    <input
-                                      {...register("lastName", { required:{
-                                        value: true,
-                                        message: "Ingrese el apellido",
-                                      } })}
-                                      id="lastName"
-                                      name="lastName"
-                                      type="text"
-                                      className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
-                                      placeholder="Perez Lopez"
-                                      autoComplete="off" 
-                                    />
-                                    {errors?.lastName && (
-                                      <label className="label">
-                                        <span className="text-red-600 text-sm">{
-                                          errors.lastName.message
-                                        }</span>
-                                      </label>
-                                    )}
-                                  </div>
-                                  {/* phone admin Input */}
-                                  <div className="form-control w-full max-w-xs">
-                                    <label className="label">
-                                      <span className="label-text">Telefono</span>
-                                    </label>
-                                    <input
-                                      {...register("phone", { required:{
-                                        value: true,
-                                        message: "Ingrese el telefono",
-                                      } })}
-                                      id="phone"
-                                      name="phone"
-                                      type="text"
-                                      className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
-                                      placeholder="456778343"
-                                      autoComplete="off" 
-                                    />
-                                    {errors?.phone && (
-                                      <label className="label">
-                                        <span className="text-red-600 text-sm">{ errors.phone.message}</span>
-                                      </label>
-                                    )}
-                                  </div>
+                
                                   {/* Email Input */}
                                   <div className="form-control w-full max-w-xs">
                                     <label className="label">

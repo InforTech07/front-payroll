@@ -6,7 +6,8 @@ class CompanyService {
     async registerCompanies(data: IFormRegisterCompanies){
         console.log('data', data)
         //return "datos registrados"
-        return await apiServices.post('companies/', data)
+        data.create_user = true;
+        return await apiServices.post('company/', data)
         //return this._apiServices.post('companies/', data)
     }
 
