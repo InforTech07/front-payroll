@@ -4,25 +4,9 @@ import { useForm } from "react-hook-form";
 import { IFormRegisterCompanies } from '@/entitys/companies';
 import { companyService } from '@/services/companie-service';
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 
-// const resolver: Resolver<FormRegisterCompaniesValues> = async (values) => {
-//   return {
-//     values: values.companies ? values : {},
-//     errors: !values.companies
-//       ? {
-//           companies: {
-//             type: "required",
-//             message: "Ingrese un nombre",
-//           },
-//         }
-//       : {},
-//   }
-// };
-
-function FormRegisterCampanies(){
-    const router = useRouter();
+function FormRegisterEmployee(){
     const {
           register, 
           handleSubmit, 
@@ -32,7 +16,7 @@ function FormRegisterCampanies(){
 
     const onSubmit =   handleSubmit((data) => {
       companyService.registerCompanies(data).then(res => {
-        if(res){
+        if(res.ok){
           toast.success("Registro satisfactorio, puede iniciar sesion");
           //router.push('/login');
           return;
@@ -45,10 +29,9 @@ function FormRegisterCampanies(){
     });
     
     return (
-      <div className="selection: selection:text-white">
-          <div className="flex min-h-screen items-center justify-center">
+          <div className="flex items-center justify-center">
               <div className="flex-1 p-8">
-                <div className="mx-auto w-full overflow-hidden rounded-3xl bg-white shadow-xl">
+                <div className="mx-auto w-full overflow-hidden rounded-3xl bg-gray-200 shadow-xl">
                     {/* Form Body */}
                     <div className="rounded-tr-4xl bg-white px-10 pb-8 pt-4">
                         <form
@@ -270,11 +253,9 @@ function FormRegisterCampanies(){
                 </div>
             </div>
           </div>
-      </div>
     );
 
 
 }
 
-export default FormRegisterCampanies;
-  
+export default FormRegisterEmployee;
