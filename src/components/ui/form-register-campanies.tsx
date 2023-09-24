@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { IFormRegisterCompanies } from '@/entitys/companies';
+import { IFormRegisterCompanies } from '@/interfaces/companies';
 import { companyService } from '@/services/companie-service';
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";

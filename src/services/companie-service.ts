@@ -1,4 +1,4 @@
-import { IFormRegisterCompanies, ICompanies } from "@/entitys/companies";
+import { IFormRegisterCompanies, ICompanies } from "@/interfaces/companies";
 import { apiServices } from "./api-service";
 
 class CompanyService {

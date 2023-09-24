@@ -1,8 +1,11 @@
+"use client";
 import './globals.css'
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import type { Metadata } from 'next'
 import { NextAuthProvider } from './providers'
+import { Provider } from 'react-redux'
+import { store } from '@/redux/store'
 
 export const metadata: Metadata = {
   title: 'payroll | Home',
@@ -17,21 +20,23 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="corporate">
       <body className='bg-gray-900'>
-        <NextAuthProvider>
-          {children}
-        </NextAuthProvider>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
+        <Provider store={store}>
+          <NextAuthProvider>
+            {children}
+          </NextAuthProvider>
+        </Provider>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
       </body>
     </html>
   )
