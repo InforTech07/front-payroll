@@ -1,8 +1,9 @@
 type NavbarAppProps = {
     title: string;
+    idBtnDrawer: string;
 }
 
-function NavbarApp({title}: NavbarAppProps){
+function NavbarApp({title, idBtnDrawer}: NavbarAppProps){
     return(
         <nav className="bg-gray-200 shadow rounded-xl">
             <div className="flex items-center justify-between p-2 mx-auto text-gray-600 capitalize">
@@ -22,17 +23,17 @@ function NavbarApp({title}: NavbarAppProps){
                     </a>
                 </div>
                 <div className="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse">
-                    <label htmlFor="drawer-form" className="rounded-l px-1 py-1 text-xs transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">Nuevo Registro</label>
+                    <label htmlFor={idBtnDrawer} className="rounded-l px-1 py-1 text-xs transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">Nuevo</label>
                     <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">
-                        Upload
+                        Informe
                     </button>
 
                     <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6  hover:bg-gray-100">
-                        Drift
+                        Buscador
                     </button>
 
                     <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">
-                        View
+                        Otra opcion
                     </button>
                 </div>
             </div>

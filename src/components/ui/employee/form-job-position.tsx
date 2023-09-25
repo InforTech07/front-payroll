@@ -1,41 +1,38 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { IDepartment } from '@/interfaces/hrm';
+import { IJobPosition } from '@/interfaces/hrm';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { registerDepartment, updateDepartment } from "@/redux/hrm/department-slice";
+import { registerJobPosition, updateJobPosition } from "@/redux/hrm/job-position-slice";
 import { useRouter, useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-interface IFormCreateUpdateDepartment{
-    isModeEdit: boolean;
-    department: IDepartment;
-    //onSubmit: any;
+interface IFormCreateUpdateJobPosition {
+  department: string | number;
 }
 
-function FormCreateUpdateDepartment(){
+function FormCreateUpdateJobPosition({department}: IFormCreateUpdateJobPosition){
   const router = useRouter();
   const params = useParams();
-  const idDepartment = params.id;
+  const idJobPosition = params.id;
   const formOptions = {
     defaultValues: {
       name: "",
       description: "",
-      company: "1",
-      id: ""
     }
   }
 
-  if(idDepartment){
-    useAppSelector(state => state.department.departments).map((item: IDepartment) => {
-      if(item.id == idDepartment){
-        formOptions.defaultValues = {
-          name: item.name,
-          description: item.description,
-          company: "1",
-          id: item.id
-        }
-      }
-    });
+  if(idJobPosition){
+    // useAppSelector(state => state.department.departments).map((item: IJobPosition) => {
+    //   if(item.id == idJobPosition){
+    //     formOptions.defaultValues = {
+    //       name: item.name,
+    //       description: item.description,
+    //       company: "1",
+    //       id: item.id,
+    //       department: department
+    //     }
+    //   }
+    // });
   } 
   const {
           register, 
@@ -43,12 +40,12 @@ function FormCreateUpdateDepartment(){
           setValue, 
           formState:{ errors },
           reset,
-    } = useForm<IDepartment>(formOptions);
+    } = useForm<IJobPosition>(formOptions);
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
-      if(idDepartment){
-        dispatch(updateDepartment(data)).then(res => {
+      if(idJobPosition){
+        dispatch(updateJobPosition(data)).then(res => {
           if(res.payload){
             router.back();
             return;
@@ -57,10 +54,10 @@ function FormCreateUpdateDepartment(){
           return;
         });
       }else{
-        dispatch(registerDepartment(data)).then(res => {
+        dispatch(registerJobPosition(data)).then(res => {
           if(res.payload){
             reset();
-            document.getElementById('drawer-form')?.click();
+            document.getElementById('drawer-form-job-position')?.click();
             return;
           }}).catch(err => {
             return;
@@ -69,31 +66,31 @@ function FormCreateUpdateDepartment(){
     });
 
     const handleHideDrawer = () => {
-      if(idDepartment){
+      if(idJobPosition){
         router.back();
       }
     };
 
     useEffect(() => {
-      if(idDepartment){
-        document.getElementById('drawer-form')?.click();
+      if(idJobPosition){
+        document.getElementById('drawer-form-job-position')?.click();
       }
     }, []);
 
 
     return (
       <div className="drawer drawer-end">
-      <input id="drawer-form" type="checkbox"  className="drawer-toggle" />
+      <input id={`drawer-form${department}`} type="checkbox"  className="drawer-toggle" />
       <div className="drawer-content">
       </div> 
       <div className="drawer-side z-10">
-          <label htmlFor="drawer-form" onClick={handleHideDrawer} className="drawer-overlay"></label>
+          <label htmlFor={`drawer-form${department}`} onClick={handleHideDrawer} className="drawer-overlay"></label>
           <div className="menu p-4 w-96 min-h-full bg-base-200">
-              <span className="text-gray-700 text-md text-center">{idDepartment ? "Actualizar Registro": "Nuevo Registro"}</span>
+              <span className="text-gray-700 text-md text-center">{idJobPosition ? "Actualizar Registro": "Nuevo Registro"}</span>
               <form onSubmit={onSubmit}>
                   <div className="grid grid-cols-1 gap-2 mt-4">
                       <div>
-                          <label className="text-gray-700 text-xs" htmlFor="name">Nombre del departamento</label>
+                          <label className="text-gray-700 text-xs" htmlFor="name">Nombre del puesto</label>
                           <input
                             {...register("name", { required: {
                               value: true,
@@ -113,7 +110,7 @@ function FormCreateUpdateDepartment(){
                             )}
                       </div>
                       <div>
-                          <label htmlFor="Description" className="block text-sm text-gray-700">Description</label>
+                          <label htmlFor="Description" className="block text-sm text-gray-700">Descripcion</label>
                           <textarea
                             {...register("description", { required: {
                               value: true,
@@ -132,7 +129,7 @@ function FormCreateUpdateDepartment(){
                               </label>
                             )}
                       </div>
-                      <div>
+                      {/* <div>
                         <input
                         {...register("company", { required: {
                           value: true,
@@ -143,7 +140,7 @@ function FormCreateUpdateDepartment(){
                           type="text" 
                           value="1" 
                           hidden />
-                      </div>
+                      </div> */}
                       <div>
                         <input 
                         {...register("id", { required: {
@@ -155,10 +152,21 @@ function FormCreateUpdateDepartment(){
                           type="text" 
                           value="3" hidden />
                       </div>
+                      <div>
+                        <input 
+                        {...register("id", { required: {
+                          value: false,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="id" 
+                          name="id" 
+                          type="text" 
+                          value={department} hidden />
+                      </div>
                   </div>
           
                   <div className="flex justify-start mt-6">
-                      <button className="btn btn-sm rounded-l btn-success text-xs">{idDepartment ? "Actualizar":"Guardar"}</button>
+                      <button className="btn btn-sm rounded-l btn-success text-xs">{idJobPosition ? "Actualizar":"Guardar"}</button>
                   </div>
               </form>
           </div>
@@ -167,4 +175,4 @@ function FormCreateUpdateDepartment(){
     );
 }
 
-export default FormCreateUpdateDepartment;
+export default FormCreateUpdateJobPosition;

@@ -53,17 +53,17 @@ export const menuAdmin: IMenuItem[] = [
         submenu: [
             {
                 name: 'Empleados',
-                path: '/employee',
+                path: '/app/hrm/employee',
                 icon: 'mdi-account',
             },
             {
                 name: 'Puestos',
-                path: '/employee/jobposition',
+                path: '/app/hrm/jobposition',
                 icon: 'mdi-account',
             },
             {
                 name: 'Departamentos',
-                path: '/employee/department',
+                path: '/app/hrm/department',
                 icon: 'mdi-account',
             }
         ]

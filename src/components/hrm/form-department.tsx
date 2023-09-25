@@ -4,50 +4,54 @@ import { IDepartment } from '@/interfaces/hrm';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerDepartment, updateDepartment } from "@/redux/hrm/department-slice";
 import { useRouter, useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 interface IFormCreateUpdateDepartment{
-    isModeEdit: boolean;
-    department: IDepartment;
-    //onSubmit: any;
+    idBtnDrawer: string;
 }
 
-function FormCreateUpdateDepartment(){
-  const router = useRouter();
-  const params = useParams();
-  const idDepartment = params.id;
-  const formOptions = {
-    defaultValues: {
-      name: "",
-      description: "",
-      company: "1",
-      id: ""
+function FormCreateUpdateDepartment({idBtnDrawer}: IFormCreateUpdateDepartment){
+    const router = useRouter();
+    const params = useParams();
+    let isModeEdit = false;
+    
+    const idEdit = params.id;
+    
+    if(idEdit){
+        isModeEdit = true;
     }
-  }
-
-  if(idDepartment){
-    useAppSelector(state => state.department.departments).map((item: IDepartment) => {
-      if(item.id == idDepartment){
-        formOptions.defaultValues = {
-          name: item.name,
-          description: item.description,
-          company: "1",
-          id: item.id
+  
+    const formOptions = {
+        defaultValues: {
+            name: "",
+            description: "",
+            company: "1",
+            id: ""
         }
-      }
-    });
-  } 
-  const {
-          register, 
-          handleSubmit,
-          setValue, 
-          formState:{ errors },
-          reset,
+    }
+
+    if(isModeEdit){
+        useAppSelector(state => state.department.departments).map((item: IDepartment) => {
+        if(item.id == idEdit){
+            formOptions.defaultValues = {
+            name: item.name,
+            description: item.description,
+            company: "1",
+            id: item.id
+            }
+        }
+        });
+    } 
+    const {
+        register, 
+        handleSubmit, 
+        formState:{ errors },
+        reset,
     } = useForm<IDepartment>(formOptions);
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
-      if(idDepartment){
+      if(isModeEdit){
         dispatch(updateDepartment(data)).then(res => {
           if(res.payload){
             router.back();
@@ -60,7 +64,7 @@ function FormCreateUpdateDepartment(){
         dispatch(registerDepartment(data)).then(res => {
           if(res.payload){
             reset();
-            document.getElementById('drawer-form')?.click();
+            document.getElementById(idBtnDrawer)?.click();
             return;
           }}).catch(err => {
             return;
@@ -69,27 +73,27 @@ function FormCreateUpdateDepartment(){
     });
 
     const handleHideDrawer = () => {
-      if(idDepartment){
+      if(isModeEdit){
         router.back();
       }
     };
 
     useEffect(() => {
-      if(idDepartment){
-        document.getElementById('drawer-form')?.click();
+      if(isModeEdit){
+        document.getElementById(idBtnDrawer)?.click();
       }
     }, []);
 
 
     return (
       <div className="drawer drawer-end">
-      <input id="drawer-form" type="checkbox"  className="drawer-toggle" />
+      <input id={idBtnDrawer} type="checkbox"  className="drawer-toggle"/>
       <div className="drawer-content">
       </div> 
       <div className="drawer-side z-10">
-          <label htmlFor="drawer-form" onClick={handleHideDrawer} className="drawer-overlay"></label>
+          <label htmlFor={idBtnDrawer} onClick={handleHideDrawer} className="drawer-overlay"></label>
           <div className="menu p-4 w-96 min-h-full bg-base-200">
-              <span className="text-gray-700 text-md text-center">{idDepartment ? "Actualizar Registro": "Nuevo Registro"}</span>
+              <span className="text-gray-700 text-md text-center">{isModeEdit ? "Actualizar Registro": "Nuevo Registro"}</span>
               <form onSubmit={onSubmit}>
                   <div className="grid grid-cols-1 gap-2 mt-4">
                       <div>
@@ -158,7 +162,7 @@ function FormCreateUpdateDepartment(){
                   </div>
           
                   <div className="flex justify-start mt-6">
-                      <button className="btn btn-sm rounded-l btn-success text-xs">{idDepartment ? "Actualizar":"Guardar"}</button>
+                      <button className="btn btn-sm rounded-l btn-success text-xs">{isModeEdit ? "Actualizar":"Guardar"}</button>
                   </div>
               </form>
           </div>

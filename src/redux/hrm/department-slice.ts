@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { IDepartment } from "@/interfaces/employee";
+import { IDepartment } from "@/interfaces/hrm";
 import { toast } from "react-toastify";
 import  { employeeService } from "@/services/employee-service";
 
