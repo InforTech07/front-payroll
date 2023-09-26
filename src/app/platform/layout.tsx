@@ -4,11 +4,11 @@ import SideBar from '@/components/navs/sidebar';
 import { Provider } from 'react-redux';
 import { store } from '@/redux/store';
 
-interface LayoutAppProps {
+interface LayoutPlatformProps {
     children: React.ReactNode;
 }
 
-function LayoutApp({ children }: LayoutAppProps) {
+function LayoutPlatform({ children }: LayoutPlatformProps) {
   return (
     <Provider store={store}>
       <div className="bg-base-100 w-full h-screen flex flex-row gap-6 mx-auto px-2 py-2 md:px-2 py-2 xl:px-6 py-4">
@@ -23,4 +23,4 @@ function LayoutApp({ children }: LayoutAppProps) {
   );
 }
 
-export default LayoutApp;
+export default LayoutPlatform;

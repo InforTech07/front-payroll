@@ -23,6 +23,14 @@ function NavbarApp({title, idBtnDrawer}: NavbarAppProps){
                     </a>
                 </div>
                 <div className="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse">
+                    <div className="relative">
+                        <input type="text" className="w-full py-1 pl-10 pr-4 text-gray-700 bg-white border rounded-md focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" placeholder="Search"/>
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <svg className="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </span>
+                    </div>
                     <label htmlFor={idBtnDrawer} className="rounded-l px-1 py-1 text-xs transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">Nuevo</label>
                     <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">
                         Informe

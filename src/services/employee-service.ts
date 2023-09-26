@@ -1,4 +1,4 @@
-import { IDepartment, IJobPosition } from "@/interfaces/hrm";
+import { IDepartment, IJobPosition, IEmployee, IFamilyMember, ISalaryIncrease } from "@/interfaces/hrm";
 import { apiServices } from "./api-service";
 
 const departmentData: IDepartment[] = [
@@ -6,70 +6,19 @@ const departmentData: IDepartment[] = [
         id: 1,
         name: 'Department 1',
         description: 'Description 1',
-        company: "1",
-        jobPositions: [
-            {
-                id: 1,
-                name: 'Job Position 1',
-                description: 'Description 1',
-            },
-            {
-                id: 2,
-                name: 'Job Position 2',
-                description: 'Description 2',
-            },
-            {
-                id: 3,
-                name: 'Job Position 3',
-                description: 'Description 3',
-            },
-        ]
+        company: "1"
     },
     {
         id: 2,
         name: 'Department 2',
         description: 'Description 2',
-        company: "1",
-        jobPositions: [
-            {
-                id: 1,
-                name: 'Job Position 1',
-                description: 'Description 1',
-            },
-            {
-                id: 2,
-                name: 'Job Position 2',
-                description: 'Description 2',
-            },
-            {
-                id: 3,
-                name: 'Job Position 3',
-                description: 'Description 3',
-            },
-        ]
+        company: "1"
     },
     {
         id: 3,
         name: 'Department 3',
         description: 'Description 3',
-        company: "1",
-        jobPositions: [
-            {
-                id: 1,
-                name: 'Job Position 1',
-                description: 'Description 1',
-            },
-            {
-                id: 2,
-                name: 'Job Position 2',
-                description: 'Description 2',
-            },
-            {
-                id: 3,
-                name: 'Job Position 3',
-                description: 'Description 3',
-            },
-        ]
+        company: "1"
     },
 ];
 
@@ -191,6 +140,43 @@ class EmployeeService {
         return id;
     }
 
+    async getEmployees(){
+        return []
+    }
+
+    async registerEmployee(data: IEmployee){
+        data.id = uuidGenerator();
+        return data
+    }
+
+    async updateEmployee(data: IEmployee){
+        return data
+    }
+
+    async deleteEmployee(id: number){
+        return id
+    }
+
+    async getDocuments(){
+        return []
+    }
+
+    async getFamilyMembers(){
+        return []
+    }
+
+    async registerFamilyMember(data: IFamilyMember){
+        data.id = uuidGenerator();
+        return data
+    }
+
+    async updateFamilyMember(data: IFamilyMember){
+        return data
+    }
+
+    async deleteFamilyMember(id: number){
+        return id
+    }
 
     // private adapterCompanies(data: any){
     //     return data.map((item: any) => {
