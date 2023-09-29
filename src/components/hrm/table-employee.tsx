@@ -16,6 +16,10 @@ function TableEmployee({employees}: ITableEmployeeProps){
     const handleDeleteEmployee = (id: number) => {
         confirm("¿Estas seguro de eliminar este empleado?") && dispatch(deleteEmployee(id));
     }
+    const handleModal = () => {
+        const modal = document.getElementById('my_modal_3');
+       // modal?.showModal();
+    }
     return(
         <section className="w-full py-4">
             <div className="grid grid-cols-5 gap-4 md:grid-cols-5 sm:grid-cols-3">
@@ -48,7 +52,7 @@ function TableEmployee({employees}: ITableEmployeeProps){
                             </div>
                         </div>
                         <div className="flex m-2 overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse">
-                            <button className="px-1 py-2 font-medium text-gray-600 transition-colors duration-200 sm:px-6 hover:bg-gray-100">
+                            <button onClick={()=>document.getElementById('my_modal_3')?.click()} className="px-1 py-2 font-medium text-gray-600 transition-colors duration-200 sm:px-6 hover:bg-gray-100">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                                 </svg>

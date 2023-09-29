@@ -48,7 +48,7 @@ export const menuAdmin: IMenuItem[] = [
         ]
     },
     {
-        name: 'Gestion RH',
+        name: 'Rec. Humanos',
         icon: 'mdi-account',
         submenu: [
             {
@@ -64,6 +64,37 @@ export const menuAdmin: IMenuItem[] = [
             {
                 name: 'Departamentos',
                 path: '/platform/hrm/department',
+                icon: 'mdi-account',
+            }
+        ]
+    },
+    {
+        name: 'Ges. Nomina',
+        icon: 'mdi-account',
+        submenu: [
+            {
+                name: 'Nomina',
+                path: '/platform/pm/payroll',
+                icon: 'mdi-account',
+            },
+            {
+                name: 'Periocidad',
+                path: '/platform/pm/period',
+                icon: 'mdi-account',
+            },
+            {
+                name: 'Conceptos',
+                path: '/platform/pm/concepts',
+                icon: 'mdi-account',
+            },
+            {
+                name: 'Ingresos',
+                path: '/platform/pm/income',
+                icon: 'mdi-account',
+            },
+            {
+                name: 'Deducciones',
+                path: '/platform/pm/deduction',
                 icon: 'mdi-account',
             }
         ]
