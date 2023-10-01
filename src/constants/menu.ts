@@ -1,4 +1,4 @@
-import { ISubMenuItem, IMenuItem } from "@/interfaces/menu";
+import { ISubMenuItem, IMenuItem } from "@/interfaces/platform";
 
 
 export const menuUser: IMenuItem[] = [
@@ -78,16 +78,6 @@ export const menuAdmin: IMenuItem[] = [
                 icon: 'mdi-account',
             },
             {
-                name: 'Periocidad',
-                path: '/platform/pm/period',
-                icon: 'mdi-account',
-            },
-            {
-                name: 'Conceptos',
-                path: '/platform/pm/concepts',
-                icon: 'mdi-account',
-            },
-            {
                 name: 'Ingresos',
                 path: '/platform/pm/income',
                 icon: 'mdi-account',
@@ -95,6 +85,16 @@ export const menuAdmin: IMenuItem[] = [
             {
                 name: 'Deducciones',
                 path: '/platform/pm/deduction',
+                icon: 'mdi-account',
+            },
+            {
+                name: 'Periocidad',
+                path: '/platform/pm/period',
+                icon: 'mdi-account',
+            },
+            {
+                name: 'Conceptos',
+                path: '/platform/pm/concepts',
                 icon: 'mdi-account',
             }
         ]

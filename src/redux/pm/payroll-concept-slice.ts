@@ -72,20 +72,7 @@ export const deletePayrollConcept = createAsyncThunk(
 export const payrollConceptSlice = createSlice({
     name: "payrollconcept",
     initialState,
-    reducers: {
-        // setDepartments: (state, { payload }: PayloadAction<IDepartment[]>) => {
-        //     state.departments = payload;
-        // },
-        // setDepartment: (state, { payload }: PayloadAction<IDepartment>) => {
-        //     state.department = payload;
-        // },
-        // setLoading: (state, { payload }: PayloadAction<boolean>) => {
-        //     state.loading = payload;
-        // },
-        // setError: (state, { payload }: PayloadAction<string>) => {
-        //     state.error = payload;
-        // },
-    },
+    reducers: {},
     extraReducers(builder) {
         builder.addCase(getPayrollConcepts.fulfilled, (state, action) => {
             state.payrollConcepts = action.payload as IPayrollConcept[];

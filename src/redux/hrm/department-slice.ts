@@ -66,7 +66,10 @@ export const deleteDepartment = createAsyncThunk(
     async (id: number,thunkAPI) => {
         try {
             const response = await employeeService.deleteDepartment(id);
-            return response;
+            if(response){
+                return id;
+            }
+            return thunkAPI.rejectWithValue(response);
         } catch (error) {
             console.log(error);
             return thunkAPI.rejectWithValue(error);
@@ -77,20 +80,7 @@ export const deleteDepartment = createAsyncThunk(
 export const departmentSlice = createSlice({
     name: "department",
     initialState,
-    reducers: {
-        // setDepartments: (state, { payload }: PayloadAction<IDepartment[]>) => {
-        //     state.departments = payload;
-        // },
-        // setDepartment: (state, { payload }: PayloadAction<IDepartment>) => {
-        //     state.department = payload;
-        // },
-        // setLoading: (state, { payload }: PayloadAction<boolean>) => {
-        //     state.loading = payload;
-        // },
-        // setError: (state, { payload }: PayloadAction<string>) => {
-        //     state.error = payload;
-        // },
-    },
+    reducers: {},
     extraReducers(builder) {
         builder.addCase(getDepartments.fulfilled, (state, action) => {
             state.departments = action.payload as IDepartment[];

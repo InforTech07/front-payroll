@@ -21,9 +21,10 @@ const initialState: IEmployeState = {
 
 export const getEmployees = createAsyncThunk(
     "employee/getEmployees",
-    async () => {
+    async (companyId:number | string) => {
         try {
-            const response = await employeeService.getEmployees();
+            const response = await employeeService.getEmployees(companyId as number);
+            console.log(response);
             return response;
         } catch (error) {
             return error

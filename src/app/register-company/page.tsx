@@ -1,12 +1,12 @@
 import ContainerBlog from "@/components/container/container";
-import FormRegisterCampanies from "@/components/ui/form-register-campanies";
+import FormCreateCompany from "@/components/register-company/form-company";
 import Navbar from "@/components/navs/navbar";
 function RegisterCompaniesPage() {
   return (
     <>
       <Navbar showLogin={false}/>
       <ContainerBlog>
-          <FormRegisterCampanies />
+          <FormCreateCompany />
       </ContainerBlog>
     </>
   );

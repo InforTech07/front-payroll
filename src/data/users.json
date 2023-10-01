@@ -12,5 +12,12 @@
       "name": "Test User",
       "role": "user",
       "id": "002"
+    },
+    {
+      "email": "superadmin@example.com",
+      "password": "@Password123",
+      "name": "Test Admin",
+      "role": "superadmin",
+      "id": "001"
     }
   ]

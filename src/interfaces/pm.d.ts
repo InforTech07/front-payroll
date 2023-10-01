@@ -1,10 +1,10 @@
 export interface IPayrollPeriod {
-    id?: number;
+    id?: number | string;
     name: string;
     start_date: string;
     end_date: string;
     type: string;
-    company_id?: number;
+    company_id?: number | string;
 }
 
 export interface IPayrollConcept{
@@ -16,16 +16,16 @@ export interface IPayrollConcept{
     company_id?: number;
 }
 
-export interface IDeduction{
-    id?: number;
+export interface IPayrollDeduction{
+    id?: number | string;
     amount: number;
     date: string;
     employee_id: number | string;
     company_id?: number | string;
 }
 
-export interface IIncome{
-    id?: number;
+export interface IPayrollIncome{
+    id?: number | string;
     amount: number;
     date: string;
     employee_id: number | string;

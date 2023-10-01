@@ -7,10 +7,10 @@ import { useRouter } from "next/navigation";
 
 function LoginPage(){
     const router = useRouter();
-    const {data: session, status} = useSession();
-    if(status === 'authenticated'){
-        router.push('/dashboard');
-    }
+    // const {data: session, status} = useSession();
+    // if(status === 'authenticated'){
+    //     router.push('/platform');
+    // }
 
     return(
         <>

@@ -1,10 +1,11 @@
 //import { getLocalStorage } from "../utils/localStorage.utility"
 //obtener session de auth-next
 import { useSession } from "next-auth/react"
+import { config } from "@/config"
 
 
 class ApiServices {
-    private readonly _root: string ='http://localhost:8000/api/v1/'
+    private readonly _root: string = config.api_url;
     //private readonly _root: string ='/api/v1/'
     // private readonly _token: string = getLocalStorage('dataUser')?.acces_token  || 'no token' 
     private readonly _token: string = 'no token'
@@ -19,7 +20,6 @@ class ApiServices {
     }
 
     private request(url:string, method:string, data: any): Promise<any>{
-        console.log('token', this._token)
         return new Promise((resolve, reject) => {
         const options: any = {
             method: method,

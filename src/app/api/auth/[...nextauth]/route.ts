@@ -30,6 +30,9 @@ const handler = NextAuth({
                     role: result.user.role,
                     image: result.user.picture,
                     id: result.user.id,
+                    idCompany: result.user.company.id,
+                    logoCompany: result.user.company.picture,
+                    nameCompany: result.user.company.name,
                     tokenjwt: result.token
                 };
                 //return await apiServices.post('login/', {email, password});

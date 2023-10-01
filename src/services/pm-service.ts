@@ -1,4 +1,4 @@
-import { IDeduction, IIncome, IPayrollConcept, IPayrollPeriod } from "@/interfaces/pm";
+import { IPayrollDeduction, IPayrollIncome, IPayrollConcept, IPayrollPeriod } from "@/interfaces/pm";
 import { apiServices } from "./api-service";
 
 
@@ -57,86 +57,134 @@ class PayrollManagerService {
         return id;
     }
 
-    // async getJobPositions(){
-    //     //return await apiServices.get('job-position/')
-    //     return {
-    //         results: jobPositionData
-    //     }
-    // }
-
-    // async registerJobPosition(data: IJobPosition){
-    //     // if(data){
-    //     //     const id = jobPositionData.length + 1;
-    //     //     data.id = id;
-    //     //     //convertir formdata a json
-    //     //     const json = JSON.stringify(data);
-    //     //     jobPositionData.push(json);
+    async registerPayrollPeriod(data: IPayrollPeriod){
+        // if(data){
+        //     const id = departmentData.length + 1;
+        //     data.id = id;
+        //     //convertir formdata a json
+        //     const json = JSON.stringify(data);
+        //     departmentData.push(json);
             
-    //     // }
-    //     data.id = uuidGenerator();
-    //     jobPositionData.push(data);
-    //     return data;
-    // }
+        // }
+        data.id = uuidGenerator();
+        // departmentData.push(data);
+        return data;
+    }
 
-    // async updateJobPosition(data: IJobPosition){
-    //     // if(data){
-    //     //     const index = jobPositionData.findIndex((item: any) => item.id === data.id);
-    //     //     jobPositionData[index] = data;
-    //     // }
+    async getPayrollPeriods(){
+        //return await apiServices.get('department/')
+        return {
+            results: []
+        }
+    }
 
-    //     //const index = jobPositionData.findIndex((item: any) => item.id === data.id);
-    //     //jobPositionData[index] = data;
+    async updatePayrollPeriod(data: IPayrollPeriod){
+        // if(data){
+        //     const index = departmentData.findIndex((item: any) => item.id === data.id);
+        //     departmentData[index] = data;
+        // }
 
-    //     return data;
-    // }
+        //const index = departmentData.findIndex((item: any) => item.id === data.id);
+        //departmentData[index] = data;
 
-    // async deleteJobPosition(id: number){
-    //     // if(id){
-    //     //     const index = jobPositionData.findIndex((item: any) => item.id === id);
-    //     //     jobPositionData.splice(index, 1);
-    //     // }
-    //     //const index = jobPositionData.findIndex((item: any) => item.id === id);
-    //     //jobPositionData.splice(index, 1);
-    //     return id;
-    // }
+        return data;
+    }
 
-    // async getEmployees(){
-    //     return []
-    // }
+    async deletePayrollPeriod(id: number){
+        // if(id){
+        //     const index = departmentData.findIndex((item: any) => item.id === id);
+        //     departmentData.splice(index, 1);
+        // }
+        //const index = departmentData.findIndex((item: any) => item.id === id);
+        //departmentData.splice(index, 1);
+        return id;
+    }
 
-    // async registerEmployee(data: IEmployee){
-    //     data.id = uuidGenerator();
-    //     return data
-    // }
+    async registerPayrollIncome(data: IPayrollIncome){
+        // if(data){
+        //     const id = departmentData.length + 1;
+        //     data.id = id;
+        //     //convertir formdata a json
+        //     const json = JSON.stringify(data);
+        //     departmentData.push(json);
+            
+        // }
+        data.id = uuidGenerator();
+        // departmentData.push(data);
+        return data;
+    }
 
-    // async updateEmployee(data: IEmployee){
-    //     return data
-    // }
+    async getPayrollIncomes(){
+        //return await apiServices.get('department/')
+        return {
+            results: []
+        }
+    }
 
-    // async deleteEmployee(id: number){
-    //     return id
-    // }
+    async updatePayrollIncome(data: IPayrollIncome){
+        // if(data){
+        //     const index = departmentData.findIndex((item: any) => item.id === data.id);
+        //     departmentData[index] = data;
+        // }
 
-    // async getDocuments(){
-    //     return []
-    // }
+        //const index = departmentData.findIndex((item: any) => item.id === data.id);
+        //departmentData[index] = data;
 
-    // async getFamilyMembers(){
-    //     return []
-    // }
+        return data;
+    }
 
-    // async registerFamilyMember(data: IFamilyMember){
-    //     data.id = uuidGenerator();
-    //     return data
-    // }
+    async deletePayrollIncome(id: number){
+        // if(id){
+        //     const index = departmentData.findIndex((item: any) => item.id === id);
+        //     departmentData.splice(index, 1);
+        // }
+        //const index = departmentData.findIndex((item: any) => item.id === id);
+        //departmentData.splice(index, 1);
+        return id;
+    }
 
-    // async updateFamilyMember(data: IFamilyMember){
-    //     return data
-    // }
+    async registerPayrollDeduction(data: IPayrollDeduction){
+        // if(data){
+        //     const id = departmentData.length + 1;
+        //     data.id = id;
+        //     //convertir formdata a json
+        //     const json = JSON.stringify(data);
+        //     departmentData.push(json);
+            
+        // }
+        data.id = uuidGenerator();
+        // departmentData.push(data);
+        return data;
+    }
 
-    // async deleteFamilyMember(id: number){
-    //     return id
-    // }
+    async getPayrollDeductions(){
+        //return await apiServices.get('department/')
+        return {
+            results: []
+        }
+    }
+
+    async updatePayrollDeduction(data: IPayrollDeduction){
+        // if(data){
+        //     const index = departmentData.findIndex((item: any) => item.id === data.id);
+        //     departmentData[index] = data;
+        // }
+
+        //const index = departmentData.findIndex((item: any) => item.id === data.id);
+        //departmentData[index] = data;
+
+        return data;
+    }
+
+    async deletePayrollDeduction(id: number){
+        // if(id){
+        //     const index = departmentData.findIndex((item: any) => item.id === id);
+        //     departmentData.splice(index, 1);
+        // }
+        //const index = departmentData.findIndex((item: any) => item.id === id);
+        //departmentData.splice(index, 1);
+        return id;
+    }
 
     // private adapterCompanies(data: any){
     //     return data.map((item: any) => {

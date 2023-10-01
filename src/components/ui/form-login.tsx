@@ -33,7 +33,7 @@ function FormLogin(){
         }
         if (res?.ok) {
           toast.success("Bienvenido");
-          return router.push("/dashboard");
+          return router.push("/platform");
         }
       });
     });
@@ -63,32 +63,30 @@ function FormLogin(){
                           method="POST"
                           onSubmit={onSubmit}
                         >
-                              <div className='flex flex-col'>
+                              <div className='flex flex-col gap-4'>
                                   <h4 className="text-2xl font-semibold text-gray-900">
                                     Ingresa tus credenciales
                                   </h4>
                                   {/* Email Input */}
-                                  <div className="form-control w-full max-w-xs">
-                                    <label className="label">
-                                      <span className="label-text">Correo electronico</span>
-                                    </label>
-                                    <input
-                                      {...register("email", { required: {
-                                          value: true,
-                                          message: "Ingrese un correo",
-                                        }, 
-                                        pattern: {
-                                          value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                                          message: "Ingrese un correo valido",
-                                        }
-                                     })}
-                                      id="email"
-                                      name="email"
-                                      type="email"
-                                      className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
-                                      placeholder="john@doe.com"
-                                      autoComplete="off" 
-                                    />
+                                  <div className="form-control w-full max-w-xs gap-2">
+                                    <label className="text-gray-700 text-xs" htmlFor="email">Usuario:</label>
+                                      <input
+                                        {...register("email", { required: {
+                                            value: true,
+                                            message: "Ingrese un correo",
+                                          }, 
+                                          pattern: {
+                                            value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                                            message: "Ingrese un correo valido",
+                                          }
+                                      })}
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                        placeholder="john@doe.com"
+                                        autoComplete="off" 
+                                      />
                                     {errors?.email && (
                                       <label className="label">
                                         <span className="text-red-600 text-sm">
@@ -98,10 +96,8 @@ function FormLogin(){
                                     )}
                                   </div>
                                   {/* password Input */}
-                                  <div className="form-control w-full max-w-xs">
-                                    <label className="label">
-                                      <span className="label-text">Contraseña</span>
-                                    </label>
+                                  <div className="form-control w-full max-w-xs gap-2">
+                                  <label className="text-gray-700 text-xs" htmlFor="email">Password:</label>
                                     <input
                                       {...register("password", { required: {
                                         value: true,
@@ -111,7 +107,7 @@ function FormLogin(){
                                       id="password"
                                       name="password"
                                       type="password"
-                                      className="input input-bordered rounded-l input-sm w-full max-w-xs text-black"
+                                      className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
                                       placeholder="*********"
                                       autoComplete="off" 
                                     />

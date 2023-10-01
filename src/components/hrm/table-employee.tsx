@@ -1,6 +1,6 @@
 "use client";
 import { IEmployee } from "@/interfaces/hrm";
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { deleteEmployee} from "@/redux/hrm/employee-slice";
 import { useRouter } from "next/navigation";
 
@@ -9,30 +9,28 @@ interface ITableEmployeeProps{
     employees: IEmployee[];
 }
 
-function TableEmployee({employees}: ITableEmployeeProps){
+function TableEmployee(){
     const dispatch = useAppDispatch();
     const router = useRouter();
-    
+    const employees = useAppSelector(state => state.employee.employees);
+    const avatarAlternative = "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80";
     const handleDeleteEmployee = (id: number) => {
         confirm("¿Estas seguro de eliminar este empleado?") && dispatch(deleteEmployee(id));
     }
-    const handleModal = () => {
-        const modal = document.getElementById('my_modal_3');
-       // modal?.showModal();
-    }
+
+     
     return(
         <section className="w-full py-4">
             <div className="grid grid-cols-5 gap-4 md:grid-cols-5 sm:grid-cols-3">
-                { employees.map((item: IEmployee, index) => (
+                { employees.length > 0 && employees.map((item: IEmployee, index) => (
                     <div key={item.id} className="w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-lg">
-                        <img className="object-cover object-center w-full h-48" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt="avatar"/>
+                        <img className="object-cover object-center w-full h-48" src={item.picture? item.picture : avatarAlternative} alt="avatar"/>
                         <div className="px-4 py-2">
-                            <h1 className="text-sm text-gray-700">{item.first_name}</h1>
+                            <h1 className="text-sm text-gray-700">{`${item.last_name}, ${item.first_name}`}</h1>
                             <div className="flex items-center mt-2 text-gray-700">
                                 <svg aria-label="suitcase icon" className="w-6 h-6 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M14 11H10V13H14V11Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M7 5V4C7 2.89545 7.89539 2 9 2H15C16.1046 2 17 2.89545 17 4V5H20C21.6569 5 23 6.34314 23 8V18C23 19.6569 21.6569 21 20 21H4C2.34314 21 1 19.6569 1 18V8C1 6.34314 2.34314 5 4 5H7ZM9 4H15V5H9V4ZM4 7C3.44775 7 3 7.44769 3 8V14H21V8C21 7.44769 20.5522 7 20 7H4ZM3 18V16H21V18C21 18.5523 20.5522 19 20 19H4C3.44775 19 3 18.5523 3 18Z"/>
                                 </svg>
-                    
                                 <h1 className="px-2 text-xs">{item.job_position}</h1>
                             </div>
                     
@@ -48,7 +46,7 @@ function TableEmployee({employees}: ITableEmployeeProps){
                                 <svg aria-label="email icon" className="w-6 h-6 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M3.00977 5.83789C3.00977 5.28561 3.45748 4.83789 4.00977 4.83789H20C20.5523 4.83789 21 5.28561 21 5.83789V17.1621C21 18.2667 20.1046 19.1621 19 19.1621H5C3.89543 19.1621 3 18.2667 3 17.1621V6.16211C3 6.11449 3.00333 6.06765 3.00977 6.0218V5.83789ZM5 8.06165V17.1621H19V8.06199L14.1215 12.9405C12.9499 14.1121 11.0504 14.1121 9.87885 12.9405L5 8.06165ZM6.57232 6.80554H17.428L12.7073 11.5263C12.3168 11.9168 11.6836 11.9168 11.2931 11.5263L6.57232 6.80554Z"/>
                                 </svg>
-                                <h1 className="px-2 text-xs">{item.email}</h1>
+                                <h1 className="px-2 text-xs">{item.user?.email}</h1>
                             </div>
                         </div>
                         <div className="flex m-2 overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse">
@@ -64,11 +62,11 @@ function TableEmployee({employees}: ITableEmployeeProps){
                                 </svg>
                             </button>
 
-                            <button className="px-1 py-2 font-medium text-gray-600 transition-colors duration-200 sm:px-6 hover:bg-gray-100">
+                            {/* <button className="px-1 py-2 font-medium text-gray-600 transition-colors duration-200 sm:px-6 hover:bg-gray-100">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                            </button>
+                            </button> */}
                             <button onClick={()=>router.push(`/platform/hrm/employee/${item.id}`)} className="px-1 py-2 font-medium text-gray-600 transition-colors duration-200 sm:px-6 hover:bg-gray-100">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />

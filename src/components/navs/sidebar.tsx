@@ -3,11 +3,14 @@ import { useEffect, useState } from 'react';
 import {useSession, signOut} from 'next-auth/react';
 import Link from 'next/link';
 import { menuAdmin, menuUser, menuSuperAdmin } from '@/constants/menu';
-import { IMenuItem, ISubMenuItem } from '@/interfaces/menu';
+import { IMenuItem, ISubMenuItem } from '@/interfaces/platform';
+import { useRouter } from 'next/navigation';
 
 function SideBar(){
+    const {data: session, status} = useSession();
     const [currentMenu, setCurrentMenu] = useState<IMenuItem[]>(menuUser);
-    const roleUser:string = "admin";
+    const roleUser: string = session?.user?.role || "user";
+    const router = useRouter();
 
     useEffect(() => {
         switch (roleUser) {
@@ -25,11 +28,17 @@ function SideBar(){
                 break;
         }
     }, [roleUser]);
+
+    const handleSignOut = () => {
+        signOut();
+        router.push('/');
+    }
+
     return(
         <aside className="flex flex-col rounded-xl w-full h-full px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
             <div className='flex flex-col justify-center items-center'>
-                <img className="w-auto h-7 rounded-full" src="https://merakiui.com/images/logo.svg" alt=""/>
-                <span className="mx-2 font-small text-gray-800 dark:text-gray-200">Institucion</span>
+                <img className="w-16 h-16 rounded-full" src={session?.user?.logoCompany} alt=""/>
+                <span className="mx-2 font-small text-gray-800 dark:text-gray-200">{session?.user?.nameCompany}</span>
             </div>
             <div className="flex flex-col justify-between flex-1 mt-6">
                 <nav className="-mx-3 space-y-6 ">
@@ -55,13 +64,13 @@ function SideBar(){
                             ))
                         }
                         <div className="collapse-title text-l min-h-0">
-                            <button onClick={() => signOut()} className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Salir</button>
+                            <button onClick={handleSignOut} className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">Salir</button>
                         </div>
                     </div> 
                 </nav>
                 <a href="/profile" className="flex items-center px-4 -mx-2">
-                    <img className="object-cover mx-2 rounded-full h-9 w-9" src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="avatar" />
-                    <span className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">John Doe</span>
+                    <img className="object-cover mx-2 rounded-full h-9 w-9" src={session?.user?.image as any} alt="avatar" />
+                    <span className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">{session?.user?.name}</span>
                 </a>
             </div>
         </aside>

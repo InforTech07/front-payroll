@@ -5,23 +5,20 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerEmployee, updateEmployee } from "@/redux/hrm/employee-slice";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import UploadImage from "../ui/upload-image";
 
 interface IFormCreateUpdateEmployee{
     idBtnDrawer: string;
 }
 
 function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
-    const router = useRouter();
+    const {data: session, status} = useSession();
     const params = useParams();
-    let isModeEdit = false;
     const departments = useAppSelector(state => state.department.departments);
     const jobPositions = useAppSelector(state => state.jobPosition.jobPositions);
-    
-    const idEdit = params.id;
-    
-    if(idEdit){
-        isModeEdit = true;
-    }
+    const date = new Date(2029,10,10);
+    const dateCompletion = date.toISOString().split('T')[0];
   
     const formOptions = {
         defaultValues: {
@@ -34,7 +31,7 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
           picture: "",
           dpi: "",
           date_hiring: Date.now(),
-          date_completion: Date.now(),
+          date_completion: dateCompletion,
           birth_date: Date.now(),
           gender: "",
           base_salary: 0,
@@ -44,49 +41,16 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
         }
     }
 
-    if(isModeEdit){
-        useAppSelector(state => state.employee.employees).map((item: IEmployee) => {
-        if(item.id == idEdit){
-            formOptions.defaultValues = {
-              id: item.id,
-              first_name: item.first_name,
-              last_name: item.last_name,
-              phone: item.phone,
-              address: item.address,
-              email: item.email,
-              picture: '',
-              dpi: item.dpi,
-              date_hiring: item.date_hiring as any,
-              date_completion: item.date_completion as any,
-              birth_date: item.birth_date as any,
-              gender: item.gender,
-              base_salary: item.base_salary as any,
-              department: item.department as any,
-              job_position: item.job_position as any,
-              company: item.company as any,
-            }
-        }
-        });
-    } 
     const {
         register, 
-        handleSubmit, 
+        handleSubmit,
+        setValue, 
         formState:{ errors },
         reset,
     } = useForm<IEmployee>(formOptions as any);
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
-      if(isModeEdit){
-        dispatch(updateEmployee(data)).then(res => {
-          if(res.payload){
-            router.back();
-            return;
-          }
-        }).catch(err => {
-          return;
-        });
-      }else{
         dispatch(registerEmployee(data)).then(res => {
           if(res.payload){
             reset();
@@ -95,31 +59,21 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
           }}).catch(err => {
             return;
           });
-      }
     });
 
-    const handleHideDrawer = () => {
-      if(isModeEdit){
-        router.back();
-      }
-    };
-
-    useEffect(() => {
-      if(isModeEdit){
-        document.getElementById(idBtnDrawer)?.click();
-      }
-    }, []);
-
-
+    const setUriImage = (uri: string) => {
+      setValue('picture', uri);
+    }
+   
     return (
       <div className="drawer drawer-end">
       <input id={idBtnDrawer} type="checkbox"  className="drawer-toggle"/>
       <div className="drawer-content">
       </div> 
       <div className="drawer-side z-10">
-          <label htmlFor={idBtnDrawer} onClick={handleHideDrawer} className="drawer-overlay"></label>
+          <label htmlFor={idBtnDrawer} className="drawer-overlay"></label>
           <div className="menu p-4 w-96 min-h-full bg-base-200">
-              <span className="text-gray-700 text-md text-center">{isModeEdit ? "Actualizar Empleado": "Nuevo Empleado"}</span>
+              <span className="text-gray-700 text-md text-center">Nuevo Empleado</span>
               <form onSubmit={onSubmit}>
                   <div className="grid grid-cols-1 gap-2 mt-4">
                       <div>
@@ -246,8 +200,8 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                             name="gender" 
                             id="gender"  
                             className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
-                            <option value={1}>Masculino</option>
-                            <option value={2}>Femenino</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
                           </select>
                           {errors?.gender && (
                               <label className="label">
@@ -295,7 +249,7 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                               </label>
                             )}
                       </div>
-                      <div>
+                      <div className="hidden">
                           <label className="text-gray-700 text-xs" htmlFor="date_completion">Fecha Terminacion</label>
                           <input
                             {...register("date_completion", { required: {
@@ -381,9 +335,32 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                               </label>
                             )}
                       </div>
+                      <UploadImage setUriImage={setUriImage} label="Avatar"/>
+                      <div>
+                        <input 
+                        {...register("company", { required: {
+                          value: false,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="company" 
+                          name="company" 
+                          type="text" 
+                          value={session?.user?.idCompany} hidden />
+                      </div>
+                      <div>
+                        <input 
+                        {...register("create_user", { required: {
+                          value: false,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="create_user" 
+                          name="create_user" 
+                          type="checkbox" 
+                          checked={true} hidden />
+                      </div>
                   </div>
                   <div className="flex justify-start mt-6">
-                      <button className="btn btn-sm rounded-l btn-success text-xs">{isModeEdit ? "Actualizar":"Guardar"}</button>
+                      <button className="btn btn-sm rounded-l btn-success text-xs">Guardar</button>
                   </div>
               </form>
           </div>

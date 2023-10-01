@@ -19,8 +19,8 @@ function TabPayrollConcept({payrollConcepts}: ITablePayrollConcept){
     return(
         <section className="w-full py-4">
             <div className="grid grid-cols-4 gap-4">
-                { payrollConcepts.map((item: IPayrollConcept, index) => (
-                    <div key={index} className={`w-full  px-4 py-3 ${item.type == '1' ? 'bg-success': 'bg-error'} rounded-md shadow-md`}>
+                { payrollConcepts &&   payrollConcepts.map((item: IPayrollConcept, index) => (
+                    <div key={index} className={`w-full  px-4 py-3  bg-white  rounded-md shadow-md`}>
                         <div className="flex items-center justify-between">
                             <span className="text-xs font-light text-gray-800">12/02/2023</span>
                             <span className="px-3 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full">
@@ -38,7 +38,6 @@ function TabPayrollConcept({payrollConcepts}: ITablePayrollConcept){
                                 </div>
                             </span>
                         </div>
-                
                         <div>
                             <h1 className="mt-2 text-l font-semibold text-gray-800">{item.name}</h1>
                             <p className="mt-2 text-xs text-gray-600">{item.description}</p>

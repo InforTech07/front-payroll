@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerEmployee, updateEmployee } from "@/redux/hrm/employee-slice";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
+import UploadImage from "../ui/upload-image";
 
 interface IFormCreateUpdateEmployee{
     idBtnDrawer: string;
@@ -23,38 +24,19 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
         isModeEdit = true;
     }
   
-    const formOptions = {
-        defaultValues: {
-          id: "",
-          first_name: "",
-          last_name: "",
-          email: "",
-          phone: "",
-          address: "",
-          picture: "",
-          dpi: "",
-          date_hiring: Date.now(),
-          date_completion: Date.now(),
-          birth_date: Date.now(),
-          gender: "",
-          base_salary: 0,
-          department: "",
-          job_position: "",
-          company: "1",
-        }
-    }
+    const formOptions = { defaultValues: {} };
 
     if(isModeEdit){
-        useAppSelector(state => state.employee.employees).map((item: IEmployee) => {
-        if(item.id == idEdit){
+        useAppSelector(state => state.employee.employees).filter((item: IEmployee) => {
+          if(item.id == idEdit){
             formOptions.defaultValues = {
               id: item.id,
               first_name: item.first_name,
               last_name: item.last_name,
               phone: item.phone,
               address: item.address,
-              email: item.email,
-              picture: '',
+              email: item.user?.email as any,
+              picture: item.picture,
               dpi: item.dpi,
               date_hiring: item.date_hiring as any,
               date_completion: item.date_completion as any,
@@ -65,7 +47,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
               job_position: item.job_position as any,
               company: item.company as any,
             }
-        }
+          }
         });
     } 
     const {
@@ -73,11 +55,12 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
         handleSubmit, 
         formState:{ errors },
         reset,
+        watch,
+        setValue
     } = useForm<IEmployee>(formOptions as any);
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
-      if(isModeEdit){
         dispatch(updateEmployee(data)).then(res => {
           if(res.payload){
             router.back();
@@ -86,17 +69,11 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
         }).catch(err => {
           return;
         });
-      }else{
-        dispatch(registerEmployee(data)).then(res => {
-          if(res.payload){
-            reset();
-            document.getElementById(idBtnDrawer)?.click();
-            return;
-          }}).catch(err => {
-            return;
-          });
-      }
     });
+
+    const setUriImage = (uri:string) => {
+      setValue("picture", uri);
+    }
 
     return (
         <form onSubmit={onSubmit}>
@@ -225,8 +202,8 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="gender" 
                       id="gender"  
                       className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
-                      <option value={1}>Masculino</option>
-                      <option value={2}>Femenino</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
                     </select>
                     {errors?.gender && (
                         <label className="label">
@@ -274,7 +251,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                         </label>
                       )}
                 </div>
-                <div>
+                <div className="hidden">
                     <label className="text-gray-700 text-xs" htmlFor="date_completion">Fecha Terminacion</label>
                     <input
                       {...register("date_completion", { required: {
@@ -361,6 +338,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       )}
                 </div>
             </div>
+            <UploadImage label="Fotografia" setUriImage={setUriImage} urlImage={watch('picture')}/> 
             <div className="flex justify-start mt-6">
                 <button className="btn btn-sm rounded-l btn-success text-xs">Editar</button>
             </div>

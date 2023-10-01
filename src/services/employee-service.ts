@@ -53,108 +53,61 @@ function uuidGenerator() {
 }
 
 class EmployeeService {
-    constructor() {}
+    private static _instance: EmployeeService;
+    public static getInstance(): EmployeeService{
+        if(!EmployeeService._instance){
+            EmployeeService._instance = new EmployeeService()
+        }
+        return EmployeeService._instance
+    }
+
+
     async registerDepartment(data: IDepartment){
-        // if(data){
-        //     const id = departmentData.length + 1;
-        //     data.id = id;
-        //     //convertir formdata a json
-        //     const json = JSON.stringify(data);
-        //     departmentData.push(json);
-            
-        // }
-        data.id = uuidGenerator();
-        departmentData.push(data);
-        return data;
+        return await apiServices.post('department/', data)
     }
 
     async getDepartments(){
-        //return await apiServices.get('department/')
-        return {
-            results: departmentData
-        }
+        return await apiServices.get('department/')
     }
 
     async updateDepartment(data: IDepartment){
-        // if(data){
-        //     const index = departmentData.findIndex((item: any) => item.id === data.id);
-        //     departmentData[index] = data;
-        // }
-
-        //const index = departmentData.findIndex((item: any) => item.id === data.id);
-        //departmentData[index] = data;
-
-        return data;
+        return await apiServices.put(`department/${data.id}/`, data)
     }
 
     async deleteDepartment(id: number){
-        // if(id){
-        //     const index = departmentData.findIndex((item: any) => item.id === id);
-        //     departmentData.splice(index, 1);
-        // }
-        //const index = departmentData.findIndex((item: any) => item.id === id);
-        //departmentData.splice(index, 1);
-        return id;
+        return await apiServices.delete(`department/${id}/`)
     }
 
     async getJobPositions(){
-        //return await apiServices.get('job-position/')
-        return {
-            results: jobPositionData
-        }
+        return await apiServices.get('job-position/')
     }
 
     async registerJobPosition(data: IJobPosition){
-        // if(data){
-        //     const id = jobPositionData.length + 1;
-        //     data.id = id;
-        //     //convertir formdata a json
-        //     const json = JSON.stringify(data);
-        //     jobPositionData.push(json);
-            
-        // }
-        data.id = uuidGenerator();
-        jobPositionData.push(data);
-        return data;
+        return await apiServices.post('job-position/', data)
     }
 
     async updateJobPosition(data: IJobPosition){
-        // if(data){
-        //     const index = jobPositionData.findIndex((item: any) => item.id === data.id);
-        //     jobPositionData[index] = data;
-        // }
-
-        //const index = jobPositionData.findIndex((item: any) => item.id === data.id);
-        //jobPositionData[index] = data;
-
-        return data;
+        return await apiServices.put(`job-position/${data.id}/`, data)
     }
 
     async deleteJobPosition(id: number){
-        // if(id){
-        //     const index = jobPositionData.findIndex((item: any) => item.id === id);
-        //     jobPositionData.splice(index, 1);
-        // }
-        //const index = jobPositionData.findIndex((item: any) => item.id === id);
-        //jobPositionData.splice(index, 1);
-        return id;
+       return await apiServices.delete(`job-position/${id}/`)
     }
 
-    async getEmployees(){
-        return []
+    async getEmployees(companyId: number){
+        return await apiServices.get(`employee/get_employees/?company=${companyId}`)
     }
 
     async registerEmployee(data: IEmployee){
-        data.id = uuidGenerator();
-        return data
+        return await apiServices.post('employee/', data)
     }
 
     async updateEmployee(data: IEmployee){
-        return data
+        return await apiServices.put(`employee/${data.id}/`, data)
     }
 
     async deleteEmployee(id: number){
-        return id
+        return await apiServices.delete(`employee/${id}/`)
     }
 
     async getDocuments(){
@@ -191,4 +144,4 @@ class EmployeeService {
 
 }
 
-export const employeeService = new EmployeeService()
+export const employeeService = EmployeeService.getInstance()

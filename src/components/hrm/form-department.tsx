@@ -5,12 +5,14 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerDepartment, updateDepartment } from "@/redux/hrm/department-slice";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 interface IFormCreateUpdateDepartment{
     idBtnDrawer: string;
 }
 
 function FormCreateUpdateDepartment({idBtnDrawer}: IFormCreateUpdateDepartment){
+    const {data: session, status} = useSession();
     const router = useRouter();
     const params = useParams();
     let isModeEdit = false;
@@ -25,7 +27,7 @@ function FormCreateUpdateDepartment({idBtnDrawer}: IFormCreateUpdateDepartment){
         defaultValues: {
             name: "",
             description: "",
-            company: "1",
+            company: session?.user?.idCompany,
             id: ""
         }
     }
@@ -36,7 +38,7 @@ function FormCreateUpdateDepartment({idBtnDrawer}: IFormCreateUpdateDepartment){
             formOptions.defaultValues = {
             name: item.name,
             description: item.description,
-            company: "1",
+            company: session?.user?.idCompany,
             id: item.id
             }
         }
@@ -137,18 +139,6 @@ function FormCreateUpdateDepartment({idBtnDrawer}: IFormCreateUpdateDepartment){
                             )}
                       </div>
                       <div>
-                        <input
-                        {...register("company", { required: {
-                          value: true,
-                          message: 'La compania es requerida'
-                        }})}
-                          id="company" 
-                          name="company" 
-                          type="text" 
-                          value="1" 
-                          hidden />
-                      </div>
-                      <div>
                         <input 
                         {...register("id", { required: {
                           value: false,
@@ -157,7 +147,18 @@ function FormCreateUpdateDepartment({idBtnDrawer}: IFormCreateUpdateDepartment){
                           id="id" 
                           name="id" 
                           type="text" 
-                          value="3" hidden />
+                          hidden />
+                      </div>
+                      <div>
+                        <input 
+                        {...register("company", { required: {
+                          value: false,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="company" 
+                          name="company" 
+                          type="text" 
+                          value={session?.user?.idCompany} hidden />
                       </div>
                   </div>
           

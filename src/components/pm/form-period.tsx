@@ -1,0 +1,231 @@
+"use client";
+import { useForm } from "react-hook-form";
+import { IPayrollPeriod } from '@/interfaces/pm';
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { registerPayrollPeriod, updatePayrollPeriod } from "@/redux/pm/payroll-period-slice";
+import { useRouter, useParams } from "next/navigation";
+import { useEffect } from "react";
+
+interface IFormCreateUpdatePayrollPeriodProps{
+    idBtnDrawer: string;
+}
+
+function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPeriodProps){
+    const router = useRouter();
+    const params = useParams();
+    let isModeEdit = false;
+    
+    const idEdit = params.id;
+    
+    if(idEdit){
+        isModeEdit = true;
+    }
+  
+    const formOptions = {
+        defaultValues: {
+          id: "",
+          name: "",
+          start_date: "",
+          end_date: "",
+          type: "",
+          company_id: "",
+        }
+    }
+
+    if(isModeEdit){
+        useAppSelector(state => state.payrollPeriod.payrollPeriods).map((item: IPayrollPeriod) => {
+        if(item.id == idEdit){
+            formOptions.defaultValues = {
+                id: item.id,
+                name: item.name,
+                start_date: item.start_date,
+                end_date: item.end_date,
+                type: item.type,
+                company_id: item.company_id as any,
+            }
+        }
+        });
+    } 
+    const {
+        register, 
+        handleSubmit, 
+        formState:{ errors },
+        reset,
+    } = useForm<IPayrollPeriod>(formOptions as any);
+
+    const dispatch = useAppDispatch();
+    const onSubmit =   handleSubmit((data) => {
+      if(isModeEdit){
+        dispatch(updatePayrollPeriod(data)).then(res => {
+          if(res.payload){
+            router.back();
+            return;
+          }
+        }).catch(err => {
+          return;
+        });
+      }else{
+        //console.log(data);
+        dispatch(registerPayrollPeriod(data)).then(res => {
+          if(res.payload){
+            reset();
+            document.getElementById(idBtnDrawer)?.click();
+            return;
+          }}).catch(err => {
+            return;
+          });
+      }
+    });
+
+    const handleHideDrawer = () => {
+      if(isModeEdit){
+        router.back();
+      }
+    };
+
+    useEffect(() => {
+      if(isModeEdit){
+        document.getElementById(idBtnDrawer)?.click();
+      }
+    }, []);
+
+
+    return (
+      <div className="drawer drawer-end">
+      <input id={idBtnDrawer} type="checkbox"  className="drawer-toggle"/>
+      <div className="drawer-content">
+      </div> 
+      <div className="drawer-side z-10">
+          <label htmlFor={idBtnDrawer} onClick={handleHideDrawer} className="drawer-overlay"></label>
+          <div className="menu p-4 w-96 min-h-full bg-base-200">
+              <span className="text-gray-700 text-md text-center">{isModeEdit ? "Actualizar Registro": "Nuevo Registro"}</span>
+              <form onSubmit={onSubmit}>
+                  <div className="grid grid-cols-1 gap-2 mt-4">
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="name">Periodo: </label>
+                          <input
+                            {...register("name", { required: {
+                              value: true,
+                              message: 'El nombre es requerido'
+                            }})}
+                            name="name" 
+                            id="name" 
+                            type="text"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                          {errors?.name && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.name.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="start_date">Del: </label>
+                          <input
+                            {...register("start_date", { required: {
+                              value: true,
+                              message: 'La fecha de inicio es requerida'
+                            }})}
+                            name="start_date" 
+                            id="start_date" 
+                            type="date"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                          {errors?.start_date && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.start_date.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="end_date">Al: </label>
+                          <input
+                            {...register("end_date", { required: {
+                              value: true,
+                              message: 'El nombre es requerido'
+                            }})}
+                            name="end_date" 
+                            id="end_date" 
+                            type="date"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                          {errors?.end_date && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.end_date.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="type">Tipo de periodo</label>
+                          <select
+                            {...register("type", { required: {
+                              value: true,
+                              message: 'El genero es requerido'
+                            }})}
+                            name="type" 
+                            id="type"  
+                            className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
+                            <option value={1}>Quincena</option>
+                            <option value={2}>Mensual</option>
+                          </select>
+                          {errors?.type && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.type.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                        <input 
+                        {...register("id", { required: {
+                          value: false,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="id" 
+                          name="id" 
+                          type="text" 
+                          value="3"/>
+                          {errors?.id && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.id.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                        <input
+                        {...register("company_id", { required: {
+                          value: false,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="company_id" 
+                          name="company_id" 
+                          type="text" 
+                          value="1" 
+                          />
+                          {errors?.company_id && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.company_id.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                  </div>
+          
+                  <div className="flex justify-start mt-6">
+                      <button className="btn btn-sm rounded-l btn-success text-xs">{isModeEdit ? "Actualizar":"Guardar"}</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+    );
+}
+
+export default FormCreateUpdatePayrollPeriod;

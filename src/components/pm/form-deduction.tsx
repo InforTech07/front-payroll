@@ -1,18 +1,16 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { IJobPosition } from '@/interfaces/hrm';
+import { IPayrollDeduction } from '@/interfaces/pm';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { registerJobPosition, updateJobPosition } from "@/redux/hrm/job-position-slice";
+import { registerPayrollDeduction, updatePayrollDeduction } from "@/redux/pm/payroll-deduction-slice";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
-const { useSession } = require("next-auth/react");
 
-interface IFormCreateUpdateJobPosition{
+interface IFormCreateUpdatePayrollDeductionProps{
     idBtnDrawer: string;
 }
 
-function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition){
-    const {data: session, status} = useSession();
+function FormCreateUpdatePayrollDeduction({idBtnDrawer}: IFormCreateUpdatePayrollDeductionProps){
     const router = useRouter();
     const params = useParams();
     let isModeEdit = false;
@@ -25,21 +23,23 @@ function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition
   
     const formOptions = {
         defaultValues: {
-            name: "",
-            description: "",
-            company: session?.user?.idCompany,
-            id: ""
+           id: "",
+           amount: "",
+           date: "",
+           employee_id: "",
+           company_id: "",
         }
     }
 
     if(isModeEdit){
-        useAppSelector(state => state.jobPosition.jobPositions).map((item: IJobPosition) => {
+        useAppSelector(state => state.payrollDeduction.payrollDeductions).map((item: IPayrollDeduction) => {
         if(item.id == idEdit){
             formOptions.defaultValues = {
-            name: item.name,
-            description: item.description,
-            company: item.company,
-            id: item.id
+                id: item.id,
+                amount: item.amount as unknown as string,
+                date: item.date,
+                employee_id: item.employee_id as unknown as string,
+                company_id: item.company_id as unknown as string,
             }
         }
         });
@@ -49,12 +49,12 @@ function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition
         handleSubmit, 
         formState:{ errors },
         reset,
-    } = useForm<IJobPosition>(formOptions);
+    } = useForm<IPayrollDeduction>(formOptions as any);
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
       if(isModeEdit){
-        dispatch(updateJobPosition(data)).then(res => {
+        dispatch(updatePayrollDeduction(data)).then(res => {
           if(res.payload){
             router.back();
             return;
@@ -63,7 +63,7 @@ function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition
           return;
         });
       }else{
-        dispatch(registerJobPosition(data)).then(res => {
+        dispatch(registerPayrollDeduction(data)).then(res => {
           if(res.payload){
             reset();
             document.getElementById(idBtnDrawer)?.click();
@@ -99,57 +99,49 @@ function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition
               <form onSubmit={onSubmit}>
                   <div className="grid grid-cols-1 gap-2 mt-4">
                       <div>
-                          <label className="text-gray-700 text-xs" htmlFor="name">Nombre del Puesto</label>
+                          <label className="text-gray-700 text-xs" htmlFor="amount">Monto</label>
                           <input
-                            {...register("name", { required: {
+                            {...register("amount", { required: {
                               value: true,
                               message: 'El nombre es requerido'
                             }})}
-                            name="name" 
-                            id="name" 
-                            type="text"
-                            // value={modeEdit ? data?.name : ""} 
+                            name="amount" 
+                            id="amount" 
+                            type="number"
                             className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
-                          {errors?.name && (
+                          {errors?.amount && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
-                                  {errors.name.message}
+                                  {errors.amount.message}
                                 </span>
                               </label>
                             )}
                       </div>
                       <div>
-                          <label htmlFor="Description" className="block text-sm text-gray-700">Description</label>
-                          <textarea
-                            {...register("description", { required: {
-                              value: true,
-                              message: 'La descripcion es requerida'
-                            }})}
-                            name="description"
-                            id="description" 
-                            placeholder="Descripcion ..." 
-                            // value={modeEdit ? data?.description : ""}
-                            className="block  mt-2 w-full  placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"></textarea>
-                            {errors?.description && (
-                              <label className="label">
-                                <span className="text-red-600 text-xs">
-                                  {errors.description.message}
-                                </span>
-                              </label>
-                            )}
-                      </div>
-                      <div>
-                        <input 
-                        {...register("company", { required: {
-                          value: false,
+                        <input
+                        {...register("company_id", { required: {
+                          value: true,
                           message: 'La compania es requerida'
                         }})}
                           id="company" 
                           name="company" 
                           type="text" 
-                          value={session?.user?.idCompany} hidden />
+                          value="1" 
+                          hidden />
                       </div>
-                      {/* <div>
+                      <div>
+                        <input
+                        {...register("employee_id", { required: {
+                          value: true,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="employee_id" 
+                          name="employee_id" 
+                          type="text" 
+                          value="1" 
+                          hidden />
+                      </div>
+                      <div>
                         <input 
                         {...register("id", { required: {
                           value: false,
@@ -159,7 +151,7 @@ function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition
                           name="id" 
                           type="text" 
                           value="3" hidden />
-                      </div> */}
+                      </div>
                   </div>
           
                   <div className="flex justify-start mt-6">
@@ -172,4 +164,4 @@ function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition
     );
 }
 
-export default FormCreateUpdateJobPosition;
+export default FormCreateUpdatePayrollDeduction;

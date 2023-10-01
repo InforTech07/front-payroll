@@ -81,18 +81,6 @@ export const jobPositionSlice = createSlice({
         setJobPosition: (state, { payload }: PayloadAction<IJobPosition>) => {
             state.jobPosition = payload;
         },
-        // setDepartments: (state, { payload }: PayloadAction<IDepartment[]>) => {
-        //     state.departments = payload;
-        // },
-        // setDepartment: (state, { payload }: PayloadAction<IDepartment>) => {
-        //     state.department = payload;
-        // },
-        // setLoading: (state, { payload }: PayloadAction<boolean>) => {
-        //     state.loading = payload;
-        // },
-        // setError: (state, { payload }: PayloadAction<string>) => {
-        //     state.error = payload;
-        // },
     },
     extraReducers(builder) {
         builder.addCase(getJobPositions.fulfilled, (state, action) => {

@@ -1,3 +1,8 @@
+interface IUserEmployee {
+    id?: number | string;
+    username: string;
+    email: string;
+}
 export interface IJobPosition {
     id?: number | string;
     name: string;
@@ -21,13 +26,15 @@ export interface IEmployee {
     picture?: string;
     dpi: string;
     date_hiring: Date;
-    date_completion?: Date;
+    date_completion?: Date | null;
     birth_date: Date;
     gender: string;
     base_salary: number;
     department?: number | string;
     job_position?: number | string;
     company?: number | string;
+    user?: IUserEmployee;
+    create_user: boolean;
 }
 
 export interface IEmployeeDocument {
