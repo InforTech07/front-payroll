@@ -71,7 +71,10 @@ class ApiServices {
         return new Promise((resolve, reject) => {
         const options = {
             method: method,
-            body: data
+            body: data,
+            // headers:{
+            //     'Content-Type': 'multipart/form-data',
+            // }
         }
         fetch(this._root + url, options)
             .then(response => {

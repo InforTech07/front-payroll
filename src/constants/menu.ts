@@ -27,27 +27,6 @@ export const menuUser: IMenuItem[] = [
 
 export const menuAdmin: IMenuItem[] = [
     {
-        name: 'Dashboard',
-        icon: 'mdi-view-dashboard',
-        submenu: [
-            {
-                name: 'Dashboard',
-                path: '/dashboard',
-                icon: 'mdi-view-dashboard',
-            },
-            {
-                name: 'Dashboard 2',
-                path: '/dashboard2',
-                icon: 'mdi-view-dashboard',
-            },
-            {
-                name: 'Dashboard 3',
-                path: '/dashboard3',
-                icon: 'mdi-view-dashboard',
-            }
-        ]
-    },
-    {
         name: 'Rec. Humanos',
         icon: 'mdi-account',
         submenu: [

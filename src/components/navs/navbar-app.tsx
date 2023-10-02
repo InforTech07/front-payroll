@@ -23,7 +23,7 @@ function NavbarApp({title, idBtnDrawer}: NavbarAppProps){
                     </a>
                 </div>
                 <div className="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse">
-                    <div className="relative">
+                    <div className="relative hidden">
                         <input type="text" className="w-full py-1 pl-10 pr-4 text-gray-700 bg-white border rounded-md focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" placeholder="Search"/>
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                             <svg className="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">

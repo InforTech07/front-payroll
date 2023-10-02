@@ -1,56 +1,6 @@
 import { IDepartment, IJobPosition, IEmployee, IFamilyMember, ISalaryIncrease } from "@/interfaces/hrm";
 import { apiServices } from "./api-service";
-
-const departmentData: IDepartment[] = [
-    {
-        id: 1,
-        name: 'Department 1',
-        description: 'Description 1',
-        company: "1"
-    },
-    {
-        id: 2,
-        name: 'Department 2',
-        description: 'Description 2',
-        company: "1"
-    },
-    {
-        id: 3,
-        name: 'Department 3',
-        description: 'Description 3',
-        company: "1"
-    },
-];
-
-
-const jobPositionData: IJobPosition[] = [
-    {
-        id: 1,
-        name: 'Job Position 1',
-        description: 'Description 1'
-    },
-    {
-        id: 2,
-        name: 'Job Position 2',
-        description: 'Description 2'
-    },
-    {
-        id: 3,
-        name: 'Job Position 3',
-        description: 'Description 3'
-    },
-];
-
-
-function uuidGenerator() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        // eslint-disable-next-line no-mixed-operators
-        const r = (Math.random() * 16) | 0,
-            // eslint-disable-next-line no-mixed-operators
-            v = c === 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-    });
-}
+import { deleteEmployeeDocument } from "@/redux/hrm/employee-doc-slice";
 
 class EmployeeService {
     private static _instance: EmployeeService;
@@ -114,21 +64,31 @@ class EmployeeService {
         return []
     }
 
-    async getFamilyMembers(){
-        return []
+    async getEmployeeDocuments(employeeId: number){
+        return await apiServices.get(`employee-document/get_documents/?employee=${employeeId}`)
+    }
+
+    async registerEmployeeDocument(data: any){
+        return await apiServices.post('employee-document/', data)
+    }
+    async deleteEmployeeDocument(id: number){
+        return await apiServices.delete(`employee-document/${id}/`)
+    }
+
+    async getFamilyMembers(employeeId: number){
+        return await apiServices.get(`family-member/get_family_members/?employee=${employeeId}`)
     }
 
     async registerFamilyMember(data: IFamilyMember){
-        data.id = uuidGenerator();
-        return data
+        return await apiServices.post('family-member/', data)
     }
 
     async updateFamilyMember(data: IFamilyMember){
-        return data
+        return await apiServices.put(`family-member/${data.id}/`, data)
     }
 
     async deleteFamilyMember(id: number){
-        return id
+        return await apiServices.delete(`family-member/${id}/`)
     }
 
     // private adapterCompanies(data: any){

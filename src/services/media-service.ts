@@ -16,8 +16,8 @@ class MediaService{
     }
 
 
-    async uploadFile(data: IEmployeeDocument){
-        return data;
+    async uploadFile(data: any){
+        return await apiServices.postFile('media/file/', data)
     }
 
     async deleteFile(id: string){

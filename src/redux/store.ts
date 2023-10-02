@@ -6,16 +6,20 @@ import { payrollConceptSlice } from "./pm/payroll-concept-slice";
 import { payrollPeriodSlice } from "./pm/payroll-period-slice";
 import { payrollIncomeSlice } from "./pm/payroll-income-slice";
 import { payrollDeductionSlice } from "./pm/payroll-deduction-slice";
+import { employeeDocumentSlice } from "./hrm/employee-doc-slice";
+import { familyMemberSlice } from "./hrm/family-member-slice";
 
 export const store = configureStore({
     reducer: {
         department: departmentSlice.reducer,
         jobPosition: jobPositionSlice.reducer,
         employee: employeeSlice.reducer,
+        employeeDocument: employeeDocumentSlice.reducer,
         payrollConcept: payrollConceptSlice.reducer,
         payrollPeriod: payrollPeriodSlice.reducer,
         payrollIncome: payrollIncomeSlice.reducer,
         payrollDeduction: payrollDeductionSlice.reducer,
+        familyMember: familyMemberSlice.reducer,
     },
 });
 

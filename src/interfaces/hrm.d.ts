@@ -32,6 +32,7 @@ export interface IEmployee {
     base_salary: number;
     department?: number | string;
     job_position?: number | string;
+    job_position_name?: string;
     company?: number | string;
     user?: IUserEmployee;
     create_user: boolean;
@@ -40,6 +41,7 @@ export interface IEmployee {
 export interface IEmployeeDocument {
     id?: number | string;
     name: string;
+    file: string;
     employee: number | string;
 }
 

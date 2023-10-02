@@ -24,7 +24,6 @@ export const getEmployees = createAsyncThunk(
     async (companyId:number | string) => {
         try {
             const response = await employeeService.getEmployees(companyId as number);
-            console.log(response);
             return response;
         } catch (error) {
             return error
@@ -63,6 +62,7 @@ export const deleteEmployee = createAsyncThunk(
     async (id: number,thunkAPI) => {
         try {
             const response = await employeeService.deleteEmployee(id);
+            response.id = id;
             return response;
         } catch (error) {
             console.log(error);
@@ -74,20 +74,7 @@ export const deleteEmployee = createAsyncThunk(
 export const employeeSlice = createSlice({
     name: "employee",
     initialState,
-    reducers: {
-        // setDepartments: (state, { payload }: PayloadAction<IDepartment[]>) => {
-        //     state.departments = payload;
-        // },
-        // setDepartment: (state, { payload }: PayloadAction<IDepartment>) => {
-        //     state.department = payload;
-        // },
-        // setLoading: (state, { payload }: PayloadAction<boolean>) => {
-        //     state.loading = payload;
-        // },
-        // setError: (state, { payload }: PayloadAction<string>) => {
-        //     state.error = payload;
-        // },
-    },
+    reducers: {},
     extraReducers(builder) {
         builder.addCase(getEmployees.fulfilled, (state, action) => {
             state.employees = action.payload as IEmployee[];
@@ -106,7 +93,7 @@ export const employeeSlice = createSlice({
         }).addCase(updateEmployee.rejected, (state, action) => {
             toast.error(action.error.message);
         }).addCase(deleteEmployee.fulfilled, (state, action) => {
-            const index = state.employees.findIndex((item: any) => item.id === action.payload);
+            const index = state.employees.findIndex((item: any) => item.id === action.payload.id);
             state.employees.splice(index, 1);
         }).addCase(deleteEmployee.rejected, (state, action) => {
             toast.error(action.error.message);

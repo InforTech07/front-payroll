@@ -4,52 +4,48 @@ import { IEmployee, IDepartment, IJobPosition } from '@/interfaces/hrm';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerEmployee, updateEmployee } from "@/redux/hrm/employee-slice";
 import { useRouter, useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UploadImage from "../ui/upload-image";
 
 interface IFormCreateUpdateEmployee{
     idBtnDrawer: string;
 }
 
-function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
+function FormUpdateEmployee(){
     const router = useRouter();
     const params = useParams();
-    let isModeEdit = false;
+    const [isModeEdit, setIsModeEdit] = useState(false);
     const departments = useAppSelector(state => state.department.departments);
     const jobPositions = useAppSelector(state => state.jobPosition.jobPositions);
     
     const idEdit = params.id;
     
-    if(idEdit){
-        isModeEdit = true;
-    }
   
     const formOptions = { defaultValues: {} };
 
-    if(isModeEdit){
-        useAppSelector(state => state.employee.employees).filter((item: IEmployee) => {
-          if(item.id == idEdit){
-            formOptions.defaultValues = {
-              id: item.id,
-              first_name: item.first_name,
-              last_name: item.last_name,
-              phone: item.phone,
-              address: item.address,
-              email: item.user?.email as any,
-              picture: item.picture,
-              dpi: item.dpi,
-              date_hiring: item.date_hiring as any,
-              date_completion: item.date_completion as any,
-              birth_date: item.birth_date as any,
-              gender: item.gender,
-              base_salary: item.base_salary as any,
-              department: item.department as any,
-              job_position: item.job_position as any,
-              company: item.company as any,
-            }
-          }
-        });
-    } 
+    useAppSelector(state => state.employee.employees).filter((item: IEmployee) => {
+      if(item.id == idEdit){
+        formOptions.defaultValues = {
+          id: item.id,
+          first_name: item.first_name,
+          last_name: item.last_name,
+          phone: item.phone,
+          address: item.address,
+          email: item.user?.email as any,
+          picture: item.picture,
+          dpi: item.dpi,
+          date_hiring: item.date_hiring as any,
+          date_completion: item.date_completion as any,
+          birth_date: item.birth_date as any,
+          gender: item.gender,
+          base_salary: item.base_salary as any,
+          department: item.department as any,
+          job_position: item.job_position as any,
+          company: item.company as any,
+        }
+      }
+    });
+  
     const {
         register, 
         handleSubmit, 
@@ -61,14 +57,18 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
-        dispatch(updateEmployee(data)).then(res => {
-          if(res.payload){
-            router.back();
+        if(isModeEdit){
+          dispatch(updateEmployee(data)).then(res => {
+            if(res.payload){
+              router.back();
+              return;
+            }
+          }).catch(err => {
             return;
-          }
-        }).catch(err => {
-          return;
-        });
+          });
+        }else{
+          setIsModeEdit(true);
+        }
     });
 
     const setUriImage = (uri:string) => {
@@ -88,6 +88,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="first_name" 
                       id="first_name" 
                       type="text"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.first_name && (
                         <label className="label">
@@ -107,6 +108,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="last_name" 
                       id="last_name" 
                       type="text"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.last_name && (
                         <label className="label">
@@ -126,6 +128,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="phone" 
                       id="phone" 
                       type="text"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.phone && (
                         <label className="label">
@@ -145,6 +148,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="address" 
                       id="address" 
                       type="text"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.address && (
                         <label className="label">
@@ -164,6 +168,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="email" 
                       id="email" 
                       type="email"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.email && (
                         <label className="label">
@@ -183,6 +188,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="dpi" 
                       id="dpi" 
                       type="text"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.dpi && (
                         <label className="label">
@@ -200,7 +206,8 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                         message: 'El genero es requerido'
                       }})}
                       name="gender" 
-                      id="gender"  
+                      id="gender"
+                      disabled={!isModeEdit}  
                       className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
                       <option value="Masculino">Masculino</option>
                       <option value="Femenino">Femenino</option>
@@ -223,6 +230,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="birth_date" 
                       id="birth_date" 
                       type="date"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.birth_date && (
                         <label className="label">
@@ -242,6 +250,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="date_hiring" 
                       id="date_hiring" 
                       type="date"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.date_hiring && (
                         <label className="label">
@@ -261,6 +270,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="date_completion" 
                       id="date_completion" 
                       type="date"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.date_completion && (
                         <label className="label">
@@ -280,6 +290,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                       name="base_salary" 
                       id="base_salary" 
                       type="number"
+                      disabled={!isModeEdit}
                       className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                     {errors?.base_salary && (
                         <label className="label">
@@ -289,7 +300,7 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                         </label>
                       )}
                 </div>
-                <div>
+                {/* <div>
                     <label className="text-gray-700 text-xs" htmlFor="department">Departamento</label>
                     <select
                       {...register("department", { required: {
@@ -297,10 +308,11 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                         message: 'El departmento de trabajo es requerido'
                       }})}
                       name="department" 
-                      id="department"  
+                      id="department"
+                      disabled={!isModeEdit}  
                       className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
                       {
-                        departments.map((item: IDepartment) => (
+                        departments && departments.map((item: IDepartment) => (
                           <option key={item.id} value={item.id}>{item.name}</option>
                         ))
                       }
@@ -312,8 +324,8 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                           </span>
                         </label>
                       )}
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                     <label className="text-gray-700 text-xs" htmlFor="job_position">Puesto</label>
                     <select
                       {...register("job_position", { required: {
@@ -321,7 +333,8 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                         message: 'El puesto de trabajo es requerido'
                       }})}
                       name="job_position" 
-                      id="job_position"  
+                      id="job_position"
+                      disabled={!isModeEdit}  
                       className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
                       {
                         jobPositions.map((item: IJobPosition) => (
@@ -336,11 +349,11 @@ function FormUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                           </span>
                         </label>
                       )}
-                </div>
+                </div> */}
             </div>
             <UploadImage label="Fotografia" setUriImage={setUriImage} urlImage={watch('picture')}/> 
             <div className="flex justify-start mt-6">
-                <button className="btn btn-sm rounded-l btn-success text-xs">Editar</button>
+                <button  className="btn btn-sm rounded-l btn-success text-xs">{isModeEdit? 'Actualizar': 'Editar'}</button>
             </div>
         </form>
     );
