@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerPayrollPeriod, updatePayrollPeriod } from "@/redux/pm/payroll-period-slice";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 interface IFormCreateUpdatePayrollPeriodProps{
     idBtnDrawer: string;
@@ -13,6 +14,7 @@ interface IFormCreateUpdatePayrollPeriodProps{
 function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPeriodProps){
     const router = useRouter();
     const params = useParams();
+    const { data: session, status } = useSession();
     let isModeEdit = false;
     
     const idEdit = params.id;
@@ -27,8 +29,9 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
           name: "",
           start_date: "",
           end_date: "",
+          status: false,
           type: "",
-          company_id: "",
+          company: session?.user?.idCompany as unknown as string,
         }
     }
 
@@ -40,8 +43,9 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                 name: item.name,
                 start_date: item.start_date,
                 end_date: item.end_date,
+                status: item.status,
                 type: item.type,
-                company_id: item.company_id as any,
+                company: item.company as unknown as string,
             }
         }
         });
@@ -51,7 +55,7 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
         handleSubmit, 
         formState:{ errors },
         reset,
-    } = useForm<IPayrollPeriod>(formOptions as any);
+    } = useForm<IPayrollPeriod>(formOptions);
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
@@ -65,7 +69,6 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
           return;
         });
       }else{
-        //console.log(data);
         dispatch(registerPayrollPeriod(data)).then(res => {
           if(res.payload){
             reset();
@@ -168,13 +171,35 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                             name="type" 
                             id="type"  
                             className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
-                            <option value={1}>Quincena</option>
-                            <option value={2}>Mensual</option>
+                            <option value="QUINCENAL">Quincena</option>
+                            <option value="MENSUAL">Mensual</option>
+                            <option value="BONO_14">Bono 14</option>
+                            <option value="AGUINALDO">Aguinaldo</option>
                           </select>
                           {errors?.type && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
                                   {errors.type.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                        <input 
+                        {...register("company", { required: {
+                          value: true,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="company" 
+                          name="company" 
+                          type="text" 
+                          value={session?.user?.idCompany}
+                          hidden
+                          />
+                          {errors?.company && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.company.message}
                                 </span>
                               </label>
                             )}
@@ -188,7 +213,9 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                           id="id" 
                           name="id" 
                           type="text" 
-                          value="3"/>
+                          value=""
+                          hidden
+                          />
                           {errors?.id && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
@@ -199,19 +226,20 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                       </div>
                       <div>
                         <input
-                        {...register("company_id", { required: {
-                          value: false,
+                        {...register("company", { required: {
+                          value: true,
                           message: 'La compania es requerida'
                         }})}
-                          id="company_id" 
-                          name="company_id" 
+                          id="company" 
+                          name="company" 
                           type="text" 
-                          value="1" 
+                          value={session?.user?.idCompany}
+                          hidden 
                           />
-                          {errors?.company_id && (
+                          {errors?.company && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
-                                  {errors.company_id.message}
+                                  {errors.company.message}
                                 </span>
                               </label>
                             )}

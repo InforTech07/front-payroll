@@ -20,9 +20,9 @@ const initialState:IPayrollConceptState = {
 
 export const getPayrollConcepts = createAsyncThunk(
     "payrollconcept/getPayrollConcepts",
-    async () => {
+    async (companyId: number) => {
         try {
-            const response = await pmService.getPayrollConcepts();
+            const response = await pmService.getPayrollConcepts(companyId);
             return response.results;
         } catch (error) {
             return error
@@ -77,23 +77,23 @@ export const payrollConceptSlice = createSlice({
         builder.addCase(getPayrollConcepts.fulfilled, (state, action) => {
             state.payrollConcepts = action.payload as IPayrollConcept[];
         }).addCase(getPayrollConcepts.rejected,() => {
-            toast.error("Error al obtener los departamentos");
+            toast.error("Error al obtener los conceptos de nomina");
         }).addCase(registerPayrollConcept.fulfilled, (state, action) => {
             state.payrollConcepts.push(action.payload as IPayrollConcept);
-            toast.success("Departamento registrado correctamente");
+            toast.success("Concepto de nomina registrado correctamente");
         }).addCase(registerPayrollConcept.rejected, (state, action) => {
-            toast.error("Error al registrar el departamento");
+            toast.error("Error al registrar el Concepto de nomina");
         }).addCase(updatePayrollConcept.fulfilled, (state, action) => {
             const index = state.payrollConcepts.findIndex((payrollConcept) => payrollConcept.id === action.payload.id);
             state.payrollConcepts[index] = action.payload as IPayrollConcept;
-            toast.success("Departamento actualizado correctamente");
+            toast.success("Concepto de nomina actualizado correctamente");
         }).addCase(updatePayrollConcept.rejected, (state, action) => {
             toast.error("Error al actualizar el departamento");
         }).addCase(deletePayrollConcept.fulfilled, (state, action) => {
             state.payrollConcepts = state.payrollConcepts.filter((payrollConcept) => payrollConcept.id !== action.payload);
-            toast.success("Departamento eliminado correctamente");
+            toast.success("Concepto de nomina eliminado correctamente");
         }).addCase(deletePayrollConcept.rejected, (state, action) => {
-            toast.error("Error al eliminar el departamento");
+            toast.error("Error al eliminar el Concepto de nomina");
         });
     },
 });

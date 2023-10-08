@@ -22,8 +22,8 @@ export const getPayrollIncomes = createAsyncThunk(
     "payrollincome/getPayrollIncomes",
     async () => {
         try {
-            const response = await pmService.getPayrollPeriods();
-            return response.results;
+            // const response = await pmService.getPayrollPeriods();
+            return 'ok'
         } catch (error) {
             return error
         }

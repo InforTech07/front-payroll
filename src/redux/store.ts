@@ -8,6 +8,7 @@ import { payrollIncomeSlice } from "./pm/payroll-income-slice";
 import { payrollDeductionSlice } from "./pm/payroll-deduction-slice";
 import { employeeDocumentSlice } from "./hrm/employee-doc-slice";
 import { familyMemberSlice } from "./hrm/family-member-slice";
+import { payrollOperationSlice } from "./pm/payroll-operation-slice";
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
         payrollIncome: payrollIncomeSlice.reducer,
         payrollDeduction: payrollDeductionSlice.reducer,
         familyMember: familyMemberSlice.reducer,
+        payrollOperation: payrollOperationSlice.reducer,
     },
 });
 

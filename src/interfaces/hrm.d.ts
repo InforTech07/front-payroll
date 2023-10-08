@@ -30,6 +30,10 @@ export interface IEmployee {
     birth_date: Date;
     gender: string;
     base_salary: number;
+    method_payment: string;
+    bank: string;
+    account_number: string;
+    head_department: boolean;
     department?: number | string;
     job_position?: number | string;
     job_position_name?: string;
@@ -62,3 +66,4 @@ export interface ISalaryIncrease {
     reason: string;
     employee?: number | string;
 }
+

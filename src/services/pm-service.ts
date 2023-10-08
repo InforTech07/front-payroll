@@ -1,4 +1,5 @@
 import { IPayrollDeduction, IPayrollIncome, IPayrollConcept, IPayrollPeriod } from "@/interfaces/pm";
+import { IOvertime, ISalesCommission, IProductionBonus, ISolidarityContribution, ILoans } from "@/interfaces/pm";
 import { apiServices } from "./api-service";
 
 
@@ -13,92 +14,72 @@ function uuidGenerator() {
 }
 
 class PayrollManagerService {
-    constructor() {}
-    async registerPayrollConcept(data: IPayrollConcept){
-        // if(data){
-        //     const id = departmentData.length + 1;
-        //     data.id = id;
-        //     //convertir formdata a json
-        //     const json = JSON.stringify(data);
-        //     departmentData.push(json);
-            
-        // }
-        data.id = uuidGenerator();
-        // departmentData.push(data);
-        return data;
+    private static _instance: PayrollManagerService;
+
+    public static getInstance() {
+        if(!PayrollManagerService._instance) {
+            PayrollManagerService._instance = new PayrollManagerService();
+        }
+        return PayrollManagerService._instance;
     }
 
-    async getPayrollConcepts(){
-        //return await apiServices.get('department/')
-        return {
-            results: []
-        }
+    async registerPayrollConcept(data: IPayrollConcept){
+        return await apiServices.post('payroll_concept/', data);   
+    }
+
+    async getPayrollConcepts(companyId: number){
+        return await apiServices.get('payroll_concept/get_payroll_concepts/?company=' + companyId);
     }
 
     async updatePayrollConcept(data: IPayrollConcept){
-        // if(data){
-        //     const index = departmentData.findIndex((item: any) => item.id === data.id);
-        //     departmentData[index] = data;
-        // }
-
-        //const index = departmentData.findIndex((item: any) => item.id === data.id);
-        //departmentData[index] = data;
-
-        return data;
+        return await apiServices.put('payroll_concept/', data);
     }
 
     async deletePayrollConcept(id: number){
-        // if(id){
-        //     const index = departmentData.findIndex((item: any) => item.id === id);
-        //     departmentData.splice(index, 1);
-        // }
-        //const index = departmentData.findIndex((item: any) => item.id === id);
-        //departmentData.splice(index, 1);
-        return id;
+        return await apiServices.delete('payroll_concept/');
     }
 
     async registerPayrollPeriod(data: IPayrollPeriod){
-        // if(data){
-        //     const id = departmentData.length + 1;
-        //     data.id = id;
-        //     //convertir formdata a json
-        //     const json = JSON.stringify(data);
-        //     departmentData.push(json);
-            
-        // }
-        data.id = uuidGenerator();
-        // departmentData.push(data);
-        return data;
+        return await apiServices.post('payroll_period/', data);
     }
 
-    async getPayrollPeriods(){
-        //return await apiServices.get('department/')
-        return {
-            results: []
-        }
+    async getPayrollPeriods(companyId: number){
+        return await apiServices.get('payroll_period/get_payroll_periods/?company='+ companyId);
     }
 
     async updatePayrollPeriod(data: IPayrollPeriod){
-        // if(data){
-        //     const index = departmentData.findIndex((item: any) => item.id === data.id);
-        //     departmentData[index] = data;
-        // }
-
-        //const index = departmentData.findIndex((item: any) => item.id === data.id);
-        //departmentData[index] = data;
-
-        return data;
+        return await apiServices.put('payroll_period/', data);
     }
 
     async deletePayrollPeriod(id: number){
-        // if(id){
-        //     const index = departmentData.findIndex((item: any) => item.id === id);
-        //     departmentData.splice(index, 1);
-        // }
-        //const index = departmentData.findIndex((item: any) => item.id === id);
-        //departmentData.splice(index, 1);
-        return id;
+        return await apiServices.delete('payroll_period/' + id); 
     }
+
+
+    async RegisterOvertime(data: IOvertime){
+        return await apiServices.post('overtime/', data);
+    }
+
+    async registerSalesCommission(data: ISalesCommission){
+        return await apiServices.post('sales_commission/', data);
+    }
+
+    async registerProductionBonus(data: IProductionBonus){
+        return await apiServices.post('production_bonus/', data);
+    }
+
+    async registerSolidarityContribution(data: ISolidarityContribution){
+        return await apiServices.post('solidarity_contribution/', data);
+    }
+
+    async registerLoans(data: ILoans){
+        return await apiServices.post('loans/', data);
+    }
+
+
+
+
+
 
     async registerPayrollIncome(data: IPayrollIncome){
         // if(data){
@@ -199,4 +180,4 @@ class PayrollManagerService {
 
 }
 
-export const pmService = new PayrollManagerService()
+export const pmService = PayrollManagerService.getInstance();

@@ -16,8 +16,8 @@ class EmployeeService {
         return await apiServices.post('department/', data)
     }
 
-    async getDepartments(){
-        return await apiServices.get('department/')
+    async getDepartments(companyId: number){
+        return await apiServices.get(`department/get_departments_by_company/?company=${companyId}`)
     }
 
     async updateDepartment(data: IDepartment){
@@ -28,8 +28,8 @@ class EmployeeService {
         return await apiServices.delete(`department/${id}/`)
     }
 
-    async getJobPositions(){
-        return await apiServices.get('job-position/')
+    async getJobPositions(companyId: number){
+        return await apiServices.get(`job-position/get_job_positions_by_company/?company=${companyId}`)
     }
 
     async registerJobPosition(data: IJobPosition){
@@ -65,30 +65,30 @@ class EmployeeService {
     }
 
     async getEmployeeDocuments(employeeId: number){
-        return await apiServices.get(`employee-document/get_documents/?employee=${employeeId}`)
+        return await apiServices.get(`employee_document/get_documents/?employee=${employeeId}`)
     }
 
     async registerEmployeeDocument(data: any){
-        return await apiServices.post('employee-document/', data)
+        return await apiServices.post('employee_document/', data)
     }
     async deleteEmployeeDocument(id: number){
-        return await apiServices.delete(`employee-document/${id}/`)
+        return await apiServices.delete(`employee_document/${id}/`)
     }
 
     async getFamilyMembers(employeeId: number){
-        return await apiServices.get(`family-member/get_family_members/?employee=${employeeId}`)
+        return await apiServices.get(`family_member/get_family_members/?employee=${employeeId}`)
     }
 
     async registerFamilyMember(data: IFamilyMember){
-        return await apiServices.post('family-member/', data)
+        return await apiServices.post('family_member/', data)
     }
 
     async updateFamilyMember(data: IFamilyMember){
-        return await apiServices.put(`family-member/${data.id}/`, data)
+        return await apiServices.put(`family_member/${data.id}/`, data)
     }
 
     async deleteFamilyMember(id: number){
-        return await apiServices.delete(`family-member/${id}/`)
+        return await apiServices.delete(`family_member/${id}/`)
     }
 
     // private adapterCompanies(data: any){

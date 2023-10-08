@@ -25,9 +25,9 @@ const initialState: IJobPositionState = {
 
 export const getJobPositions = createAsyncThunk(
     "jobPosition/getJobPositions",
-    async () => {
+    async (companyId: number) => {
         try {
-            const response = await employeeService.getJobPositions();
+            const response = await employeeService.getJobPositions(companyId);
             return response.results;
         } catch (error) {
             return error

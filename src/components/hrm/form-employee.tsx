@@ -4,7 +4,7 @@ import { IEmployee, IDepartment, IJobPosition } from '@/interfaces/hrm';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerEmployee, updateEmployee } from "@/redux/hrm/employee-slice";
 import { useRouter, useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import UploadImage from "../ui/upload-image";
 
@@ -14,6 +14,7 @@ interface IFormCreateUpdateEmployee{
 
 function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
     const {data: session, status} = useSession();
+    const [isHeadDepartment, setIsHeadDepartment] = useState<boolean>(false);
     const params = useParams();
     const departments = useAppSelector(state => state.department.departments);
     const jobPositions = useAppSelector(state => state.jobPosition.jobPositions);
@@ -22,7 +23,6 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
   
     const formOptions = {
         defaultValues: {
-          id: "",
           first_name: "",
           last_name: "",
           email: "",
@@ -34,10 +34,14 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
           date_completion: dateCompletion,
           birth_date: Date.now(),
           gender: "",
+          method_payment: "",
+          bank: "",
+          account_number: "",
+          head_department: false,
           base_salary: 0,
           department: "",
           job_position: "",
-          company: "1",
+          company: session?.user?.idCompany,
         }
     }
 
@@ -195,13 +199,13 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                           <select
                             {...register("gender", { required: {
                               value: true,
-                              message: 'El genero es requerido'
+                              message: 'El departmento de trabajo es requerido'
                             }})}
                             name="gender" 
                             id="gender"  
                             className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
+                                <option value="MASCULINO">Masculino</option>
+                                <option value="FEMENINO">Femenino</option>
                           </select>
                           {errors?.gender && (
                               <label className="label">
@@ -210,6 +214,91 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                                 </span>
                               </label>
                             )}
+                      </div>
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="method_payment">Metodo de pago</label>
+                          <select
+                            {...register("method_payment", { required: {
+                              value: true,
+                              message: 'El departmento de trabajo es requerido'
+                            }})}
+                            name="method_payment" 
+                            id="method_payment"  
+                            className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
+                                <option value="EFECTIVO">Efectivo</option>
+                                <option value="CHEQUE">Cheque</option>
+                                <option value="TRANSFERENCIA">Transferencia</option>
+                          </select>
+                          {errors?.method_payment && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.method_payment.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="bank">Entidad Bancaria</label>
+                          <select
+                            {...register("bank", { required: {
+                              value: true,
+                              message: 'El banco es requerido de trabajo es requerido'
+                            }})}
+                            name="bank" 
+                            id="bank"  
+                            className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
+                                <option value="BANRURAL">Banrural</option>
+                                <option value="BANCO_INDUSTRIAL">Banco Industrial</option>
+                                <option value="BANCO_GYT">Banco G&T</option>
+                                <option value="BANTRAB">Bantrab</option>
+                          </select>
+                          {errors?.bank && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.bank.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="account_number">Numero de cuenta</label>
+                          <input
+                            {...register("account_number", { required: {
+                              value: true,
+                              message: 'El dpi es requerido'
+                            }})}
+                            name="account_number" 
+                            id="account_number" 
+                            type="text"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                          {errors?.account_number && (
+                              <label className="label">
+                                <span className="text-red-600 text-xs">
+                                  {errors.account_number.message}
+                                </span>
+                              </label>
+                            )}
+                      </div>
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="head_department">Jefe de departamento</label>
+                            <label className="label cursor-pointer">
+                              <input 
+                                {...register("head_department", { required: {
+                                  value: false,
+                                  message: 'El jefe de departamento es requerido'
+                                }})}
+                                type="checkbox"  
+                                checked={isHeadDepartment}
+                                onChange={() => setIsHeadDepartment(!isHeadDepartment)}
+                                className="checkbox" />
+                                {errors?.head_department && (
+                                  <label className="label">
+                                    <span className="text-red-600 text-xs">
+                                      {errors.head_department.message}
+                                    </span>
+                                  </label>
+                                )}
+                            </label>
                       </div>
                       <div>
                           <label className="text-gray-700 text-xs" htmlFor="birth_date">Fecha de nacimiento</label>
@@ -315,7 +404,7 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                           <label className="text-gray-700 text-xs" htmlFor="job_position">Puesto</label>
                           <select
                             {...register("job_position", { required: {
-                              value: true,
+                              value: false,
                               message: 'El puesto de trabajo es requerido'
                             }})}
                             name="job_position" 

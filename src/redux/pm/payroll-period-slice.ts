@@ -20,10 +20,10 @@ const initialState:IPayrollPeriodState = {
 
 export const getPayrollPeriods = createAsyncThunk(
     "payrollperiod/getPayrollPeriods",
-    async () => {
+    async (companyId: number) => {
         try {
-            const response = await pmService.getPayrollPeriods();
-            return response.results;
+            const response = await pmService.getPayrollPeriods(companyId);
+            return response;
         } catch (error) {
             return error
         }

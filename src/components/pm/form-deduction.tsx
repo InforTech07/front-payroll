@@ -38,8 +38,8 @@ function FormCreateUpdatePayrollDeduction({idBtnDrawer}: IFormCreateUpdatePayrol
                 id: item.id,
                 amount: item.amount as unknown as string,
                 date: item.date,
-                employee_id: item.employee_id as unknown as string,
-                company_id: item.company_id as unknown as string,
+                employee_id: item.employee as unknown as string,
+                company_id: item.company as unknown as string,
             }
         }
         });
@@ -119,7 +119,7 @@ function FormCreateUpdatePayrollDeduction({idBtnDrawer}: IFormCreateUpdatePayrol
                       </div>
                       <div>
                         <input
-                        {...register("company_id", { required: {
+                        {...register("company", { required: {
                           value: true,
                           message: 'La compania es requerida'
                         }})}
@@ -131,12 +131,12 @@ function FormCreateUpdatePayrollDeduction({idBtnDrawer}: IFormCreateUpdatePayrol
                       </div>
                       <div>
                         <input
-                        {...register("employee_id", { required: {
+                        {...register("employee", { required: {
                           value: true,
                           message: 'La compania es requerida'
                         }})}
-                          id="employee_id" 
-                          name="employee_id" 
+                          id="employee" 
+                          name="employee" 
                           type="text" 
                           value="1" 
                           hidden />

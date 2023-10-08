@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { userService } from "@/services/user-service";
 
 
 type FormLogin = {
@@ -12,11 +13,14 @@ type FormLogin = {
 };
 
 function FormLogin(){
+    const [email, setEmail] = useState("");
+    const [existUser, setExistUser] = useState(false);
     const router = useRouter();
     const {
           register, 
           handleSubmit, 
           formState:{ errors },
+          setValue,
           reset 
     } = useForm<FormLogin>();
 
@@ -37,6 +41,24 @@ function FormLogin(){
         }
       });
     });
+
+    const verifyUser = async (e:any) => {
+      e.preventDefault();
+      const res = await userService.verifyAccount(email);
+      if(res.is_default_password){
+        toast.info("Usuario encontrado, por favor cambie su contraseña");
+        router.push(`/reset-password/${res.id}`);
+      }
+      if(!res.is_default_password){
+        setExistUser(true);
+        setValue("email", email);
+      }
+
+      if(res.error){
+        toast.error("Usuario no encontrado");
+      }
+    }
+
     
     return (
       <>
@@ -48,7 +70,7 @@ function FormLogin(){
                              <div className="lg:block" hidden>
                                  <div className='flex flex-col h-full p-6 sm:p-16 items-center justify-center'>
                                      <div aria-hidden="true" className="flex space-x-1">
-                                          <div className="h-12 w-12 rounded-full bg-gray-900 dark:bg-white"></div>
+                                          <div className="h-12 w-12 rounded-full bg-gray-900"></div>
                                           <div className="h-24 w-6 bg-primary"></div>
                                      </div>
                                      <div className="flex flex-col space-y-4">
@@ -57,13 +79,15 @@ function FormLogin(){
                                      </div>
                                  </div>
                              </div>
-                        <form
+                        {
+                          existUser ? (
+                            <form
                           className="mt-12"
                           action=""
                           method="POST"
                           onSubmit={onSubmit}
                         >
-                              <div className='flex flex-col gap-4'>
+                              <div className='flex flex-col gap-4 items-center'>
                                   <h4 className="text-2xl font-semibold text-gray-900">
                                     Ingresa tus credenciales
                                   </h4>
@@ -121,12 +145,44 @@ function FormLogin(){
                                       </label>
                                     )}
                                 </div>
+                                <div className="form-control w-full max-w-xs gap-2">
+                                  <button type="submit" className="btn btn-success my-6 rounded-l">Ingresar</button>
+                                </div>
                               </div>
-                            {/* Submit Button */}
-                            <button 
-                              type="submit" 
-                              className="btn btn-success my-6 rounded-l">Ingresar</button>
                         </form>
+                          ) : (
+                            <form
+                              className="mt-12"
+                              action=""
+                              onSubmit={verifyUser}
+                            >
+                                  <div className='flex flex-col gap-4 items-center'>
+                                      <h4 className="text-2xl font-semibold text-gray-900">
+                                        Ingresa tus credenciales
+                                      </h4>
+                                      {/* Email Input */}
+                                      <div className="form-control w-full max-w-xs gap-2">
+                                        <label className="text-gray-700 text-xs" htmlFor="email">Usuario:</label>
+                                          <input
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                            placeholder="john@doe.com"
+                                            autoComplete="off" 
+                                          />
+                                        
+                                      </div>
+                                    <div className="form-control w-full max-w-xs gap-2">
+                                      <button type="submit" className="btn btn-success my-6 rounded-l">Ingresar</button>
+                                    </div>
+                                  </div>
+                            </form>
+                          )
+                        }
+                        
                         </div>
                          </div>
                      </div>

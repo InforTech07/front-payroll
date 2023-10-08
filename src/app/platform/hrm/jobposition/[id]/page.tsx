@@ -12,9 +12,9 @@ function JobPositionPage() {
     const jobpositions = useAppSelector(state => state.jobPosition.jobPositions);
     const idBtnDrawer = "hrm-jposition-drawer";
 
-    useEffect(() => {
-        dispatch(getJobPositions());
-    }, []);
+    // useEffect(() => {
+    //     dispatch(getJobPositions());
+    // }, []);
     
     return (
         <>

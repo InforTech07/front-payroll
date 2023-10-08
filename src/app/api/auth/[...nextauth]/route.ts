@@ -23,7 +23,6 @@ const handler = NextAuth({
                 const { email, password } = credentials;
                 let user = null;
                 const result = await apiServices.post('login/', {email, password});
-                //if(result?.user) {}
                 return user = {
                     email: result.user.email,
                     name: result.user.username,
@@ -35,7 +34,6 @@ const handler = NextAuth({
                     nameCompany: result.user.company.name,
                     tokenjwt: result.token
                 };
-                //return await apiServices.post('login/', {email, password});
             }  
         }),
     ],
@@ -44,8 +42,6 @@ const handler = NextAuth({
     },
     callbacks: {
         async jwt({token, user}) {
-            //console.log(user);
-            //console.log(token);
             if(user) {
                 token.user = user;
             }

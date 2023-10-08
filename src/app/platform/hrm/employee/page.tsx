@@ -16,11 +16,11 @@ function EmployeePage() {
     const {data: session, status} = useSession();
     const dispatch = useAppDispatch();
     const idBtnDrawer = "hrm-employee-drawer";
-    dispatch(getEmployees(session?.user?.idCompany as number));
-    useEffect(() => {
-        dispatch(getDepartments());
-        dispatch(getJobPositions());
-    }, []);
+    //dispatch(getEmployees(session?.user?.idCompany as number));
+    // useEffect(() => {
+    //     dispatch(getDepartments());
+    //     dispatch(getJobPositions());
+    // }, []);
     return (
         <>
             <NavbarApp title='Empleados' idBtnDrawer={idBtnDrawer}/>

@@ -25,9 +25,9 @@ const initialState: IDepartmentState = {
 
 export const getDepartments = createAsyncThunk(
     "department/getDepartments",
-    async () => {
+    async (companyId: number) => {
         try {
-            const response = await employeeService.getDepartments();
+            const response = await employeeService.getDepartments(companyId);
             return response.results;
         } catch (error) {
             return error

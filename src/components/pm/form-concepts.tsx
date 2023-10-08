@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerPayrollConcept, updatePayrollConcept } from "@/redux/pm/payroll-concept-slice";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 interface IFormCreateUpdatePayrollConcept{
     idBtnDrawer: string;
@@ -13,6 +14,7 @@ interface IFormCreateUpdatePayrollConcept{
 function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollConcept){
     const router = useRouter();
     const params = useParams();
+    const { data: session, status } = useSession();
     let isModeEdit = false;
     
     const idEdit = params.id;
@@ -25,9 +27,9 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
         defaultValues: {
             name: "",
             type: "1",
-            amount: "",
+            value: 0,
             description: "",
-            company: "1",
+            company: '1',
             id: ""
         }
     }
@@ -39,9 +41,9 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
               id: item.id,
               name: item.name,
               type: item.type,
-              amount: item.amount as unknown as string,
+              value: item.value as unknown as number,
               description: item.description,
-              company: item.company_id as unknown as string,
+              company: item.company as unknown as string,
             }
         }
         });
@@ -130,8 +132,8 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
                             name="type" 
                             id="type"  
                             className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
-                            <option value={1}>Ingreso</option>
-                            <option value={2}>Deduccion</option>
+                            <option value="INGRESO">Ingreso</option>
+                            <option value="DEDUCCION">Deduccion</option>
                           </select>
                           {errors?.type && (
                               <label className="label">
@@ -142,21 +144,21 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
                             )}
                       </div>
                       <div>
-                          <label className="text-gray-700 text-xs" htmlFor="amount">Valor</label>
+                          <label className="text-gray-700 text-xs" htmlFor="value">Valor</label>
                           <input
-                            {...register("amount", { required: {
+                            {...register("value", { required: {
                               value: true,
                               message: 'El nombre es requerido'
                             }})}
-                            name="amount" 
-                            id="amount" 
+                            name="value" 
+                            id="value" 
                             type="number"
                             // value={modeEdit ? data?.name : ""} 
                             className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
-                          {errors?.amount && (
+                          {errors?.value && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
-                                  {errors.amount.message}
+                                  {errors.value.message}
                                 </span>
                               </label>
                             )}
@@ -182,18 +184,17 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
                             )}
                       </div>
                       <div>
-                        <input
-                        {...register("company_id", { required: {
-                          value: true,
+                        <input 
+                        {...register("company", { required: {
+                          value: false,
                           message: 'La compania es requerida'
                         }})}
                           id="company" 
                           name="company" 
                           type="text" 
-                          value="1" 
-                          hidden />
+                          value={session?.user?.idCompany} hidden />
                       </div>
-                      <div>
+                      {/* <div>
                         <input 
                         {...register("id", { required: {
                           value: false,
@@ -203,7 +204,7 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
                           name="id" 
                           type="text" 
                           value="3" hidden />
-                      </div>
+                      </div> */}
                   </div>
           
                   <div className="flex justify-start mt-6">

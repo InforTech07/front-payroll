@@ -33,11 +33,11 @@ function NavbarApp({title, idBtnDrawer}: NavbarAppProps){
                     </div>
                     <label htmlFor={idBtnDrawer} className="rounded-l px-1 py-1 text-xs transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">Nuevo</label>
                     <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">
-                        Informe
+                        Comision Venta
                     </button>
 
                     <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6  hover:bg-gray-100">
-                        Buscador
+                        Bono Produccion
                     </button>
 
                     <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">

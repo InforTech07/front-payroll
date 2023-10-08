@@ -3,15 +3,24 @@ import { useAppDispatch } from "@/hooks/redux";
 import { deletePayrollConcept } from "@/redux/pm/payroll-concept-slice";
 import { useRouter } from "next/navigation";
 import { IPayrollPeriod } from "@/interfaces/pm";
+import { useAppSelector } from "@/hooks/redux";
 
 
 interface ITablePayrollPeriodProps{
     payrollPeriods: IPayrollPeriod[];
 }
 
-function TabPayrollPeriod({payrollPeriods}: ITablePayrollPeriodProps){
+function TabPayrollPeriod(){
     const dispatch = useAppDispatch();
     const router = useRouter();
+    //let payrollPeriods = [] as IPayrollPeriod[];
+
+    const payrollPeriods = useAppSelector(state => state.payrollPeriod.payrollPeriods) as IPayrollPeriod[];
+    // if(Array.isArray(data)){
+    //     payrollPeriods = data;
+    // }
+
+    //const payrollPeriods = useAppSelector(state => state.payrollPeriod.payrollPeriods) as IPayrollPeriod[];
     
     const handleDeletePayrollConcept = (id: number) => {
         confirm("¿Estas seguro de eliminar este departamento?") && dispatch(deletePayrollConcept(id));
@@ -19,10 +28,10 @@ function TabPayrollPeriod({payrollPeriods}: ITablePayrollPeriodProps){
     return(
         <section className="w-full py-4">
             <div className="grid grid-cols-4 gap-4">
-                { payrollPeriods &&   payrollPeriods.map((item: IPayrollPeriod, index) => (
+                { Array.isArray(payrollPeriods) ?   payrollPeriods.map((item: IPayrollPeriod, index) => (
                     <div key={index} className={`w-full  px-4 py-3  bg-white  rounded-md shadow-md`}>
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-light text-gray-800">12/02/2023</span>
+                            <span className="text-xs font-light text-gray-800">{item.status ? "PAGADO" : "ACTIVO"}</span>
                             <span className="px-3 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full">
                                 <div className="flex items-center gap-x-6">
                                     <button onClick={()=>handleDeletePayrollConcept(item.id as number)} className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none">
@@ -40,10 +49,18 @@ function TabPayrollPeriod({payrollPeriods}: ITablePayrollPeriodProps){
                         </div>
                         <div>
                             <h1 className="mt-2 text-l font-semibold text-gray-800">{item.name}</h1>
-                            <p className="mt-2 text-xs text-gray-600">{item.type}</p>
+                            <div className="flex items-center justify-between mt-2">
+                                <p className="text-xs font-light text-gray-600">DEL: {item.start_date}</p>
+                                <p className="text-xs font-light text-gray-600">AL: {item.end_date}</p>
+                            </div>
+                            <p className="mt-2 text-xs text-gray-600">Tipo del periodo: {item.type}</p>
                         </div>
                     </div>
-                ))}
+                )):(
+                    <div className="w-full px-4 py-3 text-center bg-white rounded-md shadow-md">
+                        <h1 className="text-gray-800">No hay periodos de nomina registrados</h1>
+                    </div>
+                )}
             </div>
         </section>
     )

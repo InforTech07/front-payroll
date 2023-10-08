@@ -12,9 +12,9 @@ function DepartmentPage() {
     const dispatch = useAppDispatch();
     const departments = useAppSelector(state => state.department.departments);
     const idBtnDrawer = "hrm-department-drawer";
-    useEffect(() => {
-        dispatch(getDepartments());
-    }, []);
+    // useEffect(() => {
+    //     dispatch(getDepartments());
+    // }, []);
     return (
         <>
             <NavbarApp title='Departamentos' idBtnDrawer={idBtnDrawer}/>

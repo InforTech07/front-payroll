@@ -12,7 +12,7 @@ interface ITableEmployeeProps{
 function TableEmployee(){
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const employees = useAppSelector(state => state.employee.employees);
+    const employees = useAppSelector(state => state.employee.employees) as IEmployee[];
     const avatarAlternative = "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80";
     const handleDeleteEmployee = (id: number) => {
         confirm("¿Estas seguro de eliminar este empleado?") && dispatch(deleteEmployee(id));
@@ -22,7 +22,7 @@ function TableEmployee(){
     return(
         <section className="w-full py-4">
             <div className="grid grid-cols-5 gap-4 md:grid-cols-5 sm:grid-cols-3">
-                { employees.length > 0 && employees.map((item: IEmployee, index) => (
+                { Array.isArray(employees) ? employees.map((item: IEmployee, index) => (
                     <div key={item.id} className="w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-lg">
                         <img className="object-cover object-center w-full h-48" src={item.picture? item.picture : avatarAlternative} alt="avatar"/>
                         <div className="px-4 py-2">
@@ -70,7 +70,7 @@ function TableEmployee(){
                             </button>
                         </div>
                     </div>
-                ))}
+                )): (<h1 className="text-gray-600">No hay empleados</h1>)}
             </div>
         </section>
     )

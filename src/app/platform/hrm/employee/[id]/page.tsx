@@ -17,16 +17,16 @@ function EmployeePage() {
     const employees = useAppSelector(state => state.employee.employees);
     const idBtnDrawer = "hrm-employee-drawer";
 
-    useEffect(() => {
-        //dispatch(getEmployees());
-        dispatch(getDepartments());
-        dispatch(getJobPositions());
-    }, []);
+    // useEffect(() => {
+    //     //dispatch(getEmployees());
+    //     dispatch(getDepartments());
+    //     dispatch(getJobPositions());
+    // }, []);
 
     return (
         <>
             <NavbarApp title='Detalles de empleado' idBtnDrawer={idBtnDrawer}/>
-            <FormUpdateEmployee idBtnDrawer={idBtnDrawer}/>
+            <FormUpdateEmployee />
             <div className="divider"></div>
             <TableEmployeeDocuments/>
             <div className="divider"></div>

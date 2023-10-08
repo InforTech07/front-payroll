@@ -57,23 +57,13 @@ export const menuAdmin: IMenuItem[] = [
                 icon: 'mdi-account',
             },
             {
-                name: 'Ingresos',
-                path: '/platform/pm/income',
-                icon: 'mdi-account',
-            },
-            {
-                name: 'Deducciones',
-                path: '/platform/pm/deduction',
+                name: 'Operaciones',
+                path: '/platform/pm/operation',
                 icon: 'mdi-account',
             },
             {
                 name: 'Periocidad',
                 path: '/platform/pm/period',
-                icon: 'mdi-account',
-            },
-            {
-                name: 'Conceptos',
-                path: '/platform/pm/concepts',
                 icon: 'mdi-account',
             }
         ]
