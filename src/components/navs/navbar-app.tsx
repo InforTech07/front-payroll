@@ -1,11 +1,14 @@
 type NavbarAppProps = {
     title: string;
     idBtnDrawer: string;
+    cart?: boolean;
+    subTotal?: number;
+    count?: number;
 }
 
-function NavbarApp({title, idBtnDrawer}: NavbarAppProps){
+function NavbarApp({title, idBtnDrawer, cart=false, subTotal=0, count=0}: NavbarAppProps){
     return(
-        <nav className="bg-gray-200 shadow rounded-xl">
+        <nav className="bg-gray-200 rounded-md">
             <div className="flex items-center justify-between p-2 mx-auto text-gray-600 capitalize">
                 <div className="flex items-center  overflow-x-auto whitespace-nowrap">
                     <a href="#" className="text-gray-600">
@@ -18,7 +21,7 @@ function NavbarApp({title, idBtnDrawer}: NavbarAppProps){
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                         </svg>
                     </span>
-                    <a href="#" className="text-blue-600 text-xs hover:underline">
+                    <a href="#" className="text-gray-900 text-base font-semibold hover:underline">
                         {title}
                     </a>
                 </div>
@@ -31,19 +34,40 @@ function NavbarApp({title, idBtnDrawer}: NavbarAppProps){
                             </svg>
                         </span>
                     </div>
-                    <label htmlFor={idBtnDrawer} className="rounded-l px-1 py-1 text-xs transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">Nuevo</label>
-                    <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">
+                    <label htmlFor={idBtnDrawer} className="rounded-md px-1 py-1 text-base transition-colors duration-200 sm:text-xs sm:px-6 hover:bg-gray-100">Nuevo</label>
+                    {/* <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">
                         Comision Venta
                     </button>
 
                     <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6  hover:bg-gray-100">
                         Bono Produccion
-                    </button>
+                    </button> */}
 
-                    <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">
-                        Otra opcion
-                    </button>
+                    
                 </div>
+                {
+                        cart && (
+                            <div className="flex-none">
+                            <div className="dropdown dropdown-end">
+                                <label tabIndex={0} className="btn btn-ghost btn-circle">
+                                    <div className="indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                    <span className="badge badge-sm indicator-item">{count}</span>
+                                    </div>
+                                </label>
+                                <div tabIndex={0} className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
+                                    <div className="card-body">
+                                    <span className="font-bold text-lg text-black">{count} Productos </span>
+                                    <span className="text-info">Subtotal: {subTotal.toPrecision(4)}</span>
+                                    <div className="card-actions">
+                                        <label htmlFor="my-drawer-store" className="btn btn-success btn-sm drawer-button">Ver Productos</label>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        )
+                    }
             </div>
         </nav>
     )

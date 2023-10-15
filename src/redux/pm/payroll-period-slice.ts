@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { IPayrollPeriod } from "@/interfaces/pm";
 import { toast } from "react-toastify";
-import  { pmService } from "@/services/pm-service";
+import { apiServices } from "@/services/api-service";
 
 
 export interface IPayrollPeriodState {
@@ -11,7 +11,6 @@ export interface IPayrollPeriodState {
     loading: boolean;
     error: string;
 }
-3
 const initialState:IPayrollPeriodState = {
     payrollPeriods: [],
     loading: false,
@@ -22,7 +21,7 @@ export const getPayrollPeriods = createAsyncThunk(
     "payrollperiod/getPayrollPeriods",
     async (companyId: number) => {
         try {
-            const response = await pmService.getPayrollPeriods(companyId);
+            const response = await apiServices.get('payroll_period/get_payroll_periods/?company='+ companyId);
             return response;
         } catch (error) {
             return error
@@ -34,7 +33,7 @@ export const registerPayrollPeriod = createAsyncThunk(
     "payrollperiod/registerPayrollPeriod",
     async (data: IPayrollPeriod,thunkAPI) => {
         try {
-            const response = await pmService.registerPayrollPeriod(data);
+            const response = await apiServices.post('payroll_period/', data);
             return response;
         } catch (error) {
             console.log(error);
@@ -47,7 +46,7 @@ export const updatePayrollPeriod = createAsyncThunk(
     "payrollperiod/updatePayrollPeriod",
     async (data: IPayrollPeriod,thunkAPI) => {
         try {
-            const response = await pmService.updatePayrollPeriod(data);
+            const response = await apiServices.put('payroll_period/', data);
             return response;
         } catch (error) {
             console.log(error);
@@ -60,7 +59,7 @@ export const deletePayrollPeriod = createAsyncThunk(
     "payrollperiod/deletePayrollPeriod",
     async (id: number,thunkAPI) => {
         try {
-            const response = await pmService.deletePayrollPeriod(id);
+            const response = await apiServices.delete('payroll_period/' + id); 
             return response;
         } catch (error) {
             console.log(error);

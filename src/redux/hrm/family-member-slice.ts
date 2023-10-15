@@ -3,6 +3,7 @@ import { RootState } from "../store";
 import { IFamilyMember } from "@/interfaces/hrm";
 import { toast } from "react-toastify";
 import  { employeeService } from "@/services/employee-service";
+import { apiServices } from "@/services/api-service";
 
 
 export interface IFamilyMemberState {
@@ -21,7 +22,7 @@ export const getFamilyMembers = createAsyncThunk(
     "familymember/getFamilyMembers",
     async (employeeId:number | string) => {
         try {
-            const response = await employeeService.getFamilyMembers(employeeId as number);
+            const response = await apiServices.get(`family_member/get_family_members/?employee=${employeeId}`)
             return response;
         } catch (error) {
             return error
@@ -33,7 +34,7 @@ export const registerFamilyMember = createAsyncThunk(
     "familymember/registerFamilyMember",
     async (data: IFamilyMember,thunkAPI) => {
         try {
-            const response = await employeeService.registerFamilyMember(data);
+            const response = await apiServices.post('family_member/', data)
             return response;
         } catch (error) {
             console.log(error);
@@ -46,7 +47,7 @@ export const updateFamilyMember = createAsyncThunk(
     "familymember/updateFamilyMember",
     async (data: IFamilyMember,thunkAPI) => {
         try {
-            const response = await employeeService.updateFamilyMember(data);
+            const response = await apiServices.put(`family_member/${data.id}/`, data)
             return response;
         } catch (error) {
             console.log(error);
@@ -59,7 +60,7 @@ export const deleteFamilyMember = createAsyncThunk(
     "familymember/deleteFamilyMember",
     async (id: number,thunkAPI) => {
         try {
-            const response = await employeeService.deleteFamilyMember(id);
+            const response = await apiServices.delete(`family_member/${id}/`)
             return response;
         } catch (error) {
             console.log(error);

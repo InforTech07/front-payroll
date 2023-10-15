@@ -3,6 +3,7 @@ import { RootState } from "../store";
 import { IPayrollConcept } from "@/interfaces/pm";
 import { toast } from "react-toastify";
 import  { pmService } from "@/services/pm-service";
+import { apiServices } from "@/services/api-service";
 
 
 export interface IPayrollConceptState {
@@ -22,8 +23,8 @@ export const getPayrollConcepts = createAsyncThunk(
     "payrollconcept/getPayrollConcepts",
     async (companyId: number) => {
         try {
-            const response = await pmService.getPayrollConcepts(companyId);
-            return response.results;
+            const response = await apiServices.get('payroll_concept/get_payroll_concepts_by_company/?company=' + companyId);
+            return response;
         } catch (error) {
             return error
         }
@@ -34,7 +35,7 @@ export const registerPayrollConcept = createAsyncThunk(
     "payrollconcept/registerPayrollConcept",
     async (data: IPayrollConcept,thunkAPI) => {
         try {
-            const response = await pmService.registerPayrollConcept(data);
+            const response = await apiServices.post('payroll_concept/', data);   
             return response;
         } catch (error) {
             console.log(error);
@@ -47,7 +48,7 @@ export const updatePayrollConcept = createAsyncThunk(
     "payrollconcept/updatePayrollConcept",
     async (data: IPayrollConcept,thunkAPI) => {
         try {
-            const response = await pmService.updatePayrollConcept(data);
+            const response = await apiServices.put('payroll_concept/', data);
             return response;
         } catch (error) {
             console.log(error);
@@ -60,7 +61,7 @@ export const deletePayrollConcept = createAsyncThunk(
     "payrollconcept/deletePayrollConcept",
     async (id: number,thunkAPI) => {
         try {
-            const response = await pmService.deletePayrollConcept(id);
+            const response = await apiServices.delete('payroll_concept/' + id);
             return response;
         } catch (error) {
             console.log(error);

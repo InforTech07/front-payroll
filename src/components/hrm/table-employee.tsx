@@ -1,8 +1,10 @@
 "use client";
 import { IEmployee } from "@/interfaces/hrm";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { deleteEmployee} from "@/redux/hrm/employee-slice";
+import { deleteEmployee, getEmployees} from "@/redux/hrm/employee-slice";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 
 interface ITableEmployeeProps{
@@ -12,18 +14,22 @@ interface ITableEmployeeProps{
 function TableEmployee(){
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const { data: session, status } = useSession();
     const employees = useAppSelector(state => state.employee.employees) as IEmployee[];
     const avatarAlternative = "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80";
     const handleDeleteEmployee = (id: number) => {
         confirm("¿Estas seguro de eliminar este empleado?") && dispatch(deleteEmployee(id));
     }
 
-     
+    useEffect(() => {
+        dispatch(getEmployees(session?.user?.idCompany as number));
+    }, []);
+
     return(
         <section className="w-full py-4">
             <div className="grid grid-cols-5 gap-4 md:grid-cols-5 sm:grid-cols-3">
                 { Array.isArray(employees) ? employees.map((item: IEmployee, index) => (
-                    <div key={item.id} className="w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-lg">
+                    <div key={item.id} className="w-full max-w-sm overflow-hidden bg-gray-200 rounded-md">
                         <img className="object-cover object-center w-full h-48" src={item.picture? item.picture : avatarAlternative} alt="avatar"/>
                         <div className="px-4 py-2">
                             <h1 className="text-sm text-gray-700">{`${item.last_name}, ${item.first_name}`}</h1>

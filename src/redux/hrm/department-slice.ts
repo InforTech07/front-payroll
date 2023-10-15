@@ -3,7 +3,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { IDepartment } from "@/interfaces/hrm";
 import { toast } from "react-toastify";
-import  { employeeService } from "@/services/employee-service";
+import { apiServices } from "@/services/api-service";
 
 
 export interface IDepartmentState {
@@ -27,8 +27,8 @@ export const getDepartments = createAsyncThunk(
     "department/getDepartments",
     async (companyId: number) => {
         try {
-            const response = await employeeService.getDepartments(companyId);
-            return response.results;
+            const response = await apiServices.get(`department/get_departments_by_company/?company=${companyId}`)
+            return response;
         } catch (error) {
             return error
         }
@@ -39,7 +39,7 @@ export const registerDepartment = createAsyncThunk(
     "department/registerDepartment",
     async (data: IDepartment,thunkAPI) => {
         try {
-            const response = await employeeService.registerDepartment(data);
+            const response = await apiServices.post('department/', data)
             return response;
         } catch (error) {
             console.log(error);
@@ -52,7 +52,7 @@ export const updateDepartment = createAsyncThunk(
     "department/updateDepartment",
     async (data: IDepartment,thunkAPI) => {
         try {
-            const response = await employeeService.updateDepartment(data);
+            const response = await apiServices.put(`department/${data.id}/`, data)
             return response;
         } catch (error) {
             console.log(error);
@@ -65,7 +65,7 @@ export const deleteDepartment = createAsyncThunk(
     "department/deleteDepartment",
     async (id: number,thunkAPI) => {
         try {
-            const response = await employeeService.deleteDepartment(id);
+            const response = await apiServices.delete(`department/${id}/`)
             if(response){
                 return id;
             }

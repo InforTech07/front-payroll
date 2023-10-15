@@ -5,6 +5,7 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     container: {
@@ -14,7 +15,7 @@ const config: Config = {
         sm: '2rem',
         lg: '4rem',
         xl: '5rem',
-      }
+      },
     },
     extend: {
       backgroundImage: {
@@ -25,10 +26,11 @@ const config: Config = {
     },
   },
   plugins: [
-    require("daisyui")
+    require("daisyui"),
   ],
+  //darkMode: "class",
   daisyui: {
-    themes: ["corporate"],
+    themes: ["light"],
   },
 }
 export default config

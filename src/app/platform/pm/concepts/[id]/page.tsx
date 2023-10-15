@@ -13,7 +13,7 @@ function ConceptsPage() {
         <>
             <NavbarApp title='Conceptos de nomina' idBtnDrawer={idBtnDrawer}/>
             <FormCreateUpdateConcepts idBtnDrawer={idBtnDrawer}/>
-            <TableConcepts  payrollConcepts={payrollConcepts}/>
+            <TableConcepts />
         </>
     );
 }

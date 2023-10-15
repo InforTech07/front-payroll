@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { IEmployeeDocument } from "@/interfaces/hrm";
 import { toast } from "react-toastify";
-import  { employeeService } from "@/services/employee-service";
+import { apiServices } from "@/services/api-service";
 
 
 export interface IEmployeDocumentState {
@@ -21,7 +21,7 @@ export const getEmployeeDocuments = createAsyncThunk(
     "employeedocument/getEmployeeDocuments",
     async (employeeId:number | string) => {
         try {
-            const response = await employeeService.getEmployeeDocuments(employeeId as number);
+            const response = await apiServices.get(`employee_document/get_documents/?employee=${employeeId}`)
             return response;
         } catch (error) {
             return error
@@ -33,7 +33,7 @@ export const registerEmployeeDocument = createAsyncThunk(
     "employeedocument/registerEmployeeDocument",
     async (data: IEmployeeDocument,thunkAPI) => {
         try {
-            const response = await employeeService.registerEmployeeDocument(data);
+            const response = await apiServices.post('employee_document/', data)
             return response;
         } catch (error) {
             console.log(error);
@@ -59,7 +59,7 @@ export const deleteEmployeeDocument = createAsyncThunk(
     "employeedocument/deleteEmployeeDocument",
     async (id: number,thunkAPI) => {
         try {
-            const response = await employeeService.deleteEmployeeDocument(id);
+            const response = await apiServices.delete(`employee_document/${id}/`)
             return response;
         } catch (error) {
             console.log(error);

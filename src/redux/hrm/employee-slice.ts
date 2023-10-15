@@ -3,6 +3,7 @@ import { RootState } from "../store";
 import { IEmployee } from "@/interfaces/hrm";
 import { toast } from "react-toastify";
 import  { employeeService } from "@/services/employee-service";
+import { apiServices } from "@/services/api-service";
 
 
 export interface IEmployeState {
@@ -23,7 +24,7 @@ export const getEmployees = createAsyncThunk(
     "employee/getEmployees",
     async (companyId:number | string) => {
         try {
-            const response = await employeeService.getEmployees(companyId as number);
+            const response = await apiServices.get(`employee/get_employees/?company=${companyId}`)
             return response;
         } catch (error) {
             return error
@@ -35,7 +36,7 @@ export const registerEmployee = createAsyncThunk(
     "employee/registerEmployee",
     async (data: IEmployee,thunkAPI) => {
         try {
-            const response = await employeeService.registerEmployee(data);
+            const response = await apiServices.post('employee/', data)
             return response;
         } catch (error) {
             console.log(error);
@@ -48,7 +49,7 @@ export const updateEmployee = createAsyncThunk(
     "employee/updateEmployee",
     async (data: IEmployee,thunkAPI) => {
         try {
-            const response = await employeeService.updateEmployee(data);
+            const response = await apiServices.put(`employee/${data.id}/`, data)
             return response;
         } catch (error) {
             console.log(error);
@@ -61,7 +62,7 @@ export const deleteEmployee = createAsyncThunk(
     "employee/deleteEmployee",
     async (id: number,thunkAPI) => {
         try {
-            const response = await employeeService.deleteEmployee(id);
+            const response = await apiServices.delete(`employee/${id}/`)
             response.id = id;
             return response;
         } catch (error) {

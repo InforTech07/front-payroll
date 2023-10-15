@@ -387,7 +387,7 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                             id="department"  
                             className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
                             {
-                              departments.map((item: IDepartment) => (
+                              Array.isArray(departments) && departments.map((item: IDepartment) => (
                                 <option key={item.id} value={item.id}>{item.name}</option>
                               ))
                             }
@@ -411,7 +411,7 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
                             id="job_position"  
                             className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
                             {
-                              jobPositions.map((item: IJobPosition) => (
+                              Array.isArray(jobPositions) && jobPositions.map((item: IJobPosition) => (
                                 <option key={item.id} value={item.id}>{item.name}</option>
                               ))
                             }

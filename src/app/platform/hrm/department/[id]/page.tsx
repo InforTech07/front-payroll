@@ -6,15 +6,17 @@ import TableDepartment from "@/components/hrm/table-department";
 import { useAppSelector, useAppDispatch } from "@/hooks/redux";
 import { getDepartments } from '@/redux/hrm/department-slice';
 import { useEffect } from 'react';
+import { useSession } from "next-auth/react";
 
 
 function DepartmentPage() {
     const dispatch = useAppDispatch();
+    const { data: session, status } = useSession();
     const departments = useAppSelector(state => state.department.departments);
     const idBtnDrawer = "hrm-department-drawer";
-    // useEffect(() => {
-    //     dispatch(getDepartments());
-    // }, []);
+    useEffect(() => {
+        dispatch(getDepartments(session?.user?.idCompany as number));
+    }, []);
     return (
         <>
             <NavbarApp title='Departamentos' idBtnDrawer={idBtnDrawer}/>

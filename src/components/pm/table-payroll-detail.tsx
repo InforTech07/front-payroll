@@ -1,25 +1,27 @@
 "use client";
+import React from "react";
 import { useAppDispatch } from "@/hooks/redux";
 import { getPayrollPeriods } from "@/redux/pm/payroll-period-slice";
 //import { useRouter } from "next/navigation";
-import { IPayrollConcept, IPayrollPeriod } from "@/interfaces/pm";
+import { IPayrollDetail } from "@/interfaces/pm";
 import { useAppSelector } from "@/hooks/redux";
 import { useSession } from "next-auth/react";
-
-import React, { useEffect } from 'react';
+import { useEffect } from "react";
 import {
-  MaterialReactTable,
-  type MRT_Row,
-} from 'material-react-table';
+    MaterialReactTable,
+    type MRT_Row,
+  } from 'material-react-table';
 import { Box, Button, ListItemIcon, MenuItem} from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { columnsPayrollConcept, columnsPayrollConceptPDF } from "@/constants/pm";
+import { columnsPayrollDetail, columnsPayrollDetailPDF } from "@/constants/pm";
 import { downLoadPdf, downloadCsv, convertDateDDMMYYYY } from "@/services/tools-service";
 import { getPayrollConcepts } from "@/redux/pm/payroll-concept-slice";
+import { apiServices } from "@/services/api-service";
+import { useParams } from "next/navigation";
 
-const Table= ({columns, data}: any) => {
+const TableDetail = ({columns, data}: any) => {
 
-    const handleExportRows = (rows: MRT_Row<IPayrollConcept>[]) => {
+    const handleExportRows = (rows: MRT_Row<IPayrollDetail>[]) => {
       const periodsSelected = rows.map((row) => row.original);
       downloadCsv(periodsSelected);
     };
@@ -28,19 +30,18 @@ const Table= ({columns, data}: any) => {
       downloadCsv(data);
     }
     const handleExportPdf = () => {
-      downLoadPdf(data, columnsPayrollConceptPDF);
+      downLoadPdf(data, columnsPayrollDetailPDF);
     }
-    const handleExportRowsPdf = (rows: MRT_Row<IPayrollConcept>[]) => {
-      const periodsSelected = rows.map((row) => row.original);
-      downLoadPdf(periodsSelected, columnsPayrollConceptPDF);
-    }
+    // const handleExportRowsPdf = (rows: MRT_Row<IPayrollDetail>[]) => {
+    //   const periodsSelected = rows.map((row) => row.original);
+    //   downLoadPdf(periodsSelected, columnsPayroll);
+    // }
 
   return(
     <MaterialReactTable
         columns={columns}
         data={data}
         enableRowSelection
-        enableRowActions
         positionToolbarAlertBanner="bottom"
         renderTopToolbarCustomActions={({ table }) => (
           <Box
@@ -116,20 +117,30 @@ const Table= ({columns, data}: any) => {
 
 
 
-const TableConcept = () => {
+function TablePayrollDetail() {
   const { data: session, status } = useSession();
+  const [payrollDetail, setPayrollDetail] = React.useState<IPayrollDetail[]>([]);
   const dispatch = useAppDispatch();
-  const concepts = useAppSelector(state => state.payrollConcept.payrollConcepts) as IPayrollConcept[];
-  console.log(concepts)
+  const params = useParams();
+  const id = params.id;
+  
+  //const concepts = useAppSelector(state => state.payrollConcept.payrollConcepts) as IPayrollDetail[];
+  //console.log(concepts)
+  const getPayrollDetail= async () => {
+      const res = await apiServices.get('payroll/generate_prev_payroll/?payroll_period=' + id + '&company=' + session?.user?.idCompany);
+      setPayrollDetail(res);
+  }
   useEffect(() => {
-    dispatch(getPayrollConcepts(session?.user?.idCompany as number));
+    setTimeout(() => {
+      getPayrollDetail();
+    }, 1000);
   }, []);
 
   return (
-    <div className="mt-8">
-      <Table columns={columnsPayrollConcept} data={concepts} />
-    </div>
+      <div>
+        <TableDetail columns={columnsPayrollDetail} data={payrollDetail} />
+      </div>
   );
 };
 
-export default TableConcept;
+export default TablePayrollDetail;

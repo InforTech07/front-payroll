@@ -10,9 +10,6 @@ export interface IMenuItem{
     submenu?: ISubMenuItem[];
 }
 
-export interface IImage{
-    
-}
 
 
 

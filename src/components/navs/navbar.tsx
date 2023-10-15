@@ -1,5 +1,7 @@
+"use client";
 import  Link  from 'next/link';
 import ContainerBlog from "../container/container";
+import { useState } from "react";
 const links = [
     {
         to: "/#features",
@@ -18,15 +20,25 @@ type NavbarProps = {
     showLogin?: boolean;
 };
 function Navbar({showLogin = true}: NavbarProps){
+    const [isToggled, setIsToggled] = useState<boolean>(false);
     // if (pathname !== "/") {
     //     setIsHome(false);
     // }
     // let isToggled = false;
-    // const navlinks = document.querySelector("#navlinks");
-    // const hamburger = document.querySelector("#hamburger");
-    // const layer = document.querySelector("#navLayer");
-    // const links = [...navlinks.querySelector("ul").children];
+    //const navlinks = document.querySelector("#navlinks");
+    //const hamburger = document.querySelector("#hamburger");
+    //const layer = document.querySelector("#navLayer");
+    //const links = [...navlinks.querySelector("ul").children];
 
+    // const toggleNavlinks = () => {
+    //     console.log("toggleNavlinks");
+    //     if(isToggled){
+    //         setIsToggled(false);
+    //     }else{
+    //         setIsToggled(true);
+    //     }
+    // }
+    
     // function toggleNavlinks() {
     //     if (isToggled) {
     //         navlinks.classList.add("!visible", "!scale-100", "!opacity-100", "!lg:translate-y-0");
@@ -94,6 +106,7 @@ function Navbar({showLogin = true}: NavbarProps){
                                     </div>
                                 )
                             }
+                            
                         </div>
                     </div>
                 </ContainerBlog>

@@ -29,7 +29,7 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
           name: "",
           start_date: "",
           end_date: "",
-          status: false,
+          is_open: true,
           type: "",
           company: session?.user?.idCompany as unknown as string,
         }
@@ -43,7 +43,7 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                 name: item.name,
                 start_date: item.start_date,
                 end_date: item.end_date,
-                status: item.status,
+                is_open: item.is_open,
                 type: item.type,
                 company: item.company as unknown as string,
             }
@@ -54,8 +54,9 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
         register, 
         handleSubmit, 
         formState:{ errors },
+        setValue,
         reset,
-    } = useForm<IPayrollPeriod>(formOptions);
+    } = useForm<IPayrollPeriod>(formOptions as any);
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
@@ -69,6 +70,8 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
           return;
         });
       }else{
+        setValue("company", session?.user?.idCompany as unknown as string);
+        setValue("is_open", true);
         dispatch(registerPayrollPeriod(data)).then(res => {
           if(res.payload){
             reset();
@@ -98,7 +101,7 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
       <input id={idBtnDrawer} type="checkbox"  className="drawer-toggle"/>
       <div className="drawer-content">
       </div> 
-      <div className="drawer-side z-10">
+      <div className="drawer-side z-50">
           <label htmlFor={idBtnDrawer} onClick={handleHideDrawer} className="drawer-overlay"></label>
           <div className="menu p-4 w-96 min-h-full bg-base-200">
               <span className="text-gray-700 text-md text-center">{isModeEdit ? "Actualizar Registro": "Nuevo Registro"}</span>
@@ -184,7 +187,7 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                               </label>
                             )}
                       </div>
-                      <div>
+                      {/* <div>
                         <input 
                         {...register("company", { required: {
                           value: true,
@@ -203,8 +206,8 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                                 </span>
                               </label>
                             )}
-                      </div>
-                      <div>
+                      </div> */}
+                      {/* <div>
                         <input 
                         {...register("id", { required: {
                           value: false,
@@ -223,8 +226,8 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                                 </span>
                               </label>
                             )}
-                      </div>
-                      <div>
+                      </div> */}
+                      {/* <div>
                         <input
                         {...register("company", { required: {
                           value: true,
@@ -243,7 +246,20 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                                 </span>
                               </label>
                             )}
-                      </div>
+                      </div> */}
+                      {/* <div>
+                        <input
+                        {...register("is_open", { required: {
+                          value: false,
+                          message: 'La compania es requerida'
+                        }})}
+                          id="is_open" 
+                          name="is_open" 
+                          type="text" 
+                          checked={true}
+                          hidden 
+                          />
+                      </div> */}
                   </div>
           
                   <div className="flex justify-start mt-6">

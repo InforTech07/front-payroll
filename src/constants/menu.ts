@@ -8,17 +8,18 @@ export const menuUser: IMenuItem[] = [
         submenu: [
             {
                 name: 'Dashboard',
-                path: '/dashboard',
+                path: '/platform',
                 icon: 'mdi-view-dashboard',
-            },
+            }
+        ]
+    },
+    {
+        name: 'Tienda',
+        icon: 'mdi-view-dashboard',
+        submenu: [
             {
-                name: 'Dashboard 2',
-                path: '/dashboard2',
-                icon: 'mdi-view-dashboard',
-            },
-            {
-                name: 'Dashboard 3',
-                path: '/dashboard3',
+                name: 'Tienda',
+                path: '/platform/store',
                 icon: 'mdi-view-dashboard',
             }
         ]
@@ -57,8 +58,8 @@ export const menuAdmin: IMenuItem[] = [
                 icon: 'mdi-account',
             },
             {
-                name: 'Operaciones',
-                path: '/platform/pm/operation',
+                name: 'Conceptos',
+                path: '/platform/pm/concepts',
                 icon: 'mdi-account',
             },
             {

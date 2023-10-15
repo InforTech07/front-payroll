@@ -19,11 +19,11 @@ function TableJobPosition({jobpositions}: ITableDepartment){
     return(
         <section className="w-full py-4">
             <div className="grid grid-cols-3 gap-4">
-                { jobpositions.map((item: IJobPosition, index) => (
-                    <div key={index} className="w-full  px-4 py-3 bg-white rounded-md shadow-md">
+                { Array.isArray(jobpositions) && jobpositions.map((item: IJobPosition, index) => (
+                    <div key={index} className="w-full  px-4 py-3 rounded-md bg-gray-200">
                         <div className="flex items-center justify-between">
                             <span className="text-xs font-light text-gray-800">Cargo o puesto:</span>
-                            <span className="px-3 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full">
+                            <span className="px-3 py-1 text-xs text-blue-800 uppercase bg-white rounded-md">
                                 <div className="flex items-center gap-x-6">
                                     <button onClick={()=>handleDeleteDepartment(item.id as number)} className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4">

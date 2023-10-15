@@ -1,10 +1,11 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { IPayrollConcept } from '@/interfaces/pm';
+import { IPayrollConcept, IPayrollPeriod } from '@/interfaces/pm';
+import { IEmployee } from '@/interfaces/hrm';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { registerPayrollConcept, updatePayrollConcept } from "@/redux/pm/payroll-concept-slice";
 import { useRouter, useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
 interface IFormCreateUpdatePayrollConcept{
@@ -12,9 +13,12 @@ interface IFormCreateUpdatePayrollConcept{
 }
 
 function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollConcept){
+    const [isCheckPublicHoliday, setIsCheckPublicHoliday] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
     const { data: session, status } = useSession();
+    const employees = useAppSelector(state => state.employee.employees) as IEmployee[];
+    const periods = useAppSelector(state => state.payrollPeriod.payrollPeriods) as IPayrollPeriod[];
     let isModeEdit = false;
     
     const idEdit = params.id;
@@ -23,37 +27,32 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
         isModeEdit = true;
     }
   
-    const formOptions = {
-        defaultValues: {
-            name: "",
-            type: "1",
-            value: 0,
-            description: "",
-            company: '1',
-            id: ""
-        }
-    }
+    // const formOptions = {
+    //     defaultValues: {
+            
+    //     }
+    // }
 
-    if(isModeEdit){
-        useAppSelector(state => state.payrollConcept.payrollConcepts).map((item: IPayrollConcept) => {
-        if(item.id == idEdit){
-            formOptions.defaultValues = {
-              id: item.id,
-              name: item.name,
-              type: item.type,
-              value: item.value as unknown as number,
-              description: item.description,
-              company: item.company as unknown as string,
-            }
-        }
-        });
-    } 
+    // if(isModeEdit){
+    //     useAppSelector(state => state.payrollConcept.payrollConcepts).map((item: IPayrollConcept) => {
+    //     if(item.id == idEdit){
+    //         formOptions.defaultValues = {
+    //           id: item.id,
+    //           name: item.name,
+    //           type: item.type,
+    //           value: item.value as unknown as number,
+    //           description: item.description,
+    //           company: item.company as unknown as string,
+    //         }
+    //     }
+    //     });
+    // } 
     const {
         register, 
         handleSubmit, 
         formState:{ errors },
         reset,
-    } = useForm<IPayrollConcept>(formOptions);
+    } = useForm<IPayrollConcept>();
 
     const dispatch = useAppDispatch();
     const onSubmit =   handleSubmit((data) => {
@@ -103,86 +102,201 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
               <form onSubmit={onSubmit}>
                   <div className="grid grid-cols-1 gap-2 mt-4">
                       <div>
-                          <label className="text-gray-700 text-xs" htmlFor="name">Nombre del concepto</label>
-                          <input
-                            {...register("name", { required: {
-                              value: true,
-                              message: 'El nombre es requerido'
-                            }})}
-                            name="name" 
-                            id="name" 
-                            type="text"
-                            // value={modeEdit ? data?.name : ""} 
-                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
-                          {errors?.name && (
-                              <label className="label">
-                                <span className="text-red-600 text-xs">
-                                  {errors.name.message}
-                                </span>
-                              </label>
-                            )}
-                      </div>
-                      <div>
-                          <label className="text-gray-700 text-xs" htmlFor="type">Tipo</label>
+                          <label className="text-gray-700 text-xs" htmlFor="concept">Tipo</label>
                           <select
-                            {...register("type", { required: {
+                            {...register("concept", { required: {
                               value: true,
-                              message: 'El genero es requerido'
+                              message: 'El concepto es requerido'
                             }})}
-                            name="type" 
-                            id="type"  
+                            name="concept" 
+                            id="concept"  
                             className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
-                            <option value="INGRESO">Ingreso</option>
-                            <option value="DEDUCCION">Deduccion</option>
+                            <option value="OVERTIME">Horas extras</option>
+                            <option value="SALES_COMMISSION">Comisiones de ventas</option>
+                            <option value="PRODUCTION_BONUS">Bonos de produccion</option>
+                            <option value="SOLIDARITY_CONTRIBUTION">Aporte solidario</option>
+                            <option value="LOANS">Prestamo</option>
                           </select>
-                          {errors?.type && (
+                          {errors?.concept && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
-                                  {errors.type.message}
+                                  {errors.concept.message}
                                 </span>
                               </label>
                             )}
                       </div>
                       <div>
-                          <label className="text-gray-700 text-xs" htmlFor="value">Valor</label>
+                        <label className="text-gray-700 text-xs p-y-2" htmlFor="employee">Empleado: </label>
+                        <select
+                        {
+                            ...register("employee", { required: {
+                                value: true,
+                                message: 'El empleado es requerido'
+                            }})
+                        }
+                        name="employee"
+                        id="employee" 
+                        placeholder='Seleccione' 
+                        className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
+                            {
+                              Array.isArray(employees) && employees.map((item: IEmployee, index) => (
+                                    <option key={index} value={item.id}>{item.first_name + ' ' + item.last_name}</option>
+                                ))
+                            }
+                        </select>
+                        {errors?.employee && (
+                            <label className="label">
+                            <span className="text-red-600 text-xs">
+                                {errors.employee.message}
+                            </span>
+                            </label>
+                        )}
+                    </div>
+                    <div>
+                        <label className="text-gray-700 text-xs p-y-2" htmlFor="payroll_period">Periodo: </label>
+                        <select
+                        {
+                            ...register("payroll_period", { required: {
+                                value: true,
+                                message: 'El periodo es requerido'
+                            }})
+                        }
+                        name="payroll_period"
+                        id="payroll_period" 
+                        placeholder='Seleccione' 
+                        className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
+                            {
+                              Array.isArray(periods) && periods.map((item: IPayrollPeriod, index) => (
+                                    <option key={index} value={item.id}>{item.type + '(' + item.start_date + '-' + item.end_date + ')'}</option>
+                                ))
+                            }
+                        </select>
+                        {errors?.payroll_period && (
+                          <label className="label">
+                            <span className="text-red-600 text-xs">
+                                {errors.payroll_period.message}
+                            </span>
+                          </label>
+                        )}
+                    </div>
+                      <div>
+                          <label className="text-gray-700 text-xs" htmlFor="reason">Razon: </label>
                           <input
-                            {...register("value", { required: {
+                            {...register("reason", { required: {
                               value: true,
                               message: 'El nombre es requerido'
                             }})}
-                            name="value" 
-                            id="value" 
-                            type="number"
-                            // value={modeEdit ? data?.name : ""} 
+                            name="reason" 
+                            id="reason" 
+                            type="text"
                             className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
-                          {errors?.value && (
+                          {errors?.reason && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
-                                  {errors.value.message}
+                                  {errors.reason.message}
                                 </span>
                               </label>
                             )}
                       </div>
                       <div>
-                          <label htmlFor="Description" className="block text-sm text-gray-700">Description</label>
-                          <textarea
-                            {...register("description", { required: {
-                              value: true,
-                              message: 'La descripcion es requerida'
+                          <label className="text-gray-700 text-xs" htmlFor="overtime_minutes">Horas en minutos: </label>
+                          <input
+                            {...register("overtime_minutes", { required: {
+                              value: false,
+                              message: 'El tiempo en minutos es requerido'
                             }})}
-                            name="description"
-                            id="description" 
-                            placeholder="Descripcion ..." 
-                            // value={modeEdit ? data?.description : ""}
-                            className="block  mt-2 w-full  placeholder-gray-400/70 rounded-lg border border-gray-200 bg-white px-4 h-32 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"></textarea>
-                            {errors?.description && (
+                            name="overtime_minutes" 
+                            id="overtime_minutes" 
+                            type="number"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                          {errors?.overtime_minutes && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
-                                  {errors.description.message}
+                                  {errors.overtime_minutes.message}
                                 </span>
                               </label>
                             )}
                       </div>
+                      <div>
+                        <label className="label cursor-pointer text-gray-700 text-xs">
+                            Es feriado o Domingo
+                            <input 
+                            {...register("public_holiday", { required: {
+                                value: false,
+                                message: 'El jefe de departamento es requerido'
+                            }})}
+                            name='public_holiday'
+                            id='public_holiday'
+                            type="checkbox"  
+                            checked={isCheckPublicHoliday}
+                            onChange={() => setIsCheckPublicHoliday(!isCheckPublicHoliday)}
+                            className="checkbox checkbox-sm" />
+                            {errors?.public_holiday && (
+                                <label className="label">
+                                <span className="text-red-600 text-xs">
+                                    {errors.public_holiday.message}
+                                </span>
+                                </label>
+                            )}
+                        </label>
+                    </div>
+                    <div className="form-control">
+                        <label className="text-gray-700 text-xs" htmlFor="sales">Ventas</label>
+                        <input
+                        {...register("sales", { required: {
+                            value: false,
+                            message: 'Las ventas son requeridas'
+                        }})}
+                        name="sales" 
+                        id="sales" 
+                        type="number"
+                        className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                        {errors?.sales && (
+                            <label className="label">
+                            <span className="text-red-600 text-xs">
+                                {errors.sales.message}
+                            </span>
+                            </label>
+                        )}
+                    </div>
+                    <div className="form-control">
+                        <label className="text-gray-700 text-xs" htmlFor="production">Produccion: </label>
+                        <input
+                        {...register("production", { required: {
+                            value: false,
+                            message: 'La cantidad es requerida'
+                        }})}
+                        name="production" 
+                        id="production" 
+                        type="number"
+                        className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                        {errors?.production && (
+                            <label className="label">
+                            <span className="text-red-600 text-xs">
+                                {errors.production.message}
+                            </span>
+                            </label>
+                        )}
+                    </div>
+                    <div className="form-control">
+                        <label className="text-gray-700 text-xs" htmlFor="amount">Monto de Contribucion: </label>
+                        <input
+                        {...register("amount", { required: {
+                            value: false,
+                            message: 'La cantidad es requerida'
+                        }})}
+                        name="amount" 
+                        id="amount" 
+                        type="number"
+                        className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                        {errors?.amount && (
+                            <label className="label">
+                            <span className="text-red-600 text-xs">
+                                {errors.amount.message}
+                            </span>
+                            </label>
+                        )}
+                    </div>
                       <div>
                         <input 
                         {...register("company", { required: {
@@ -194,17 +308,6 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
                           type="text" 
                           value={session?.user?.idCompany} hidden />
                       </div>
-                      {/* <div>
-                        <input 
-                        {...register("id", { required: {
-                          value: false,
-                          message: 'La compania es requerida'
-                        }})}
-                          id="id" 
-                          name="id" 
-                          type="text" 
-                          value="3" hidden />
-                      </div> */}
                   </div>
           
                   <div className="flex justify-start mt-6">
