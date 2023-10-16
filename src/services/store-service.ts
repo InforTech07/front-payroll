@@ -1,11 +1,12 @@
 import { IProduct } from "@/interfaces/store";
 import { apiServices } from "./api-service";
 
-const urlProducts = "https://fakestoreapi.com/products";
+import { config } from "@/config";
 
 
 class StoreService {
     private static _instance: StoreService;
+    private readonly _apiUrl: string = config.API_URL_STORE;
 
     public static getInstance(): StoreService{
         if(!StoreService._instance){
@@ -16,7 +17,7 @@ class StoreService {
 
     getProducts(){
         return new Promise<IProduct[]>((resolve, reject) => {
-            fetch(urlProducts)
+            fetch(this._apiUrl)
             .then((response) => response.json())
             .then((data) => resolve(data))
             .catch((error) => reject(error))

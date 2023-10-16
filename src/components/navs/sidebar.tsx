@@ -68,10 +68,10 @@ function SideBar(){
                         </div>
                     </div> 
                 </nav>
-                <a href="/profile" className="flex items-center px-4 -mx-2">
+                <Link href="/platform/profile" className="flex items-center px-4 -mx-2">
                     <img className="object-cover mx-2 rounded-full h-9 w-9" src={session?.user?.image as any} alt="avatar" />
                     <span className="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">{session?.user?.name}</span>
-                </a>
+                </Link>
             </div>
         </aside>
     )

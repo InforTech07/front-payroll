@@ -82,19 +82,28 @@ function StorePage(){
         }
     });
 
+    const divStyle ={
+        backgroundImage: `url('https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')`,
+      };
 
     useEffect(() => {
         getProducts();
     }, []);
     return (
         <>
-            <NavbarApp title="Tienda Solidaria" idBtnDrawer="my-drawer-store" cart={true} subTotal={subTotal} count={cart.length} />
-            <StoreHeading />
-            <div className="grid grid-cols-3 gap-4">
-                {products && products.map((product) => {
-                    return <ProductCard addProduct={addProduct} product={product} />
-                })}
+        <section className="h-full rounded-md bg-cover" style={divStyle}>
+            <div className="container flex flex-col h-full min-w-full px-6 py-4 mx-auto bg-black/60 rounded-md">
+                <NavbarApp title="Tienda Solidaria" idBtnDrawer="my-drawer-store" cart={true} subTotal={subTotal} count={cart.length} btnNew={false} />
+                <StoreHeading />
+                <div className="container px-6 py-2 mx-auto">
+                    <div className="grid grid-cols-3 gap-4 overflow-y-auto h-1/4">
+                        {products && products.map((product) => {
+                            return <ProductCard addProduct={addProduct} product={product} />
+                        })}
+                    </div>
+                </div>
             </div>
+        </section>
             <div className="drawer">
                 <input id="my-drawer-store" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">

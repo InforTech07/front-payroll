@@ -3,12 +3,23 @@ import { ISubMenuItem, IMenuItem } from "@/interfaces/platform";
 
 export const menuUser: IMenuItem[] = [
     {
-        name: 'Dashboard',
+        name: 'Inicio',
         icon: 'mdi-view-dashboard',
         submenu: [
             {
                 name: 'Dashboard',
                 path: '/platform',
+                icon: 'mdi-view-dashboard',
+            }
+        ]
+    },
+    {
+        name: 'Gestiones',
+        icon: 'mdi-view-dashboard',
+        submenu: [
+            {
+                name: 'Permisos',
+                path: '/platform/hrm/permission',
                 icon: 'mdi-view-dashboard',
             }
         ]
@@ -28,9 +39,22 @@ export const menuUser: IMenuItem[] = [
 
 export const menuAdmin: IMenuItem[] = [
     {
+        name: 'Inicio',
+        icon: 'mdi-account',
+        submenu: [
+
+            {
+                name: 'Dashboard',
+                path: '/platform',
+                icon: 'mdi-account',
+            }
+        ]
+    },
+    {
         name: 'Rec. Humanos',
         icon: 'mdi-account',
         submenu: [
+
             {
                 name: 'Empleados',
                 path: '/platform/hrm/employee',

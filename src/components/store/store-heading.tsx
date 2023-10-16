@@ -14,11 +14,8 @@ function PageTitle({ text }: PageTitleProps) {
 
 function StoreHeading() {
   return (
-    <div className="py-4 mb-4">
+    <div className="">
       <PageTitle text="Tienda Solidaria" />
-      <p className="max-w-xl text-center px-2 mx-auto text-base text-gray-600">
-        Aprovecha nuestro productos y compra los mejores productos.    
-      </p>
     </div>
   )
 }

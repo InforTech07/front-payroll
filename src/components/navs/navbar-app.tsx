@@ -4,9 +4,10 @@ type NavbarAppProps = {
     cart?: boolean;
     subTotal?: number;
     count?: number;
+    btnNew?: boolean;
 }
 
-function NavbarApp({title, idBtnDrawer, cart=false, subTotal=0, count=0}: NavbarAppProps){
+function NavbarApp({title, idBtnDrawer, cart=false, subTotal=0, count=0, btnNew=true}: NavbarAppProps){
     return(
         <nav className="bg-gray-200 rounded-md">
             <div className="flex items-center justify-between p-2 mx-auto text-gray-600 capitalize">
@@ -34,7 +35,11 @@ function NavbarApp({title, idBtnDrawer, cart=false, subTotal=0, count=0}: Navbar
                             </svg>
                         </span>
                     </div>
-                    <label htmlFor={idBtnDrawer} className="rounded-md px-1 py-1 text-base transition-colors duration-200 sm:text-xs sm:px-6 hover:bg-gray-100">Nuevo</label>
+                    {
+                        btnNew && (
+                            <label htmlFor={idBtnDrawer} className="rounded-md px-1 py-1 text-base transition-colors duration-200 sm:text-xs sm:px-6 hover:bg-gray-100">Nuevo</label>
+                        )
+                    }
                     {/* <button className="px-1 py-1 text-xs  text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 hover:bg-gray-100">
                         Comision Venta
                     </button>

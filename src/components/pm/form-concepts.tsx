@@ -12,7 +12,10 @@ interface IFormCreateUpdatePayrollConcept{
     idBtnDrawer: string;
 }
 
+const TYPE_CONCEPT:string[] = ['OVERTIME', 'SALES_COMMISSION', 'PRODUCTION_BONUS', 'SOLIDARITY_CONTRIBUTION', 'LOANS']
+
 function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollConcept){
+  const [typeConcept, setTypeConcept] = useState<string>(TYPE_CONCEPT[0]);
     const [isCheckPublicHoliday, setIsCheckPublicHoliday] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
@@ -109,7 +112,9 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
                               message: 'El concepto es requerido'
                             }})}
                             name="concept" 
-                            id="concept"  
+                            id="concept"
+                            value={typeConcept}
+                            onChange={(e) => setTypeConcept(e.target.value)}  
                             className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
                             <option value="OVERTIME">Horas extras</option>
                             <option value="SALES_COMMISSION">Comisiones de ventas</option>
@@ -198,106 +203,147 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
                               </label>
                             )}
                       </div>
-                      <div>
-                          <label className="text-gray-700 text-xs" htmlFor="overtime_minutes">Horas en minutos: </label>
-                          <input
-                            {...register("overtime_minutes", { required: {
-                              value: false,
-                              message: 'El tiempo en minutos es requerido'
+                      {
+                        typeConcept == TYPE_CONCEPT[0] && (
+                          <>
+                            <div>
+                              <label className="text-gray-700 text-xs" htmlFor="overtime_minutes">Horas en minutos: </label>
+                              <input
+                                {...register("overtime_minutes", { required: {
+                                  value: false,
+                                  message: 'El tiempo en minutos es requerido'
+                                }})}
+                                name="overtime_minutes" 
+                                id="overtime_minutes" 
+                                type="number"
+                                className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                                {errors?.overtime_minutes && (
+                                    <label className="label">
+                                      <span className="text-red-600 text-xs">
+                                        {errors.overtime_minutes.message}
+                                      </span>
+                                    </label>
+                                  )}
+                            </div>
+                            <div>
+                              <label className="label cursor-pointer text-gray-700 text-xs">
+                                  Es feriado o Domingo
+                                  <input 
+                                  {...register("public_holiday", { required: {
+                                      value: false,
+                                      message: 'El jefe de departamento es requerido'
+                                  }})}
+                                  name='public_holiday'
+                                  id='public_holiday'
+                                  type="checkbox"  
+                                  checked={isCheckPublicHoliday}
+                                  onChange={() => setIsCheckPublicHoliday(!isCheckPublicHoliday)}
+                                  className="checkbox checkbox-sm" />
+                                  {errors?.public_holiday && (
+                                      <label className="label">
+                                      <span className="text-red-600 text-xs">
+                                          {errors.public_holiday.message}
+                                      </span>
+                                      </label>
+                                  )}
+                              </label>
+                            </div>
+                          </>
+                        )
+                      }
+                      {
+                        typeConcept == TYPE_CONCEPT[1] && (
+                          <div className="form-control">
+                            <label className="text-gray-700 text-xs" htmlFor="sales">Ventas</label>
+                            <input
+                            {...register("sales", { required: {
+                                value: false,
+                                message: 'Las ventas son requeridas'
                             }})}
-                            name="overtime_minutes" 
-                            id="overtime_minutes" 
+                            name="sales" 
+                            id="sales" 
                             type="number"
                             className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
-                          {errors?.overtime_minutes && (
-                              <label className="label">
-                                <span className="text-red-600 text-xs">
-                                  {errors.overtime_minutes.message}
-                                </span>
-                              </label>
-                            )}
-                      </div>
-                      <div>
-                        <label className="label cursor-pointer text-gray-700 text-xs">
-                            Es feriado o Domingo
-                            <input 
-                            {...register("public_holiday", { required: {
-                                value: false,
-                                message: 'El jefe de departamento es requerido'
-                            }})}
-                            name='public_holiday'
-                            id='public_holiday'
-                            type="checkbox"  
-                            checked={isCheckPublicHoliday}
-                            onChange={() => setIsCheckPublicHoliday(!isCheckPublicHoliday)}
-                            className="checkbox checkbox-sm" />
-                            {errors?.public_holiday && (
+                            {errors?.sales && (
                                 <label className="label">
                                 <span className="text-red-600 text-xs">
-                                    {errors.public_holiday.message}
+                                    {errors.sales.message}
                                 </span>
                                 </label>
                             )}
-                        </label>
-                    </div>
-                    <div className="form-control">
-                        <label className="text-gray-700 text-xs" htmlFor="sales">Ventas</label>
-                        <input
-                        {...register("sales", { required: {
-                            value: false,
-                            message: 'Las ventas son requeridas'
-                        }})}
-                        name="sales" 
-                        id="sales" 
-                        type="number"
-                        className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
-                        {errors?.sales && (
-                            <label className="label">
-                            <span className="text-red-600 text-xs">
-                                {errors.sales.message}
-                            </span>
-                            </label>
-                        )}
-                    </div>
-                    <div className="form-control">
-                        <label className="text-gray-700 text-xs" htmlFor="production">Produccion: </label>
-                        <input
-                        {...register("production", { required: {
-                            value: false,
-                            message: 'La cantidad es requerida'
-                        }})}
-                        name="production" 
-                        id="production" 
-                        type="number"
-                        className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
-                        {errors?.production && (
-                            <label className="label">
-                            <span className="text-red-600 text-xs">
-                                {errors.production.message}
-                            </span>
-                            </label>
-                        )}
-                    </div>
-                    <div className="form-control">
-                        <label className="text-gray-700 text-xs" htmlFor="amount">Monto de Contribucion: </label>
-                        <input
-                        {...register("amount", { required: {
-                            value: false,
-                            message: 'La cantidad es requerida'
-                        }})}
-                        name="amount" 
-                        id="amount" 
-                        type="number"
-                        className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
-                        {errors?.amount && (
-                            <label className="label">
-                            <span className="text-red-600 text-xs">
-                                {errors.amount.message}
-                            </span>
-                            </label>
-                        )}
-                    </div>
-                      <div>
+                          </div>
+                        )
+                      }
+                      {
+                        typeConcept == TYPE_CONCEPT[2] && (
+                          <div className="form-control">
+                            <label className="text-gray-700 text-xs" htmlFor="production">Produccion: </label>
+                            <input
+                            {...register("production", { required: {
+                                value: false,
+                                message: 'La cantidad es requerida'
+                            }})}
+                            name="production" 
+                            id="production" 
+                            type="number"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                            {errors?.production && (
+                                <label className="label">
+                                <span className="text-red-600 text-xs">
+                                    {errors.production.message}
+                                </span>
+                                </label>
+                            )}
+                          </div>
+                        )
+                      }
+                      {
+                        typeConcept == TYPE_CONCEPT[3] && (
+                          <div className="form-control">
+                            <label className="text-gray-700 text-xs" htmlFor="amount">Monto de contribucion: </label>
+                            <input
+                            {...register("amount", { required: {
+                                value: false,
+                                message: 'La cantidad es requerida'
+                            }})}
+                            name="amount" 
+                            id="amount" 
+                            type="number"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                            {errors?.amount && (
+                                <label className="label">
+                                <span className="text-red-600 text-xs">
+                                    {errors.amount.message}
+                                </span>
+                                </label>
+                            )}
+                          </div>
+                        )
+                      }
+                      {
+                        typeConcept == TYPE_CONCEPT[4] && (
+                          <div className="form-control">
+                            <label className="text-gray-700 text-xs" htmlFor="amount">Couta del prestamo: </label>
+                            <input
+                            {...register("amount", { required: {
+                                value: false,
+                                message: 'La cantidad es requerida'
+                            }})}
+                            name="amount" 
+                            id="amount" 
+                            type="number"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                            {errors?.amount && (
+                                <label className="label">
+                                <span className="text-red-600 text-xs">
+                                    {errors.amount.message}
+                                </span>
+                                </label>
+                            )}
+                          </div>
+                        )
+                      }
+                    <div>
                         <input 
                         {...register("company", { required: {
                           value: false,
@@ -309,7 +355,6 @@ function FormCreateUpdatePayrollConcept({idBtnDrawer}: IFormCreateUpdatePayrollC
                           value={session?.user?.idCompany} hidden />
                       </div>
                   </div>
-          
                   <div className="flex justify-start mt-6">
                       <button className="btn btn-sm rounded-l btn-success text-xs">{isModeEdit ? "Actualizar":"Guardar"}</button>
                   </div>

@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import  CredentialsProvider  from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
-import { userService } from "@/services/user-service";
 import { apiServices } from "@/services/api-service";
 import { config } from "@/config";
 
@@ -32,7 +31,8 @@ const handler = NextAuth({
                     idCompany: result.user.company.id,
                     logoCompany: result.user.company.picture,
                     nameCompany: result.user.company.name,
-                    tokenjwt: result.token
+                    tokenjwt: result.token,
+                    employeeId: result.employee_id,
                 };
             }  
         }),
