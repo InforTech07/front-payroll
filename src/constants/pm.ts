@@ -1,4 +1,4 @@
-import { type MRT_ColumnDef } from 'material-react-table';
+import { type MRT_ColumnDef, type MRT_Row } from 'material-react-table';
 import { IPayrollPeriod, IPayrollConcept, IPayroll, IPayrollDetail } from '@/interfaces/pm';
 import { IPermission } from '@/interfaces/hrm';
 
@@ -6,30 +6,41 @@ export const columnsPayrollPeriod: MRT_ColumnDef<IPayrollPeriod>[] = [
     {
       accessorKey: 'id',
       header: 'NO.',
+      id: 'id',
       size: 40,
+
     },
     {
-      accessorKey: 'name',
-      header: 'Periodo',
+      accessorKey: 'type',
+      header: 'Tipo',
       size: 120,
     },
     {
       accessorKey: 'start_date',
       header: 'Fecha de inicio',
+      accessorFn: (row: any) => {
+        const newDate = new Date(row.start_date);
+        return newDate.toLocaleDateString();
+      },
       size: 200,
     },
     {
       accessorKey: 'end_date',
       header: 'Fecha de fin',
+      accessorFn: (row: any) => {
+        const newDate = new Date(row.end_date);
+        return newDate.toLocaleDateString();
+      },
       size: 200,
     },
     {
-      accessorKey: 'status',
+      accessorKey: 'is_open',
       header: 'Estado',
+      accessorFn: (row: any) => row.is_open ? 'Abierto' : 'Cerrado',
     },
     {
-      accessorKey: 'type',
-      header: 'Tipo',
+      accessorKey: 'name',
+      header: 'Periodo',
       size: 120,
     },
 ];
@@ -39,7 +50,7 @@ export const columnsPayrollPeriodPDF = [
     { header: 'Periodo', dataKey: 'name' },
     { header: 'Fecha de inicio', dataKey: 'start_date' },
     { header: 'Fecha de fin', dataKey: 'end_date' },
-    { header: 'Estado', dataKey: 'status' },
+    { header: 'Estado', dataKey: 'is_open'},
     { header: 'Tipo', dataKey: 'type' },
 ]
 
@@ -52,6 +63,31 @@ export const columnsPayrollConcept: MRT_ColumnDef<IPayrollConcept>[] = [
   {
     accessorKey: 'concept',
     header: 'Concepto',
+    accessorFn: (row: any) => {
+      if (row.concept === 'OVERTIME') {
+        return 'Horas extra';
+      } else if (row.concept === 'SALES_COMMISSION') {
+        return 'Ventas';
+      } else if (row.concept === 'PRODUCTION_BONUS') {
+        return 'Producción';
+      } else if (row.concept === 'SOLIDARITY_CONTRIBUTION') {
+        return 'Contribución solidaria';
+      } else if (row.concept === 'LOANS') { 
+        return 'Préstamos';
+      }else{
+        return row.concept;
+      }
+      
+    },
+    size: 120,
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Monto',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.amount);
+      return newAmount;
+    },
     size: 120,
   },
   {
@@ -60,48 +96,57 @@ export const columnsPayrollConcept: MRT_ColumnDef<IPayrollConcept>[] = [
     size: 200,
   },
   {
-    accessorKey: 'payroll_period',
-    header: 'Periodo',
-    size: 200,
-  },
-  {
-    accessorKey: 'date',
-    header: 'Fecha',
-  },
-  {
-    accessorKey: 'reason',
-    header: 'Motivo',
-    size: 120,
-  },
-  {
     accessorKey: 'overtime_minutes',
-    header: 'Minutos extra',
-    size: 120,
+    header: 'Horas extra',
+    size: 50,
   },
   {
     accessorKey: 'public_holiday',
     header: 'Feriado',
-    size: 120,
+    accessorFn: (row: any) => row.public_holiday ? 'Si' : 'No',
+    size: 50,
   },
   {
     accessorKey: 'sales',
     header: 'Ventas',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.sales);
+      return newAmount;
+    },
     size: 120,
   },
   {
     accessorKey: 'production',
     header: 'Producción',
-    size: 120,
-  },
-  {
-    accessorKey: 'amount',
-    header: 'Monto',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.production);
+      return newAmount;
+    },
     size: 120,
   },
   {
     accessorKey: 'cancelled',
     header: 'Estado',
+    accessorFn: (row: any) => row.cancelled ? 'Cancelado' : 'Activo',
     size: 120,
+  },
+  {
+    accessorKey: 'payroll_period',
+    header: 'Periodo',
+    size: 50,
+  },
+  {
+    accessorKey: 'reason',
+    header: 'Motivo',
+    size: 100,
+  },
+  {
+    accessorKey: 'date',
+    header: 'Fecha',
+    accessorFn: (row: any) => {
+      const newDate = new Date(row.date);
+      return newDate.toLocaleDateString();
+    },
   },
 ];
 
@@ -128,30 +173,54 @@ export const columnsPayrollDetail: MRT_ColumnDef<IPayrollDetail>[] = [
   },
   {
     accessorKey: 'total',
-    header: 'Total',
+    header: 'Sueldo Líquido',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.total);
+      return newAmount;
+    },
     size: 200,
   },
   {
     accessorKey: 'incomes',
     header: 'Ingresos',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.incomes);
+      return newAmount;
+    },
     size: 200,
   },
   {
     accessorKey: 'deductions',
     header: 'Deducciones',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.deductions);
+      return newAmount;
+    },
   },
   {
     accessorKey: 'salary_base',
     header: 'Salario base',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.salary_base);
+      return newAmount;
+    },
     size: 120,
   },
   {
     accessorKey: 'social_insurance_employee',
     header: 'Seguro social empleado',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.social_insurance_employee);
+      return newAmount;
+    },
     size: 120,
   },
   {
     accessorKey: 'social_insurance_company',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.social_insurance_company);
+      return newAmount;
+    },
     header: 'Seguro social empresa',
     size: 120,
   },
@@ -189,10 +258,18 @@ export const columnsPermission: MRT_ColumnDef<IPermission>[] = [
     accessorKey: 'start_date',
     header: 'Inicio',
     size: 200,
+    accessorFn: (row: any) => {
+      const newDate = new Date(row.start_date);
+      return newDate.toLocaleDateString();
+    },
   },
   {
     accessorKey: 'end_date',
     header: 'Fin',
+    accessorFn: (row: any) => {
+      const newDate = new Date(row.end_date);
+      return newDate.toLocaleDateString();
+    },
     size: 200,
   },
   {

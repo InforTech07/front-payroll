@@ -12,6 +12,6 @@ export interface IProduct {
 }
 
 export interface IBuyOrder {
-  user: string | string;
+  employee: number | string;
   total: number;
 }

@@ -25,7 +25,7 @@ class StoreService {
     }
 
     async ToBuyOrder(data: any){
-        return await apiServices.post("store_purchase/create_credit/", data)
+        return await apiServices.post("store_purchase/", data)
     }
 }
 

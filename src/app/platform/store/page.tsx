@@ -66,7 +66,7 @@ function StorePage(){
     const onSubmit =   handleSubmit((data) => {
         if(subTotal > 0){
             const order = {
-                user: session?.user?.id,
+                employee: session?.user?.employeeId,
                 total: subTotal,
             }
 

@@ -119,7 +119,6 @@ const TablePeriod = () => {
   const { data: session, status } = useSession();
   const dispatch = useAppDispatch();
   const periods = useAppSelector(state => state.payrollPeriod.payrollPeriods) as IPayrollPeriod[];
-  console.log(periods)
   useEffect(() => {
     dispatch(getPayrollPeriods(session?.user?.idCompany as number));
   }, []);

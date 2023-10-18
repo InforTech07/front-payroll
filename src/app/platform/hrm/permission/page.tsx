@@ -5,6 +5,7 @@ import { apiServices } from "@/services/api-service";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { IPermission } from "@/interfaces/hrm";
+import { formatDate } from "@/services/tools-service";
 
 
 
@@ -33,6 +34,7 @@ function PermissionPage(){
         const res = await apiServices.get("request_absence/get_requests/?employee=" + session?.user?.employeeId);
         setPermissions(res);
       };
+    
 
     useEffect(() => {
         getPermissions();
@@ -86,7 +88,8 @@ function PermissionPage(){
                                     </svg>
                                 </span>
 
-                                <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Del:{item.start_date} Al: {item.end_date}</h2>
+                                <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Del:{formatDate(item.start_date)}</h2>
+                                <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Al:{formatDate(item.end_date)}</h2>
                                 <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{item.reason}</p>
                                 <p className="mt-2 text-sm text-blue-500 dark:text-blue-400">{item.status}</p>
                             </div>
