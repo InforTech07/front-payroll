@@ -16,7 +16,13 @@ function LoginPage(){
         <>
             <Navbar showLogin={false}/>
             <ContainerBlog>
-                <FormLogin />
+                <div className="relative h-screen flex flex-col items-center justify-center">
+                    <FormLogin />
+                    <div className="mt-3 text-center space-x-4">
+                        <span>&copy; Payroll - Platform</span>
+                        <a href="#" className="text-sm hover:text-blue-900">Privacidad & Terminos</a>
+                    </div>
+                </div>
             </ContainerBlog>
         </>
     )

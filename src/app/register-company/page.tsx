@@ -6,7 +6,9 @@ function RegisterCompaniesPage() {
     <>
       <Navbar showLogin={false}/>
       <ContainerBlog>
+        <div className="relative h-screen flex flex-col items-center justify-center">
           <FormCreateCompany />
+        </div>
       </ContainerBlog>
     </>
   );

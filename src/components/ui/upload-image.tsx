@@ -37,9 +37,26 @@ function UploadImage({label, setUriImage, urlImage}: UploadImageProps){
     }, [urlImage]);
 
     return(
-        <div className="form-control w-full max-w-xs">
-            <label htmlFor="file" className="block text-sm text-gray-700">{label}</label>
-            <div className="grid grid-cols-2 gap-2">
+        <div className="mt-2 flex flex-col">
+            <label htmlFor="file" className="block  text-sm text-gray-700">{label}</label>
+            <div className="grid grid-cols-2 gap-2 mt-2">
+                {preview && (
+                        <div>
+                            <img src={preview.toString()} alt="Preview" className="rounded-md w-16 h-16 " />
+                        </div>
+                    )}
+                <label htmlFor="dropzone-file" className="flex items-center px-3 py-3 mx-auto mt-2 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+
+                    <h2 className="mx-3 text-gray-400">Cargar imagen</h2>
+
+                    <input id="dropzone-file" type="file" onChange={handleFileChange} className="hidden" />
+                </label>
+            </div>
+            
+            {/* <div className="grid grid-cols-2 gap-2">
                 <div>
                     <label htmlFor="dropzone-file" className="flex flex-col items-center w-full max-w-lg p-5 mx-auto mt-2 text-center bg-white border-2 border-gray-300 border-dashed cursor-pointer rounded-xl">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-8 h-8 text-gray-500">
@@ -54,7 +71,7 @@ function UploadImage({label, setUriImage, urlImage}: UploadImageProps){
                         <img src={preview.toString()} alt="Preview" className="rounded-xl w-full h-full " />
                     </div>
                 )}
-            </div>
+            </div> */}
         </div>
     )
 }

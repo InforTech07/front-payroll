@@ -1,3 +1,5 @@
+"use client";
+
 function AdminPage() {
   return (
     <div>
@@ -5,3 +7,5 @@ function AdminPage() {
     </div>
   );
 }
+
+export default AdminPage;

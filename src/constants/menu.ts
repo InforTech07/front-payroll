@@ -7,7 +7,7 @@ export const menuUser: IMenuItem[] = [
         icon: 'mdi-view-dashboard',
         submenu: [
             {
-                name: 'Dashboard',
+                name: 'Perfil',
                 path: '/platform',
                 icon: 'mdi-view-dashboard',
             }
@@ -98,18 +98,13 @@ export const menuAdmin: IMenuItem[] = [
         icon: 'mdi-account',
         submenu: [
             {
-                name: 'User',
-                path: '/user',
+                name: 'Permisos',
+                path: '/platform/admin/permission',
                 icon: 'mdi-account',
             },
             {
-                name: 'User 2',
-                path: '/user2',
-                icon: 'mdi-account',
-            },
-            {
-                name: 'User 3',
-                path: '/user3',
+                name: 'Ventas',
+                path: '/platform/admin/sales',
                 icon: 'mdi-account',
             }
         ]
@@ -118,67 +113,26 @@ export const menuAdmin: IMenuItem[] = [
 
 export const menuSuperAdmin: IMenuItem[] = [
     {
-        name: 'Dashboard',
+        name: 'Inicio',
         icon: 'mdi-view-dashboard',
         submenu: [
             {
                 name: 'Dashboard',
-                path: '/dashboard',
+                path: '/platform',
                 icon: 'mdi-view-dashboard',
             },
-            {
-                name: 'Dashboard 2',
-                path: '/dashboard2',
-                icon: 'mdi-view-dashboard',
-            },
-            {
-                name: 'Dashboard 3',
-                path: '/dashboard3',
-                icon: 'mdi-view-dashboard',
-            }
         ]
     },
     {
-        name: 'User',
+        name: 'Clientes',
         icon: 'mdi-account',
         submenu: [
             {
-                name: 'User',
-                path: '/user',
+                name: 'Clientes',
+                path: '/platform/client',
                 icon: 'mdi-account',
             },
-            {
-                name: 'User 2',
-                path: '/user2',
-                icon: 'mdi-account',
-            },
-            {
-                name: 'User 3',
-                path: '/user3',
-                icon: 'mdi-account',
-            }
         ]
     },
-    {
-        name: 'Admin',
-        icon: 'mdi-account',
-        submenu: [
-            {
-                name: 'Admin',
-                path: '/admin',
-                icon: 'mdi-account',
-            },
-            {
-                name: 'Admin 2',
-                path: '/admin2',
-                icon: 'mdi-account',
-            },
-            {
-                name: 'Admin 3',
-                path: '/admin3',
-                icon: 'mdi-account',
-            }
-        ]
-    }
 ];
 

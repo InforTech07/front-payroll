@@ -58,142 +58,113 @@ function FormLogin(){
         toast.error("Usuario no encontrado");
       }
     }
-
+    const divStyle = {
+      backgroundImage: 'url(https://images.unsplash.com/photo-1606660265514-358ebbadc80d?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEyfHBoYXJldHR5LWJveHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80)',
+    };
     
     return (
       <>
-      <div className="relative h-screen flex justify-center before:absolute before:inset-0 before:w-full before:h-[50%]">
-             <div className="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">
-                 <div className="m-auto space-y-8 md:w-8/12 lg:w-full">
-                     <div className="rounded-xl border backdrop-blur-2xl bg-gray-200 shadow-xl">
-                         <div className="lg:grid lg:grid-cols-2">
-                             <div className="lg:block" hidden>
-                                 <div className='flex flex-col h-full p-6 sm:p-16 items-center justify-center'>
-                                     <div aria-hidden="true" className="flex space-x-1">
-                                          <div className="h-12 w-12 rounded-full bg-gray-900"></div>
-                                          <div className="h-24 w-6 bg-primary"></div>
-                                     </div>
-                                     <div className="flex flex-col space-y-4">
-                                         <span className="text-black mt-5 text-center text-3xl">Bienvenido a Payroll</span>
-                                         <span className="text-black text-center text-3xl">Tu plataforma de nomina.</span>
-                                     </div>
-                                 </div>
-                             </div>
-                        {
-                          existUser ? (
-                            <form
-                          className="mt-12"
-                          action=""
-                          method="POST"
-                          onSubmit={onSubmit}
-                        >
-                              <div className='flex flex-col gap-4 items-center'>
-                                  <h4 className="text-2xl font-semibold text-gray-900">
-                                    Ingresa tus credenciales
-                                  </h4>
-                                  {/* Email Input */}
-                                  <div className="form-control w-full max-w-xs gap-2">
-                                    <label className="text-gray-700 text-xs" htmlFor="email">Usuario:</label>
-                                      <input
-                                        {...register("email", { required: {
-                                            value: true,
-                                            message: "Ingrese un correo",
-                                          }, 
-                                          pattern: {
-                                            value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                                            message: "Ingrese un correo valido",
-                                          }
-                                      })}
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
-                                        placeholder="john@doe.com"
-                                        autoComplete="off" 
-                                      />
-                                    {errors?.email && (
-                                      <label className="label">
-                                        <span className="text-red-600 text-sm">
-                                          {errors.email.message}
-                                        </span>
-                                      </label>
-                                    )}
-                                  </div>
-                                  {/* password Input */}
-                                  <div className="form-control w-full max-w-xs gap-2">
-                                  <label className="text-gray-700 text-xs" htmlFor="email">Password:</label>
-                                    <input
-                                      {...register("password", { required: {
-                                        value: true,
-                                        message: "Ingrese una contraseña",
-                                      }
-                                     })}
-                                      id="password"
-                                      name="password"
-                                      type="password"
-                                      className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
-                                      placeholder="*********"
-                                      autoComplete="off" 
-                                    />
-                                    {errors?.password && (
-                                      <label className="label">
-                                        <span className="text-red-600 text-sm">
-                                          {
-                                            errors.password.message
-                                          }
-                                        </span>
-                                      </label>
-                                    )}
-                                </div>
-                                <div className="form-control w-full max-w-xs gap-2">
-                                  <button type="submit" className="btn btn-success my-6 rounded-l">Ingresar</button>
-                                </div>
-                              </div>
-                        </form>
-                          ) : (
-                            <form
-                              className="mt-12"
-                              action=""
-                              onSubmit={verifyUser}
-                            >
-                                  <div className='flex flex-col gap-4 items-center'>
-                                      <h4 className="text-2xl font-semibold text-gray-900">
-                                        Ingresa tus credenciales
-                                      </h4>
-                                      {/* Email Input */}
-                                      <div className="form-control w-full max-w-xs gap-2">
-                                        <label className="text-gray-700 text-xs" htmlFor="email">Usuario:</label>
-                                          <input
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
-                                            placeholder="john@doe.com"
-                                            autoComplete="off" 
-                                          />
-                                        
-                                      </div>
-                                    <div className="form-control w-full max-w-xs gap-2">
-                                      <button type="submit" className="btn btn-success my-6 rounded-l">Ingresar</button>
-                                    </div>
-                                  </div>
-                            </form>
-                          )
-                        }
-                        
-                        </div>
-                         </div>
-                     </div>
-                     <div className="text-center space-x-4">
-                         <span>&copy; Payroll - Platform</span>
-                        <a href="#" className="text-sm hover:text-blue-900">Privacidad & Terminos</a>
-                     </div>
-                 </div>
-             </div>
-            </>
-    );
+      <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">
+        <div className="hidden bg-cover lg:block lg:w-1/2" style={divStyle}></div>
+        <div className="w-full px-6 py-8 md:px-8 lg:w-1/2">
+            <p className="text-xl font-semibold text-center text-gray-600">BIENVENIDO</p>
+            {existUser ? (
+              <form
+                className="mt-12"
+                action=""
+                method="POST"
+                onSubmit={onSubmit}
+                >
+                <div className="mt-4">
+                    <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="email">Usuario:</label>
+                    <input 
+                      {...register("email", { required: {
+                            value: true,
+                            message: "Ingrese un correo",
+                          }, 
+                          pattern: {
+                            value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                            message: "Ingrese un correo valido",
+                      }
+                      })}
+                    id="email"
+                    name="email"
+                    placeholder="john@doe.com"
+                    autoComplete="off" 
+                    className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300" 
+                    type="email" />
+                    {errors?.email && (
+                      <label className="label">
+                        <span className="text-red-600 text-sm">
+                          {errors.email.message}
+                        </span>
+                      </label>
+                    )}
+                </div>
+
+                <div className="mt-4">
+                    <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="email">Password:</label>
+                    <input
+                      {...register("password", { required: {
+                        value: true,
+                        message: "Ingrese una contraseña",
+                      }
+                    })}
+                      id="password"
+                      name="password"
+                      className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300" 
+                      type="password" 
+                      placeholder="*********"
+                      autoComplete="off" 
+                      />
+                      {errors?.password && (
+                        <label className="label">
+                          <span className="text-red-600 text-sm">
+                            {
+                              errors.password.message
+                            }
+                          </span>
+                        </label>
+                      )}
+                </div>
+
+                <div className="mt-6">
+                    <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                        Ingresar
+                    </button>
+                </div>
+              </form>
+            ):(
+            <form
+              className="mt-12"
+              action=""
+              method="POST"
+              onSubmit={verifyUser}
+              >
+              <div className="mt-4">
+                  <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="email">Usuario:</label>
+                  <input 
+                  id="email"
+                  name="email"
+                  placeholder="john@doe.com"
+                  autoComplete="off"
+                  onChange={(e) => setEmail(e.target.value)} 
+                  value={email}
+                  className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300" 
+                  type="email" />
+              </div>
+              <div className="mt-6">
+                  <button 
+                    type="submit"
+                    className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                      Ingresar
+                  </button>
+              </div>
+            </form>)}
+        </div>
+    </div>
+    </>
+  );
 }
 
 export default FormLogin;

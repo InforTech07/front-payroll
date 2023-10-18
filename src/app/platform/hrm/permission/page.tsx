@@ -4,27 +4,23 @@ import { useSession } from "next-auth/react";
 import { apiServices } from "@/services/api-service";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { IPermission } from "@/interfaces/hrm";
 
-type FormValues = {
-    employee: string | number;
-    start_date: string;
-    end_date: string;
-    reason: string;
-    status: string;
-}
+
 
 function PermissionPage(){
     const { data: session } = useSession();
-    const [permissions, setPermissions] = useState<FormValues[]>([]);
+    const [permissions, setPermissions] = useState<IPermission[]>([]);
     const divStyle ={
         backgroundImage: `url('https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')`,
       };
     
-      const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
+      const { register, handleSubmit, formState: { errors } } = useForm<IPermission>();
 
       const onSubmit = handleSubmit((data) => {
         data.employee = session?.user?.employeeId as number;
         data.status = "PENDIENTE";
+        data.company = session?.user?.idCompany as number;
         apiServices.post("request_absence/", data).then((res) => {
             toast.success("Permiso solicitado con exito");
             setPermissions([...permissions, res]);
@@ -82,7 +78,7 @@ function PermissionPage(){
             <div className="text-white lg:w-1/2 lg:mx-6">
                 <div className="grid grid-cols-1 gap-12 lg:col-span-2 sm:grid-cols-2 ">
                     {
-                       permissions && permissions.map((item: FormValues) => (
+                       permissions && permissions.map((item: IPermission) => (
                             <div className="p-4 rounded-lg bg-blue-50 md:p-6 dark:bg-gray-800">
                                 <span className="inline-block p-3 text-blue-500 rounded-lg bg-blue-100/80 dark:bg-gray-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">

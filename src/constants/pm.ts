@@ -1,5 +1,6 @@
 import { type MRT_ColumnDef } from 'material-react-table';
 import { IPayrollPeriod, IPayrollConcept, IPayroll, IPayrollDetail } from '@/interfaces/pm';
+import { IPermission } from '@/interfaces/hrm';
 
 export const columnsPayrollPeriod: MRT_ColumnDef<IPayrollPeriod>[] = [
     {
@@ -54,7 +55,7 @@ export const columnsPayrollConcept: MRT_ColumnDef<IPayrollConcept>[] = [
     size: 120,
   },
   {
-    accessorKey: 'employee',
+    accessorKey: 'employee_name',
     header: 'Empleado',
     size: 200,
   },
@@ -99,17 +100,7 @@ export const columnsPayrollConcept: MRT_ColumnDef<IPayrollConcept>[] = [
   },
   {
     accessorKey: 'cancelled',
-    header: 'Cancelado',
-    size: 120,
-  },
-  {
-    accessorKey: 'is_active',
-    header: 'Activo',
-    size: 120,
-  },
-  {
-    accessorKey: 'created_at',
-    header: 'Creado',
+    header: 'Estado',
     size: 120,
   },
 ];
@@ -117,7 +108,7 @@ export const columnsPayrollConcept: MRT_ColumnDef<IPayrollConcept>[] = [
 export const columnsPayrollConceptPDF = [
   { header: 'NO.', dataKey: 'id' },
   { header: 'Concepto', dataKey: 'concept' },
-  { header: 'Empleado', dataKey: 'employee' },
+  { header: 'Empleado', dataKey: 'employee_name' },
   { header: 'Periodo', dataKey: 'payroll_period' },
   { header: 'Fecha', dataKey: 'date' },
   { header: 'Motivo', dataKey: 'reason' },
@@ -126,9 +117,7 @@ export const columnsPayrollConceptPDF = [
   { header: 'Ventas', dataKey: 'sales' },
   { header: 'Producción', dataKey: 'production' },
   { header: 'Monto', dataKey: 'amount' },
-  { header: 'Cancelado', dataKey: 'cancelled' },
-  { header: 'Activo', dataKey: 'is_active' },
-  { header: 'Creado', dataKey: 'created_at' },
+  { header: 'Estado', dataKey: 'cancelled' },
 ];
 
 export const columnsPayrollDetail: MRT_ColumnDef<IPayrollDetail>[] = [
@@ -183,3 +172,45 @@ export const columnsPayrollDetailPDF = [
   { header: 'Seguro social empresa', dataKey: 'social_insurance_company' },
   { header: 'Periodo', dataKey: 'payroll_period' },
 ]
+
+
+export const columnsPermission: MRT_ColumnDef<IPermission>[] = [
+  {
+    accessorKey: 'id',
+    header: 'NO.',
+    size: 40,
+  },
+  {
+    accessorKey: 'employee_name',
+    header: 'Empleado',
+    size: 120,
+  },
+  {
+    accessorKey: 'start_date',
+    header: 'Inicio',
+    size: 200,
+  },
+  {
+    accessorKey: 'end_date',
+    header: 'Fin',
+    size: 200,
+  },
+  {
+    accessorKey: 'reason',
+    header: 'Motivo',
+    size: 200,
+  },
+  {
+    accessorKey: 'status',
+    header: 'Estado',
+  },
+];
+
+export const columnsPermissionPDF = [
+  { header: 'NO.', dataKey: 'id' },
+  { header: 'Empleado', dataKey: 'employee_name' },
+  { header: 'Inicio', dataKey: 'start_date' },
+  { header: 'Fin', dataKey: 'end_date' },
+  { header: 'Motivo', dataKey: 'reason' },
+  { header: 'Estado', dataKey: 'status' },
+];

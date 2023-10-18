@@ -24,6 +24,7 @@ export interface IPayrollConcept{
     cancelled?: boolean;
     is_active?: boolean;
     created_at?: string;
+    employee_name?: string;
 }
 
 export interface IPayrollDeduction{

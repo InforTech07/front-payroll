@@ -67,3 +67,13 @@ export interface ISalaryIncrease {
     employee?: number | string;
 }
 
+export interface IPermission {
+    id?: number | string;
+    employee: string | number;
+    start_date: string;
+    end_date: string;
+    reason: string;
+    status: string;
+    company?: number | string;
+    employee_name?: string;
+}
