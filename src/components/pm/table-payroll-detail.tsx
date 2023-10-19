@@ -13,13 +13,13 @@ import {
   } from 'material-react-table';
 import { Box, Button, ListItemIcon, MenuItem} from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { columnsPayrollDetail, columnsPayrollDetailPDF } from "@/constants/pm";
+import { columnsPayrollDetail, columnsPayrollDetailPDF, columnsPayrollDetail2 } from "@/constants/pm";
 import { downLoadPdf, downloadCsv, convertDateDDMMYYYY } from "@/services/tools-service";
 import { getPayrollConcepts } from "@/redux/pm/payroll-concept-slice";
 import { apiServices } from "@/services/api-service";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
-const TableDetail = ({columns, data}: any) => {
+const TableDetail = ({columns, data, columnsPdf}: any) => {
 
     const handleExportRows = (rows: MRT_Row<IPayrollDetail>[]) => {
       const periodsSelected = rows.map((row) => row.original);
@@ -30,7 +30,7 @@ const TableDetail = ({columns, data}: any) => {
       downloadCsv(data);
     }
     const handleExportPdf = () => {
-      downLoadPdf(data, columnsPayrollDetailPDF);
+      downLoadPdf(data, columnsPdf);
     }
     // const handleExportRowsPdf = (rows: MRT_Row<IPayrollDetail>[]) => {
     //   const periodsSelected = rows.map((row) => row.original);
@@ -122,7 +122,11 @@ function TablePayrollDetail() {
   const [payrollDetail, setPayrollDetail] = React.useState<IPayrollDetail[]>([]);
   const dispatch = useAppDispatch();
   const params = useParams();
+  const queryParams = useSearchParams();
   const id = params.id;
+  const type = queryParams.get('type');
+
+  //const columnsPayroll = 
   
   //const concepts = useAppSelector(state => state.payrollConcept.payrollConcepts) as IPayrollDetail[];
   //console.log(concepts)
@@ -131,14 +135,18 @@ function TablePayrollDetail() {
       setPayrollDetail(res);
   }
   useEffect(() => {
-    setTimeout(() => {
-      getPayrollDetail();
-    }, 1000);
+    getPayrollDetail();
   }, []);
 
   return (
       <div>
-        <TableDetail columns={columnsPayrollDetail} data={payrollDetail} />
+        {
+          type === 'MONTLY' ? (
+            <TableDetail columns={columnsPayrollDetail} data={payrollDetail} columnsPdf={columnsPayrollDetailPDF} />
+          ): (
+            <TableDetail columns={columnsPayrollDetail2} data={payrollDetail} columnsPdf={columnsPayrollDetailPDF}/>
+          )
+        }
       </div>
   );
 };

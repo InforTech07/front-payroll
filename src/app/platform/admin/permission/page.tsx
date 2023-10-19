@@ -12,6 +12,7 @@ import { Box, Button, ListItemIcon, MenuItem} from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { columnsPermission, columnsPermissionPDF } from "@/constants/pm";
 import { downLoadPdf, downloadCsv } from "@/services/tools-service";
+import { toast } from "react-toastify";
 
 type TableProps = {
     permissions: IPermission[];
@@ -139,6 +140,7 @@ function PermssionPage(){
             const res = await apiServices.put("request_absence/" + item.id +"/",  item);
             if(res){
                 setPermissions([...permissions]);
+                toast.success("Se actualizo el estado del permiso");
             }
         }
     }

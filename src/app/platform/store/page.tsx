@@ -68,6 +68,7 @@ function StorePage(){
             const order = {
                 employee: session?.user?.employeeId,
                 total: subTotal,
+                company: session?.user?.idCompany,
             }
 
             storeService.ToBuyOrder(order).then((res) => {

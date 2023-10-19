@@ -10,37 +10,27 @@ import {
   } from 'material-react-table';
 import { Box, Button, ListItemIcon, MenuItem} from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { columnsPermission, columnsPermissionPDF } from "@/constants/pm";
+import { columnsSalesOrder, columnsSalesOrderPDF } from "@/constants/pm";
 import { downLoadPdf, downloadCsv } from "@/services/tools-service";
+import { ISalesOrder } from "@/interfaces/store";
 
 type TableProps = {
-    permissions: IPermission[];
-    handleChangeStatusPermission: (id:number,status:string)=> void;
+    sales: ISalesOrder[];
+    //handleChangeStatusPermission: (id:number,status:string)=> void;
 }
 
-function TablePermissions({permissions, handleChangeStatusPermission}: TableProps) {
-    const handleExportRows = (rows: MRT_Row<IPermission>[]) => {
-        const periodsSelected = rows.map((row) => row.original);
-        downloadCsv(periodsSelected);
-      };
+function TableSales({sales}: TableProps) {
   
       const handleDownloadCVS = () => {
-        downloadCsv(permissions);
+        downloadCsv(sales);
       }
       const handleExportPdf = () => {
-        downLoadPdf(permissions, columnsPermissionPDF);
-      }
-      const handleExportRowsPdf = (rows: MRT_Row<IPermission>[]) => {
-        const periodsSelected = rows.map((row) => row.original);
-        downLoadPdf(periodsSelected, columnsPermissionPDF);
-      }
-  
+        downLoadPdf(sales, columnsSalesOrderPDF);
+      }  
     return(
       <MaterialReactTable
-          columns={columnsPermission}
-          data={permissions}
-          enableRowSelection
-          enableRowActions
+          columns={columnsSalesOrder}
+          data={sales}
           positionToolbarAlertBanner="bottom"
           renderTopToolbarCustomActions={({ table }) => (
             <Box
@@ -87,71 +77,29 @@ function TablePermissions({permissions, handleChangeStatusPermission}: TableProp
               </Button>
             </Box>
           )}
-          renderRowActionMenuItems={({row}) => [
-            <MenuItem
-              key={0}
-              onClick={() => {
-                // ver el id del permiso
-                handleChangeStatusPermission(row.original.id as number, "APROBADO")
-              }}
-              sx={{ m: 0 }}
-            >
-              Aprobar con descuento de sueldo
-            </MenuItem>,
-            <MenuItem
-            key={0}
-            onClick={() => {
-              // ver el id del permiso
-              handleChangeStatusPermission(row.original.id as number, "APROBADO_SIN_DESCUENTO")
-            }}
-            sx={{ m: 0 }}
-          >
-            Aprobado sin descuento de sueldo
-          </MenuItem>,
-            <MenuItem
-              key={1}
-              onClick={() => {
-                handleChangeStatusPermission(row.original.id as number, "RECHAZADO")
-              }}
-              sx={{ m: 0 }}
-            >
-              Rechazar
-            </MenuItem>,
-          ]}
         />
     )
 }
 
 
-function PermssionPage(){
+function SalesOrderPage(){
     const { data: session } = useSession();
-    const [permissions, setPermissions] = useState<IPermission[]>([]);
-    const getPermissions = async () => {
-        const res = await apiServices.get("request_absence/get_requests_absence_by_company/?company=" + session?.user?.idCompany);
+    const [sales, setSales] = useState<ISalesOrder[]>([]);
+    const getSalesOrder = async () => {
+        const res = await apiServices.get("store_purchase/get_store_purchases_by_company/?company=" + session?.user?.idCompany);
         console.log(res); 
-        setPermissions(res);
-    }
-
-    const handleChangeStatusPermission = async (id:number,status:string) => {
-        const item = permissions.find((item) => item.id === id);
-        if(item){
-            item.status = status;
-            const res = await apiServices.put("request_absence/" + item.id +"/",  item);
-            if(res){
-                setPermissions([...permissions]);
-            }
-        }
+        setSales(res);
     }
 
     useEffect(() => {
-        getPermissions();
+        getSalesOrder();
     }, []);
     return (
         <>
             <NavbarApp title="Cola de permisos" idBtnDrawer="hola" btnNew={false} />
-            <TablePermissions permissions={permissions} handleChangeStatusPermission={handleChangeStatusPermission} />
+            <TableSales sales={sales} />
         </>
     )
 }
 
-export default PermssionPage;
+export default SalesOrderPage;

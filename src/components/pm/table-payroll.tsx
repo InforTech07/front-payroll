@@ -53,11 +53,16 @@ function TablePayroll(){
                         </div>
                 
                         <div>
-                            <div className="mt-6 mb-6">
+                            <div className="mt-6 mb-6 flex gap-2">
                                 <Link 
-                                    href={`/platform/pm/payroll/${item.payroll_period}`}
+                                    href={`/platform/pm/payroll/${item.payroll_period}?type=MONTLY`}
                                     className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                                     Pre Nomina
+                                </Link>
+                                <Link 
+                                    href={`/platform/pm/payroll/${item.payroll_period}?type=BIWEEKLY`}
+                                    className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                                    Quincenal
                                 </Link>
                             </div>
                         </div>
