@@ -202,7 +202,7 @@ function TableFamilyMember(){
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {familyMembersStored && familyMembersStored.map((item: IFamilyMember, index) => (
-                                <tr>
+                                <tr key={item.id}>
                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                         <div className="inline-flex items-center gap-x-3">
                                             <div className="flex items-center gap-x-2">

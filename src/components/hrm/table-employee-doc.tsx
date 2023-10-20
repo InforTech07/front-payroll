@@ -43,7 +43,9 @@ function TableEmployeeDocuments(){
     }
 
     useEffect(() => {
-        dispatch(getEmployeeDocuments(params.id as string));
+        if(params.id){
+            dispatch(getEmployeeDocuments(params.id as string));
+        }
     }, []);
     return(
         <details className="collapse bg-base-200">
@@ -114,7 +116,7 @@ function TableEmployeeDocuments(){
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
                                             {documentsSorted && documentsSorted.map((item: IEmployeeDocument, index) => (
-                                                <tr>
+                                                <tr key={item.id}>
                                                     <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                                         <div className="inline-flex items-center gap-x-3">
                                                             <div className="flex items-center gap-x-2">

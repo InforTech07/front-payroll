@@ -1,5 +1,4 @@
 "use client";
-
 import NavbarApp from '@/components/navs/navbar-app';
 import FormCreateUpdateConcepts from '@/components/pm/form-concepts';
 import TableConcepts from '@/components/pm/table-concepts';

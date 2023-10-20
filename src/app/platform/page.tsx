@@ -31,38 +31,9 @@ Tooltip,
 Legend
 );
 
-export const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Ultimas 7 nóminas',
-      },
-    },
-  };
 
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Total de nominas',
-      data: [65, 59, 80, 81, 56, 55, 40],
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    // {
-    //   label: 'Dataset 2',
-    //   data: [28, 48, 40, 19, 86, 27, 90],
-    //   backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    // },
-  ],
-};
-
-function MyChart() {
+function MyChart({options, data}:any) {
     return <Bar options={options} data={data} />;
 }
 
@@ -76,6 +47,37 @@ function DashboardAdmin({name}: DashboardProps){
     const [countDepartments, setCountDepartments] = React.useState<number>(0);
     const [countEmployees, setCountEmployees] = React.useState<number>(0);
     const [countJobPositions, setCountJobPositions] = React.useState<number>(0);
+
+    const options = {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top' as const,
+          },
+          title: {
+            display: true,
+            text: 'Ultimas 7 nóminas',
+          },
+        },
+      };
+    
+      const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    
+    const data = {
+      labels,
+      datasets: [
+        {
+          label: 'Total de nominas',
+          data: [65, 59, 80, 81, 56, 55, 40],
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+        // {
+        //   label: 'Dataset 2',
+        //   data: [28, 48, 40, 19, 86, 27, 90],
+        //   backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        // },
+      ],
+    };
 
     const getDataDashboard = async () => {
         const departaments = await apiServices.get('department/get_count_departments_by_company/?company=' + session?.user?.idCompany);
@@ -154,8 +156,8 @@ function DashboardAdmin({name}: DashboardProps){
             </section>
 
             <div className="container px-6 py-10 h-96 flex items-center justify-center gap-8">
-            <MyChart />
-            <MyChart />
+            <MyChart options={options} data={data}/>
+            <MyChart options={options} data={data}/>
         </div>
     </>
 

@@ -99,7 +99,7 @@ function StorePage(){
                 <div className="container px-6 py-2 mx-auto">
                     <div className="grid grid-cols-3 gap-4 overflow-y-auto h-1/4">
                         {products && products.map((product) => {
-                            return <ProductCard addProduct={addProduct} product={product} />
+                            return <ProductCard key={product.id} addProduct={addProduct} product={product} />
                         })}
                     </div>
                 </div>

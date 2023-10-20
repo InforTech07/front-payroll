@@ -2,7 +2,6 @@
 import React from 'react';
 import NavbarApp from '@/components/navs/navbar-app';
 import FormCreateUpdateConcepts from '@/components/pm/form-concepts';
-import FormOperation from '@/components/pm/form-operation';
 import TableConcepts from '@/components/pm/table-concepts';
 import { useAppSelector } from "@/hooks/redux";
 import TablePayrollConcept from '@/components/pm/table-concepts';

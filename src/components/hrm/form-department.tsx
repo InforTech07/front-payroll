@@ -16,6 +16,7 @@ function FormCreateUpdateDepartment({idBtnDrawer}: IFormCreateUpdateDepartment){
     const router = useRouter();
     const params = useParams();
     let isModeEdit = false;
+    const departments = useAppSelector(state => state.department.departments);
     
     const idEdit = params.id;
     
@@ -33,16 +34,16 @@ function FormCreateUpdateDepartment({idBtnDrawer}: IFormCreateUpdateDepartment){
     }
 
     if(isModeEdit){
-        useAppSelector(state => state.department.departments).map((item: IDepartment) => {
-        if(item.id == idEdit){
+
+        const department = departments.find((item: IDepartment) => item.id == idEdit);
+        if(department){
             formOptions.defaultValues = {
-            name: item.name,
-            description: item.description,
-            company: session?.user?.idCompany,
-            id: item.id
+                name: department.name,
+                description: department.description,
+                company: session?.user?.idCompany,
+                id: department.id as string
             }
         }
-        });
     } 
     const {
         register, 

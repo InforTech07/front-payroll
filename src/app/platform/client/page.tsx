@@ -25,8 +25,7 @@ function ClientPage() {
         <NavbarApp title="Clientes" idBtnDrawer="id" btnNew={false} />
       <h1>{
           Array.isArray(companies) && companies.map((company) => {
-            console.log(company.name)
-          return <div className="text-black">{company.name}</div>
+          return <div key={company.name} className="text-black">{company.name}</div>
         })
         }</h1>
     </div>

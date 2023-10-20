@@ -16,6 +16,7 @@ function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition
     const router = useRouter();
     const params = useParams();
     let isModeEdit = false;
+    const jobPositions = useAppSelector(state => state.jobPosition.jobPositions);
     
     const idEdit = params.id;
     
@@ -33,16 +34,16 @@ function FormCreateUpdateJobPosition({idBtnDrawer}: IFormCreateUpdateJobPosition
     }
 
     if(isModeEdit){
-        useAppSelector(state => state.jobPosition.jobPositions).map((item: IJobPosition) => {
-        if(item.id == idEdit){
+
+        const jobPosition = jobPositions.find((item: IJobPosition) => item.id == idEdit);
+        if(jobPosition){
             formOptions.defaultValues = {
-            name: item.name,
-            description: item.description,
-            company: item.company,
-            id: item.id
+                name: jobPosition.name,
+                description: jobPosition.description,
+                company: session?.user?.idCompany,
+                id: jobPosition.id as string
             }
         }
-        });
     } 
     const {
         register, 

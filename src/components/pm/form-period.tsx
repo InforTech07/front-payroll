@@ -16,7 +16,7 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
     const params = useParams();
     const { data: session, status } = useSession();
     let isModeEdit = false;
-    
+    const periods = useAppSelector(state => state.payrollPeriod.payrollPeriods);
     const idEdit = params.id;
     
     if(idEdit){
@@ -36,19 +36,18 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
     }
 
     if(isModeEdit){
-        useAppSelector(state => state.payrollPeriod.payrollPeriods).map((item: IPayrollPeriod) => {
-        if(item.id == idEdit){
+        const period = periods.find((item: IPayrollPeriod) => item.id == idEdit);
+        if(period){
             formOptions.defaultValues = {
-                id: item.id,
-                name: item.name,
-                start_date: item.start_date,
-                end_date: item.end_date,
-                is_open: item.is_open,
-                type: item.type,
-                company: item.company as unknown as string,
+                id: period.id as unknown as string,
+                name: period.name,
+                start_date: period.start_date,
+                end_date: period.end_date,
+                is_open: period.is_open,
+                type: period.type,
+                company: period.company as unknown as string,
             }
         }
-        });
     } 
     const {
         register, 
