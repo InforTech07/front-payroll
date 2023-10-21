@@ -22,9 +22,9 @@ export const storage = getStorage(app);
 export const config = {
     nextAuthUrl: process.env.NEXTAUTH_URL || "https://main.d34sc4zffkrzrb.amplifyapp.com/",
     nextAuthSecret: process.env.NEXTAUTH_SECRET || "secret",
-    API_URL: process.env.API_URL || "http://localhost:8000/api/v1/",
+    //API_URL: process.env.API_URL || "http://localhost:8000/api/v1/",
     //API_URL: "http://18.216.107.32/api/v1/",
-    //API_URL: "https://api-platform-payroll.onrender.com/api/v1/",
+    API_URL: "https://api-platform-payroll.onrender.com/api/v1/",
     API_URL_STORE: "https://fakestoreapi.com/products",
     ENVIROMENT: process.env.NODE_ENV || "development",
 };

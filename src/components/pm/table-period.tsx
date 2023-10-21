@@ -29,11 +29,11 @@ const Table= ({columns, data}: any) => {
       downloadCsv(data);
     }
     const handleExportPdf = () => {
-      downLoadPdf(data, columnsPayrollPeriodPDF);
+      downLoadPdf(data, columnsPayrollPeriodPDF, "Periodos de nómina");
     }
     const handleExportRowsPdf = (rows: MRT_Row<IPayrollPeriod>[]) => {
       const periodsSelected = rows.map((row) => row.original);
-      downLoadPdf(periodsSelected, columnsPayrollPeriodPDF);
+      downLoadPdf(periodsSelected, columnsPayrollPeriodPDF, "Periodos de nómina");
     }
 
   return(

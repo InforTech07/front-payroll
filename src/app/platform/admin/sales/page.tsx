@@ -16,16 +16,16 @@ import { ISalesOrder } from "@/interfaces/store";
 
 type TableProps = {
     sales: ISalesOrder[];
-    //handleChangeStatusPermission: (id:number,status:string)=> void;
+    title: string;
 }
 
-function TableSales({sales}: TableProps) {
+function TableSales({sales,title}: TableProps) {
   
       const handleDownloadCVS = () => {
         downloadCsv(sales);
       }
       const handleExportPdf = () => {
-        downLoadPdf(sales, columnsSalesOrderPDF);
+        downLoadPdf(sales, columnsSalesOrderPDF, title);
       }  
     return(
       <MaterialReactTable
@@ -96,8 +96,8 @@ function SalesOrderPage(){
     }, []);
     return (
         <>
-            <NavbarApp title="Cola de permisos" idBtnDrawer="hola" btnNew={false} />
-            <TableSales sales={sales} />
+            <NavbarApp title="Orden de ventas" idBtnDrawer="hola" btnNew={false} />
+            <TableSales sales={sales} title="Ventas Tienda" />
         </>
     )
 }

@@ -28,11 +28,11 @@ const Table= ({columns, data}: any) => {
       downloadCsv(data);
     }
     const handleExportPdf = () => {
-      downLoadPdf(data, columnsPayrollConceptPDF);
+      downLoadPdf(data, columnsPayrollConceptPDF, "Conceptos de nómina");
     }
     const handleExportRowsPdf = (rows: MRT_Row<IPayrollConcept>[]) => {
       const periodsSelected = rows.map((row) => row.original);
-      downLoadPdf(periodsSelected, columnsPayrollConceptPDF);
+      downLoadPdf(periodsSelected, columnsPayrollConceptPDF, "Conceptos de nómina");
     }
 
     const handleDeleteConcept= (id: number) => {
