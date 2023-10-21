@@ -222,6 +222,7 @@ function FormCreateCompany(){
                             )}
                     </div>
                     <UploadImage label="Logo de la empresa" setUriImage={setUriImage}/>
+                    <UploadFile setUriFile={setUriImage}/>
                     <div className="mt-6">
                         <button 
                             type="submit"

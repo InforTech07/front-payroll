@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { mediaService } from "@/services/media-service";
+//import { mediaService } from "@/services/media-service";
 import { toast } from "react-toastify";
 import { ref , uploadBytes, getDownloadURL } from'firebase/storage';
 import { storage } from '@/config'

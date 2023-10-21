@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { mediaService } from "@/services/media-service";
+//import { mediaService } from "@/services/media-service";
 import { toast } from "react-toastify";
 
 interface UploadImageProps {
