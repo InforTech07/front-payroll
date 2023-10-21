@@ -15,8 +15,7 @@ function SideBar(){
     useEffect(() => {
         switch (roleUser) {
             case "admin":
-                //setCurrentMenu(menuAdmin);
-                setCurrentMenu(menuSuperAdmin);
+                setCurrentMenu(menuAdmin);
                 break;
             case "user":
                 setCurrentMenu(menuUser);
