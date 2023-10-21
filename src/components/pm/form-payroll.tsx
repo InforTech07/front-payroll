@@ -19,9 +19,9 @@ function FormCreateUpdatePayroll({idBtnDrawer}: IFormCreateUpdatePayrollProps){
     const periods = useAppSelector(state => state.payrollPeriod.payrollPeriods);
     const idEdit = params.id;
     
-    if(idEdit){
-        isModeEdit = true;
-    }
+    // if(idEdit){
+    //     isModeEdit = true;
+    // }
   
     const formOptions = {
         defaultValues: {
@@ -84,11 +84,11 @@ function FormCreateUpdatePayroll({idBtnDrawer}: IFormCreateUpdatePayrollProps){
       }
     };
 
-    useEffect(() => {
-      if(isModeEdit){
-        document.getElementById(idBtnDrawer)?.click();
-      }
-    }, []);
+    // useEffect(() => {
+    //   // if(isModeEdit){
+    //   //   document.getElementById(idBtnDrawer)?.click();
+    //   // }
+    // }, []);
 
 
     return (
