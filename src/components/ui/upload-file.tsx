@@ -1,6 +1,10 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { mediaService } from "@/services/media-service";
 import { toast } from "react-toastify";
+import { ref , uploadBytes, getDownloadURL } from'firebase/storage';
+import { storage } from '@/config'
+import { generateUUID } from "@/services/tools-service";
 
 interface UploadImageProps {
     setUriFile(uri:string): void;
@@ -9,18 +13,30 @@ interface UploadImageProps {
 function UploadFile({setUriFile}: UploadImageProps){
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        if (!e.currentTarget.files) return;
+        if (!e.target.files) return;
+        const uuid = generateUUID();
+        const storagRef = ref(storage, uuid);
         try {
-            const formData = new FormData();
-            formData.append("file", e.target.files?.length && e.target.files[0] as any);
-            const response = await mediaService.uploadFile(formData);
-            setUriFile(response.file);
+            await uploadBytes(storagRef, e.target.files[0] as Blob);
+            const url = await getDownloadURL(storagRef);
+            setUriFile(url);
             toast.success("Archivo cargada correctamente");
-            
         } catch (error) {
             console.log(error);
             toast.error("Error al cargar la archivo");
         }
+
+        // try {
+        //     const formData = new FormData();
+        //     formData.append("file", e.target.files?.length && e.target.files[0] as any);
+        //     const response = await mediaService.uploadFile(formData);
+        //     setUriFile(response.file);
+        //     toast.success("Archivo cargada correctamente");
+            
+        // } catch (error) {
+        //     console.log(error);
+        //     toast.error("Error al cargar la archivo");
+        // }
         
     };
 

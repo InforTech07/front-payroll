@@ -12,23 +12,50 @@ interface UploadImageProps {
 
 function UploadImage({label, setUriImage, urlImage}: UploadImageProps){
     const [preview, setPreview] = useState<string | ArrayBuffer | null>("");
+    const [file, setFile] = useState<File | null>(null);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        if (!e.currentTarget.files) return;
+        if (!e.target.files) return;
+        
+        const formData = new FormData();
+        formData.append("file", e.target.files[0] as Blob)
+
         try {
-            const file = e.target.files?.length && e.target.files[0];
-            const formData = new FormData();
-            formData.append("picture", file as Blob);
-            const response = await mediaService.uploadImage(formData);
-            setPreview(response.picture);
-            setUriImage(response.picture);
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+            const data = await response.json();
+            setPreview(data.url);
+            setUriImage(data.url);
             toast.success("Imagen cargada correctamente");
-            
         } catch (error) {
             console.log(error);
             toast.error("Error al cargar la imagen");
         }
+
+        
+        // const data = await response.json();
+        // console.log(data);
+        // const data = await response.json();
+        // console.log(data);
+
+
+        // if (!e.currentTarget.files) return;
+        // try {
+        //     const file = e.target.files?.length && e.target.files[0];
+        //     const formData = new FormData();
+        //     formData.append("picture", file as Blob);
+        //     const response = await mediaService.uploadImage(formData);
+        //     setPreview(response.picture);
+        //     setUriImage(response.picture);
+        //     toast.success("Imagen cargada correctamente");
+            
+        // } catch (error) {
+        //     console.log(error);
+        //     toast.error("Error al cargar la imagen");
+        // }
         
     };
 

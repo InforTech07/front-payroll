@@ -5,6 +5,7 @@ import { ICompany } from '@/interfaces/companies';
 import { companyService } from '@/services/companie-service';
 import { mediaService } from "@/services/media-service";
 import UploadImage from "../ui/upload-image";
+import UploadFile from "../ui/upload-file";
 import { toast } from "react-toastify";
 
 

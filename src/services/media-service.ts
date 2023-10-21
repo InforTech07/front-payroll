@@ -23,6 +23,18 @@ class MediaService{
     async deleteFile(id: string){
         return id;
     }
+    // async uploadImageLocal(data: any){
+    //     return new Promise((resolve, reject) => {
+    //         fetch('/api/upload', {
+    //             method: 'POST',
+    //             body: data
+    //         }).then(res => {
+    //             resolve(res)
+    //         }).catch(err => {
+    //             reject(err)
+    //         })
+    //     })
+    // }
 }
 
 export const mediaService = MediaService.getInstance()
