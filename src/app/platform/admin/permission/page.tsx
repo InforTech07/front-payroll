@@ -129,7 +129,6 @@ function PermssionPage(){
     const [permissions, setPermissions] = useState<IPermission[]>([]);
     const getPermissions = async () => {
         const res = await apiServices.get("request_absence/get_requests_absence_by_company/?company=" + session?.user?.idCompany);
-        console.log(res); 
         setPermissions(res);
     }
 

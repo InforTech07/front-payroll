@@ -48,20 +48,12 @@ function PermissionPage(){
                     <h1 className="text-xl font-medium text-gray-700 dark:text-gray-200">Formulario de Permisos</h1>
                     <form className="mt-4" onSubmit={onSubmit}>
                         <div className="flex-1">
-                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Fecha de inicio:</label>
+                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Fecha del permiso:</label>
                             <input 
-                                {...register("start_date", { required: true })}
+                                {...register("date_request", { required: true })}
                                 type="date" 
                                 className="block w-full input-sm px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" />
                         </div>
-                        <div className="flex-1">
-                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Fecha de finalizacion:</label>
-                            <input 
-                                {...register("end_date", { required: true })}
-                                type="date" 
-                                className="block w-full input-sm px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" />
-                        </div>
-
                         <div className="w-full mt-6">
                             <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Razon:</label>
                             <textarea 
@@ -88,8 +80,7 @@ function PermissionPage(){
                                     </svg>
                                 </span>
 
-                                <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Del:{formatDate(item.start_date)}</h2>
-                                <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Al:{formatDate(item.end_date)}</h2>
+                                <h2 className="mt-4 text-base font-medium text-gray-800 dark:text-white">Fecha:{formatDate(item.date_request)}</h2>
                                 <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{item.reason}</p>
                                 <p className="mt-2 text-sm text-blue-500 dark:text-blue-400">{item.status}</p>
                             </div>

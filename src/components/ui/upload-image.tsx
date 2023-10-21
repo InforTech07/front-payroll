@@ -1,6 +1,10 @@
+"use client";
 import React, { useEffect, useState } from "react";
 //import { mediaService } from "@/services/media-service";
 import { toast } from "react-toastify";
+import { getDownloadURL, ref, uploadBytes } from'firebase/storage';
+import { storage } from '@/config'
+import { generateUUID } from "@/services/tools-service";
 
 interface UploadImageProps {
     label: string;
@@ -18,44 +22,19 @@ function UploadImage({label, setUriImage, urlImage}: UploadImageProps){
         e.preventDefault();
         if (!e.target.files) return;
         
-        const formData = new FormData();
-        formData.append("file", e.target.files[0] as Blob)
+        const uuid = generateUUID();
+        const storagRef = ref(storage, uuid);
 
         try {
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData
-            })
-            const data = await response.json();
-            setPreview(data.url);
-            setUriImage(data.url);
-            toast.success("Imagen cargada correctamente");
+            await uploadBytes(storagRef, e.target.files[0] as Blob);
+            const url = await getDownloadURL(storagRef);
+            setUriImage(url);
+            toast.success("Archivo cargada correctamente");
         } catch (error) {
             console.log(error);
-            toast.error("Error al cargar la imagen");
+            toast.error("Error al cargar la archivo");
         }
 
-        
-        // const data = await response.json();
-        // console.log(data);
-        // const data = await response.json();
-        // console.log(data);
-
-
-        // if (!e.currentTarget.files) return;
-        // try {
-        //     const file = e.target.files?.length && e.target.files[0];
-        //     const formData = new FormData();
-        //     formData.append("picture", file as Blob);
-        //     const response = await mediaService.uploadImage(formData);
-        //     setPreview(response.picture);
-        //     setUriImage(response.picture);
-        //     toast.success("Imagen cargada correctamente");
-            
-        // } catch (error) {
-        //     console.log(error);
-        //     toast.error("Error al cargar la imagen");
-        // }
         
     };
 
