@@ -2,11 +2,14 @@
 import { useForm } from "react-hook-form";
 import { IEmployee, IDepartment, IJobPosition } from '@/interfaces/hrm';
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { registerEmployee, updateEmployee } from "@/redux/hrm/employee-slice";
+import { registerEmployee, getEmployees} from "@/redux/hrm/employee-slice";
+import { getJobPositions } from "@/redux/hrm/job-position-slice";
+import { getDepartments } from "@/redux/hrm/department-slice";
 import { useRouter, useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import UploadImage from "../ui/upload-image";
+import { get } from "http";
 
 interface IFormCreateUpdateEmployee{
     idBtnDrawer: string;
@@ -59,6 +62,7 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
           if(res.payload){
             reset();
             document.getElementById(idBtnDrawer)?.click();
+            dispatch(getEmployees(session?.user?.idCompany as number));
             return;
           }}).catch(err => {
             return;
@@ -68,6 +72,11 @@ function FormCreateUpdateEmployee({idBtnDrawer}: IFormCreateUpdateEmployee){
     const setUriImage = (uri: string) => {
       setValue('picture', uri);
     }
+    
+    useEffect(() => {
+      dispatch(getDepartments(session?.user?.idCompany as number));
+      dispatch(getJobPositions(session?.user?.idCompany as number));
+    }, [])
    
     return (
       <div className="drawer drawer-end">

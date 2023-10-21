@@ -17,9 +17,10 @@ import { toast } from "react-toastify";
 type TableProps = {
     permissions: IPermission[];
     handleChangeStatusPermission: (id:number,status:string)=> void;
+    title: string;
 }
 
-function TablePermissions({permissions, handleChangeStatusPermission}: TableProps) {
+function TablePermissions({permissions, handleChangeStatusPermission, title}: TableProps) {
     const handleExportRows = (rows: MRT_Row<IPermission>[]) => {
         const periodsSelected = rows.map((row) => row.original);
         downloadCsv(periodsSelected);
@@ -29,11 +30,11 @@ function TablePermissions({permissions, handleChangeStatusPermission}: TableProp
         downloadCsv(permissions);
       }
       const handleExportPdf = () => {
-        downLoadPdf(permissions, columnsPermissionPDF);
+        downLoadPdf(permissions, columnsPermissionPDF, title);
       }
       const handleExportRowsPdf = (rows: MRT_Row<IPermission>[]) => {
         const periodsSelected = rows.map((row) => row.original);
-        downLoadPdf(periodsSelected, columnsPermissionPDF);
+        downLoadPdf(periodsSelected, columnsPermissionPDF, title);
       }
   
     return(
@@ -150,7 +151,7 @@ function PermssionPage(){
     return (
         <>
             <NavbarApp title="Cola de permisos" idBtnDrawer="hola" btnNew={false} />
-            <TablePermissions permissions={permissions} handleChangeStatusPermission={handleChangeStatusPermission} />
+            <TablePermissions permissions={permissions} handleChangeStatusPermission={handleChangeStatusPermission} title="Permisos de empleados"/>
         </>
     )
 }

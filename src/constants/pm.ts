@@ -2,6 +2,7 @@ import { type MRT_ColumnDef, type MRT_Row } from 'material-react-table';
 import { IPayrollPeriod, IPayrollConcept, IPayroll, IPayrollDetail } from '@/interfaces/pm';
 import { IPermission } from '@/interfaces/hrm';
 import { ISalesOrder } from '@/interfaces/store';
+import { ICompany } from '@/interfaces/companies';
 
 export const columnsPayrollPeriod: MRT_ColumnDef<IPayrollPeriod>[] = [
     {
@@ -173,10 +174,19 @@ export const columnsPayrollDetail: MRT_ColumnDef<IPayrollDetail>[] = [
     size: 120,
   },
   {
-    accessorKey: 'total',
-    header: 'Sueldo Líquido',
+    accessorKey: 'net_salary', //net_salary
+    header: 'Sueldo Neto',
     accessorFn: (row: any) => {
-      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.total);
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.net_salary);
+      return newAmount;
+    },
+    size: 200,
+  },
+  {
+    accessorKey: 'gross_salary', //gross_salary
+    header: 'Sueldo Bruto',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.gross_salary);
       return newAmount;
     },
     size: 200,
@@ -239,19 +249,28 @@ export const columnsPayrollDetail2: MRT_ColumnDef<IPayrollDetail>[] = [
     size: 120,
   },
   {
-    accessorKey: 'total',
-    header: 'Sueldo Líquido',
+    accessorKey: 'gross_biweekly_salary',
+    header: 'Sueldo Bruto Quincena',
     accessorFn: (row: any) => {
-      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.total);
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.gross_biweekly_salary);
       return newAmount;
     },
     size: 200,
   },
   {
-    accessorKey: 'deductions',
-    header: 'Deducciones',
+    accessorKey: 'net_biweekly_salary',
+    header: 'Sueldo neto Quincena',
     accessorFn: (row: any) => {
-      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.deductions);
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.net_biweekly_salary);
+      return newAmount;
+    },
+    size: 200,
+  },
+  {
+    accessorKey: 'total_biweekly_deduction',
+    header: 'Deducciones quincena',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.total_biweekly_deduction);
       return newAmount;
     },
   },
@@ -270,17 +289,109 @@ export const columnsPayrollDetail2: MRT_ColumnDef<IPayrollDetail>[] = [
     size: 120,
   },
 ]
+//bono 14
+export const columnsPayrollDetail3: MRT_ColumnDef<IPayrollDetail>[] = [
+  {
+    accessorKey: 'employee_name',
+    header: 'Empleado',
+    size: 120,
+  },
+  {
+    accessorKey: 'salary_base',
+    header: 'Salario base',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.salary_base);
+      return newAmount;
+    },
+    size: 120,
+  },
+  {
+    accessorKey: 'bono14',
+    header: 'Bono 14',
+    accessorFn: (row: any) => {
+      if(row.bono14 === '0.00'){
+        return 'No aplica para este periodo';
+      }else{
+        const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.bono14);
+        return newAmount;
+      }
+    },
+  },
+  {
+    accessorKey: 'payroll_period',
+    header: 'Periodo',
+    size: 120,
+  },  
+]
 
-
+//aguinaldo
+export const columnsPayrollDetail4: MRT_ColumnDef<IPayrollDetail>[] = [
+  {
+    accessorKey: 'employee_name',
+    header: 'Empleado',
+    size: 120,
+  },
+  {
+    accessorKey: 'salary_base',
+    header: 'Salario base',
+    accessorFn: (row: any) => {
+      const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.salary_base);
+      return newAmount;
+    },
+    size: 120,
+  },
+  {
+    accessorKey: 'aguinaldo',
+    header: 'Aguinaldo',
+    accessorFn: (row: any) => {
+      if(row.aguinaldo === '0.00'){
+        return 'No aplica para este periodo';
+      }{
+        const newAmount = new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(row.aguinaldo);
+        return newAmount;
+      }
+    },
+  },
+  
+  {
+    accessorKey: 'payroll_period',
+    header: 'Periodo',
+    size: 120,
+  },  
+]
 
 export const columnsPayrollDetailPDF = [
-  { header: 'Empleado', dataKey: 'employee' },
-  { header: 'Total', dataKey: 'total' },
+  { header: 'Empleado', dataKey: 'employee_name' },
+  { header: 'Sueldo Neto', dataKey: 'net_salary' },
+  { header: 'Sueldo Bruto', dataKey: 'gross_salary' },
   { header: 'Ingresos', dataKey: 'incomes' },
   { header: 'Deducciones', dataKey: 'deductions' },
   { header: 'Salario base', dataKey: 'salary_base' },
   { header: 'Seguro social empleado', dataKey: 'social_insurance_employee' },
   { header: 'Seguro social empresa', dataKey: 'social_insurance_company' },
+  { header: 'Periodo', dataKey: 'payroll_period' },
+]
+
+export const columnsPayrollDetailPDF2 = [
+  { header: 'Empleado', dataKey: 'employee_name' },
+  { header: 'Sueldo Neto', dataKey: 'net_biweekly_salary' },
+  { header: 'Sueldo Bruto', dataKey: 'gross_biweekly_salary' },
+  { header: 'Deducciones', dataKey: 'total_biweekly_deduction' },
+  { header: 'Salario base', dataKey: 'salary_base' },
+  { header: 'Periodo', dataKey: 'payroll_period' },
+]
+
+export const columnsPayrollDetailPDF3 = [
+  { header: 'Empleado', dataKey: 'employee_name' },
+  { header: 'Salario base', dataKey: 'salary_base' },
+  { header: 'Bono 14', dataKey: 'bono14' },
+  { header: 'Periodo', dataKey: 'payroll_period' },
+]
+
+export const columnsPayrollDetailPDF4 = [
+  { header: 'Empleado', dataKey: 'employee_name' },
+  { header: 'Salario base', dataKey: 'salary_base' },
+  { header: 'Aguinaldo', dataKey: 'aguinaldo' },
   { header: 'Periodo', dataKey: 'payroll_period' },
 ]
 
@@ -297,22 +408,13 @@ export const columnsPermission: MRT_ColumnDef<IPermission>[] = [
     size: 120,
   },
   {
-    accessorKey: 'start_date',
-    header: 'Inicio',
+    accessorKey: 'date_request',
+    header: 'Fecha del permiso',
     size: 200,
     accessorFn: (row: any) => {
-      const newDate = new Date(row.start_date);
+      const newDate = new Date(row.date_request);
       return newDate.toLocaleDateString();
     },
-  },
-  {
-    accessorKey: 'end_date',
-    header: 'Fin',
-    accessorFn: (row: any) => {
-      const newDate = new Date(row.end_date);
-      return newDate.toLocaleDateString();
-    },
-    size: 200,
   },
   {
     accessorKey: 'reason',
@@ -328,8 +430,7 @@ export const columnsPermission: MRT_ColumnDef<IPermission>[] = [
 export const columnsPermissionPDF = [
   { header: 'NO.', dataKey: 'id' },
   { header: 'Empleado', dataKey: 'employee_name' },
-  { header: 'Inicio', dataKey: 'start_date' },
-  { header: 'Fin', dataKey: 'end_date' },
+  { header: 'Fecha de permiso', dataKey: 'date_requeste' },
   { header: 'Motivo', dataKey: 'reason' },
   { header: 'Estado', dataKey: 'status' },
 ];
@@ -382,4 +483,40 @@ export const columnsSalesOrderPDF = [
   { header: 'Estado', dataKey: 'cancelled' },
   { header: 'Empresa', dataKey: 'company' },
   { header: 'Fecha', dataKey: 'date' },
+];
+
+export const columnsCompany: MRT_ColumnDef<ICompany>[] = [
+  {
+    accessorKey: 'id',
+    header: 'NO.',
+    size: 40,
+  },
+  {
+    accessorKey: 'name',
+    header: 'Nombre',
+    size: 120,
+  },
+  {
+    accessorKey: 'description',
+    header: 'Descripción',
+    size: 200,
+  },
+  {
+    accessorKey: 'address',
+    header: 'Dirección',
+    size: 200,
+  },
+  {
+    accessorKey: 'phone',
+    header: 'Teléfono',
+    size: 200,
+  },
+];
+
+export const columnsCompanyPDF = [
+  { header: 'NO.', dataKey: 'id' },
+  { header: 'Nombre', dataKey: 'name' },
+  { header: 'Descripción', dataKey: 'description' },
+  { header: 'Dirección', dataKey: 'address' },
+  { header: 'Teléfono', dataKey: 'phone' },
 ];

@@ -30,7 +30,7 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
           start_date: "",
           end_date: "",
           is_open: true,
-          type: "",
+          type: "MENSUAL",
           company: session?.user?.idCompany as unknown as string,
         }
     }
@@ -106,17 +106,29 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
               <span className="text-gray-700 text-md text-center">{isModeEdit ? "Actualizar Registro": "Nuevo Registro"}</span>
               <form onSubmit={onSubmit}>
                   <div className="grid grid-cols-1 gap-2 mt-4">
-                      <div>
-                          <label className="text-gray-700 text-xs" htmlFor="name">Periodo: </label>
-                          <input
+                      <div >
+                          <label className="text-gray-700 text-xs" htmlFor="name">Mes:</label>
+                          <select
                             {...register("name", { required: {
                               value: true,
-                              message: 'El nombre es requerido'
+                              message: 'El Mes es requerido'
                             }})}
                             name="name" 
-                            id="name" 
-                            type="text"
-                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
+                            id="name"  
+                            className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
+                            <option value="ENERO">ENERO</option>
+                            <option value="FEBRERO">FEBRERO</option>
+                            <option value="MARZO">MARZO</option>
+                            <option value="ABRIL">ABRIL</option>
+                            <option value="MAYO">MAYO</option>
+                            <option value="JUNIO">JUNIO</option>
+                            <option value="JULIO">JULIO</option>
+                            <option value="AGOSTO">AGOSTO</option>
+                            <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                            <option value="OCTUBRE">OCTUBRE</option>
+                            <option value="NOVIEMBRE">NOVIEMBRE</option>
+                            <option value="DICIEMBRE">DICIEMBRE</option>
+                          </select>
                           {errors?.name && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">
@@ -163,21 +175,18 @@ function FormCreateUpdatePayrollPeriod({idBtnDrawer}: IFormCreateUpdatePayrollPe
                               </label>
                             )}
                       </div>
-                      <div>
-                          <label className="text-gray-700 text-xs" htmlFor="type">Tipo de periodo</label>
-                          <select
+                      <div className="hidden">
+                          <label className="text-gray-700 text-xs" htmlFor="type"> </label>
+                          <input
                             {...register("type", { required: {
-                              value: true,
-                              message: 'El genero es requerido'
+                              value: false,
+                              message: 'El tipo es requerido'
                             }})}
                             name="type" 
                             id="type"  
-                            className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
-                            <option value="QUINCENAL">Quincena</option>
-                            <option value="MENSUAL">Mensual</option>
-                            <option value="BONO_14">Bono 14</option>
-                            <option value="AGUINALDO">Aguinaldo</option>
-                          </select>
+                            type="text"
+                            value="MENSUAL"
+                            className="block w-full input-sm px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"/>
                           {errors?.type && (
                               <label className="label">
                                 <span className="text-red-600 text-xs">

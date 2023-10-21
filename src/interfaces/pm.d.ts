@@ -50,15 +50,29 @@ export interface IPayroll{
     date_generated : string;
     total : number;
     is_open : boolean;
+    payroll_name?: string;
 }
 
 export interface IPayrollDetail{
-    employee: string;
-    total: number;
+    id?: number | string;
+    gross_salary: number;
+    net_salary: number;
     incomes: number;
     deductions: number;
     salary_base: number;
     social_insurance_employee: number;
     social_insurance_company: number;
-    payroll_period: string;
+    gross_biweekly_salary: number;
+    net_biweekly_salary: number;
+    total_biweekly_deduction : number;
+    employee_name: string;
+    date_generated: string;
+    total: number;
+    is_open: boolean;
+    is_active: boolean;
+    created_at: string;
+    company: number | string;
+    payroll_period: number | string;
+    aguinaldo: number;
+    bono14: number;
 }

@@ -15,6 +15,8 @@ import { Box, Button, ListItemIcon, MenuItem} from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { columnsPayrollPeriod, columnsPayrollPeriodPDF } from "@/constants/pm";
 import { downLoadPdf, downloadCsv, convertDateDDMMYYYY } from "@/services/tools-service";
+import { useDispatch } from "react-redux";
+import { deletePayrollPeriod } from "@/redux/pm/payroll-period-slice";
 
 const Table= ({columns, data}: any) => {
 

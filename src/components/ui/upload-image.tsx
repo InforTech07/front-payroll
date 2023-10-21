@@ -29,6 +29,7 @@ function UploadImage({label, setUriImage, urlImage}: UploadImageProps){
             await uploadBytes(storagRef, e.target.files[0] as Blob);
             const url = await getDownloadURL(storagRef);
             setUriImage(url);
+            setPreview(url);
             toast.success("Archivo cargada correctamente");
         } catch (error) {
             console.log(error);

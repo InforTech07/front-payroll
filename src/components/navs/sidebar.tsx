@@ -15,7 +15,8 @@ function SideBar(){
     useEffect(() => {
         switch (roleUser) {
             case "admin":
-                setCurrentMenu(menuAdmin);
+                //setCurrentMenu(menuAdmin);
+                setCurrentMenu(menuSuperAdmin);
                 break;
             case "user":
                 setCurrentMenu(menuUser);
@@ -30,8 +31,8 @@ function SideBar(){
     }, [roleUser]);
 
     const handleSignOut = () => {
-        signOut();
-        router.push('/');
+        //signOut();
+        router.push('/api/auth/signout');
     }
 
     return(

@@ -21,10 +21,6 @@ function TablePayroll(){
         alert("operacion en desarrollo")
        // confirm("¿Estas seguro de eliminar este departamento?") && dispatch(deleteJobPosition(id));
     }
-    const formatDate = (date: string) => {
-        const newDate = new Date(date);
-        return newDate.toLocaleDateString();
-    };
 
     useEffect(() => {
         dispatch(getPayrolls(session?.user?.idCompany as number));
@@ -35,7 +31,7 @@ function TablePayroll(){
                 { Array.isArray(payrolls) && payrolls.map((item: IPayroll, index) => (
                     <div key={index} className={'w-full  px-4 py-3 rounded-md bg-gray-200' }>
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-light text-gray-800">Nomina: {formatDate(item.date_generated as string)}</span>
+                            <span className="text-xs font-light text-gray-800">Nomina: {item.payroll_name}</span>
                             <span className="px-3 py-1 text-xs text-blue-800 uppercase bg-white rounded-md">
                                 <div className="flex items-center gap-x-6">
                                     <button onClick={()=>handleDeleteDepartment(item.id as number)} className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none">
@@ -53,16 +49,27 @@ function TablePayroll(){
                         </div>
                 
                         <div>
-                            <div className="mt-6 mb-6 flex gap-2">
+                            <span className="text-sm font-medium text-gray-800">Pre Nominas</span>
+                            <div className="grid grid-cols-2 gap-4 mt-4">
                                 <Link 
                                     href={`/platform/pm/payroll/${item.payroll_period}?type=MONTLY`}
                                     className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-                                    Pre Nomina
+                                    Mensual
                                 </Link>
                                 <Link 
                                     href={`/platform/pm/payroll/${item.payroll_period}?type=BIWEEKLY`}
                                     className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                                     Quincenal
+                                </Link>
+                                <Link 
+                                    href={`/platform/pm/payroll/${item.payroll_period}?type=BONO14`}
+                                    className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                                    Bono 14
+                                </Link>
+                                <Link 
+                                    href={`/platform/pm/payroll/${item.payroll_period}?type=AGUINALDO`}
+                                    className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                                    Aguinaldo
                                 </Link>
                             </div>
                         </div>

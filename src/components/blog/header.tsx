@@ -12,6 +12,7 @@ function HeaderBlog(){
                 <div className="relative pt-36 ml-auto">
                     <div className="lg:w-2/3 text-center mx-auto">
                         <h1 className="text-gray-900 dark:text-white font-bold text-5xl md:text-6xl xl:text-7xl">Payroll platform</h1>
+                        <p className="mt-8 text-gray-700 dark:text-gray-300">T Consulting, S.A.</p>
                         <p className="mt-8 text-gray-700 dark:text-gray-300">Lleva el control de tu nomina facil, rapido y seguro!</p>
                         <div className="mt-16 flex flex-wrap justify-center gap-y-4 gap-x-6">
                             <Link href="/register-company"

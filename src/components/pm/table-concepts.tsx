@@ -1,9 +1,8 @@
 "use client";
-import { useAppDispatch } from "@/hooks/redux";
 import { getPayrollPeriods } from "@/redux/pm/payroll-period-slice";
 //import { useRouter } from "next/navigation";
 import { IPayrollConcept, IPayrollPeriod } from "@/interfaces/pm";
-import { useAppSelector } from "@/hooks/redux";
+import { useAppSelector, useAppDispatch } from "@/hooks/redux";
 import { useSession } from "next-auth/react";
 
 import React, { useEffect } from 'react';
@@ -15,10 +14,11 @@ import { Box, Button, ListItemIcon, MenuItem} from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { columnsPayrollConcept, columnsPayrollConceptPDF } from "@/constants/pm";
 import { downLoadPdf, downloadCsv, convertDateDDMMYYYY } from "@/services/tools-service";
-import { getPayrollConcepts } from "@/redux/pm/payroll-concept-slice";
+import { getPayrollConcepts, deletePayrollConcept } from "@/redux/pm/payroll-concept-slice";
+
 
 const Table= ({columns, data}: any) => {
-
+    const dispatch = useAppDispatch();
     const handleExportRows = (rows: MRT_Row<IPayrollConcept>[]) => {
       const periodsSelected = rows.map((row) => row.original);
       downloadCsv(periodsSelected);
@@ -33,6 +33,10 @@ const Table= ({columns, data}: any) => {
     const handleExportRowsPdf = (rows: MRT_Row<IPayrollConcept>[]) => {
       const periodsSelected = rows.map((row) => row.original);
       downLoadPdf(periodsSelected, columnsPayrollConceptPDF);
+    }
+
+    const handleDeleteConcept= (id: number) => {
+      dispatch(deletePayrollConcept(id));
     }
 
   return(
@@ -87,26 +91,16 @@ const Table= ({columns, data}: any) => {
             </Button>
           </Box>
         )}
-        renderRowActionMenuItems={({ closeMenu }) => [
+        renderRowActionMenuItems={({ row }:any) => [
           <MenuItem
             key={0}
             onClick={() => {
-              // View profile logic...
-              closeMenu();
+              //handleDeleteConcept(row.original.id as number);
+              alert("en desarrollo")
             }}
             sx={{ m: 0 }}
           >
-            View Profile
-          </MenuItem>,
-          <MenuItem
-            key={1}
-            onClick={() => {
-              // Send email logic...
-              closeMenu();
-            }}
-            sx={{ m: 0 }}
-          >
-            Send Email
+            Eliminar concepto
           </MenuItem>,
         ]}
       />

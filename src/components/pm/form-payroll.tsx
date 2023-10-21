@@ -116,9 +116,12 @@ function FormCreateUpdatePayroll({idBtnDrawer}: IFormCreateUpdatePayrollProps){
                         placeholder='Seleccione' 
                         className="select select-sm block w-full text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring">
                             {
-                              Array.isArray(periods) && periods.map((item: IPayrollPeriod, index) => (
-                                    <option key={index} value={item.id}>{item.type + '(' + item.start_date + '-' + item.end_date + ')'}</option>
-                                ))
+                              Array.isArray(periods) && periods.map((item: IPayrollPeriod, index) => 
+                                {
+                                  if(item.is_open){
+                                    return <option key={index} value={item.id}>{item.name}</option>
+                                  }
+                                })  
                             }
                         </select>
                         {errors?.payroll_period && (

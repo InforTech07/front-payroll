@@ -9,11 +9,14 @@ export function downloadCsv(data: any[]) {
   download(csvConfig)(csvExporter)
 }
 
-export function downLoadPdf(data: any[], columns: any[]) {
+export function downLoadPdf(data: any[], columns: any[], title: string) {
   //const columnss = Object.keys(data[0]);
   const doc = new jsPdf('landscape','pt','a4');
+  doc.text(`Reporte: ${title}  Fecha: ${today.toLocaleDateString()}`, 40, 40);
+  
   autoTable(doc, {
     columnStyles: { europe: { halign: 'center' } }, // European countries centered
+    margin: { top: 50 },
     body: data as any,
     columns: columns as any,
   }); 
